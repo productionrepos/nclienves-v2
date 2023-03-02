@@ -126,9 +126,6 @@
                             </div>
             </form>
             <div class="page-content" >
-
-				<h2 style="color:green">GeeksforGeeks</h2>
-				<strong> Adding and Deleting Input fields Dynamically</strong>
 				<div >
 						<div class="">
 							<div class="col-lg-12">

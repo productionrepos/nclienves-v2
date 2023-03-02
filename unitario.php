@@ -199,7 +199,7 @@
                                                             <h4>Mis Direcciones</h4>
                                                         </div>
                                                         <div class="col-sm-4 col-12">
-                                                            <a class="btn rounded-pill" data-bs-toggle="collapse" data-bs-target="#collapseotherdir" 
+                                                            <a class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#collapseotherdir" 
                                                                 aria-expanded="false" aria-controls="collapseotherdir">
                                                                         Enviaré desde otra dirección
                                                             </a>

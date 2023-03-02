@@ -58,13 +58,13 @@
 <html lang="en">
 
 <?php
-include_once('../nclientesv2/include/head.php');
+include_once('./include/head.php');
 ?>
 <body>
     <div id="app">
         <!-- SideBar -->
         <?php
-              include_once('../nclientesv2/include/sidebar.php');
+              include_once('./include/sidebar.php');
         ?>
         
         
@@ -313,7 +313,7 @@ include_once('../nclientesv2/include/head.php');
             </form>
    <!-- Footer contiene div de main app div -->
    <?php
-        include_once('../nclientesv2/include/footer.php')
+        include_once('./include/footer.php')
     ?>
     <script src="assets/js/jquery-validation/jquery.validate.js"></script>
 

@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php 
-    require_once('include/head.php');
+    require_once('./include/head.php');
 ?>
 <body>
     <?php 
-        include_once('include/sidebar.php');
+        include_once('./include/sidebar.php');
     ?>
 
 
@@ -88,7 +88,7 @@
                     </div>
             </div>
 <?php
- require_once('include/footer.php')
+ require_once('./include/footer.php')
 ?>
 </div>
 </body>

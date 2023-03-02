@@ -1,5 +1,5 @@
 <?php
-    require_once('/xampp/htdocs/nclientesv2/ws/bd/dbconn.php');
+    require_once('./ws/bd/dbconn.php');
     
     session_start();
     if($_POST){

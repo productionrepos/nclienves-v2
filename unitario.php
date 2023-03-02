@@ -76,7 +76,7 @@
 <div id="app">
         <!-- SideBar -->
         <?php
-            include_once('../nclientesv2/include/sidebar.php');
+            include_once('./include/sidebar.php');
         ?>
             
 
@@ -504,7 +504,7 @@
             </button>
 
             <?php
-                include_once('../nclientesv2/include/footer.php')
+                include_once('./include/footer.php')
             ?>
             <script src="assets/js/jquery-validation/jquery.validate.js"></script>
 

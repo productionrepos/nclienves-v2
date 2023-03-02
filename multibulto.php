@@ -59,7 +59,7 @@
 <div id="app" >
         <!-- SideBar -->
         <?php
-            include_once('../nclientesv2/include/sidebar.php');
+            include_once('./include/sidebar.php');
         ?>
             
 

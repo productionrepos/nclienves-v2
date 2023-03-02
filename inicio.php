@@ -5,7 +5,7 @@
 
     $id_cliente = $_SESSION['cliente']->id_cliente;
 
-    require_once('ws/bd/dbconn.php');
+    require_once('./ws/bd/dbconn.php');
     $conexion = new bd();
     $conexion->conectar();
 
@@ -28,7 +28,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php
-        include_once('../nclientesv2/include/head.php');
+        include_once('./include/head.php');
     ?>
 
 
@@ -37,7 +37,7 @@
     <div id="app">
         <!-- SideBar -->
         <?php
-            include_once('../nclientesv2/include/sidebar.php');
+            include_once('./include/sidebar.php');
         ?>
        
         <div id="main"  class="layout-navbar">
@@ -182,7 +182,7 @@
             
 
             <?php
-                include_once('../nclientesv2/include/footer.php')
+                include_once('./include/footer.php')
             ?>
            
 

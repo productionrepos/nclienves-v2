@@ -1,7 +1,7 @@
 <?php
 
     $id_bulto = $_POST['id_bulto'];
-    require_once('/xampp/htdocs/nclientesv2/ws/bd/dbconn.php');
+    require_once('./ws/bd/dbconn.php');
 
     $conn = new bd();
 

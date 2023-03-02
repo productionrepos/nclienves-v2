@@ -272,7 +272,7 @@
                     </div>
                 </div>
             </div>
-            <a id="apretameclick" class="col-2 btn btn-success">Procesar credito</a>
+            <!-- <a id="apretameclick" class="col-2 btn btn-success">Procesar credito</a> -->
             <?php
                 include_once('./include/footer.php')
             ?>
@@ -286,13 +286,13 @@
         $('#apretameclick').on('click',function(){
             console.log("COTELOYOLA");
             console.log(appoloData);
-            // $.ajax({
-            //         type: "get",
-            //         url: "https://spreadfillment-back-dev.azurewebsites.net/api/pymes/revisarPedido/"+busquedaget,
-            //         success: function(data) {
-            //             console.log(data)
-            //         }
-            //     })
+            $.ajax({
+                    type: "get",
+                    url: "https://spreadfillment-back-dev.azurewebsites.net/api/pymes/revisarPedido/"+busquedaget,
+                    success: function(data) {
+                        console.log(data)
+                    }
+                })
             
             appoloData.forEach(ap => {
 

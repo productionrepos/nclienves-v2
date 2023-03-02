@@ -148,6 +148,7 @@
                         if(data.success==1) {
 							$(".toggle-block").toggle();
 							swal.fire("¡Bien hecho!", data.message, "success");
+              window.location = "index.php";
                         }
                         else {
 							swal.fire("Error", data.message, "error");

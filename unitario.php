@@ -86,7 +86,7 @@
             <?php
                 include_once('./include/topbar.php');
             ?>
-            <form class="form hidewhenbod1" id="formdir">
+            <form class="form hidewhenbod1" id="formdir2">
                             <div class="direnvio row" style="background-color: #66cab2;">
                                 <div class="col-8">
                                     <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
@@ -98,27 +98,36 @@
                                 <div class="col-md-6 col-lg-6 col-sm-8" >
                                     <div class="form-group">
                                         <label for="form_dir">Dirección</label>
-                                        <input type="text" id="form_dir" name="form_dir" class="form-control"
+                                        <input type="text" id="form_dir2" name="form_dir2" class="form-control"
                                             placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="form_numero">Número</label>
-                                        <input type="text" id="form_numero" name="form_numero" class="form-control"
-                                            placeholder="Casa, Depto, Bodega, etc." >
+                                        <input type="text" id="form_numero2" name="form_numero2" class="form-control"
+                                            placeholder="Número de dirección">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
-                                        <label for="first-name-column">Nombre</label>
-                                        <input type="text" id="form_nombre" name="form_nombre" class="form-control"
+                                        <label for="first-name-column">Depto/casa/block etc.</label>
+                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
                                             placeholder="Casa, Depto, Bodega, etc.">
                                     </div>
                                 </div>
+                                
+                                <div class="col-md-3 col-lg-3 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="first-name-column">Nombre</label>
+                                        <input type="text" id="" name="" class="form-control"
+                                            placeholder="Nombre del punto de retiro">
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6 col-lg-6 col-sm-8">
                                     <label for="Comuna">Región </label>
-                                    <select class="form-select" name="select_regioncli" id="select_regioncli">
+                                    <select class="form-select" name="select_regioncli2" id="select_regioncli2">
                                         <option value=""></option>
                                         <?php 
                                             foreach($regiones as $reg)
@@ -130,7 +139,7 @@
                                 </div>
                                 <div class="col-md-6 col-lg-6 col-sm-8">
                                     <label for="Comuna">Comuna</label>
-                                    <select class="form-select" name="select_comunacli" id="select_comunacli">
+                                    <select class="form-select" name="select_comunacli2" id="select_comunacli2">
                                         <option value=""></option>
                                     </select>
                                 </div>
@@ -499,9 +508,9 @@
                         </div>
                 </section> 
             </div>
-            <button id="buttonsubmit">
+            <!-- <button id="buttonsubmit">
                  pressme                                       
-            </button>
+            </button> -->
 
             <?php
                 include_once('./include/footer.php')
@@ -529,9 +538,9 @@
     var crearcliente = document.getElementById('savecliente')
     var selectcomuna = 0;
 
-    $('#buttonsubmit').on('click', function(){
-        console.log(crearcliente.checked);
-    })
+    // $('#buttonsubmit').on('click', function(){
+    //     console.log(crearcliente.checked);
+    // })
 
     $("input#rut_datos_contacto").rut({
 		formatOn: 'keyup',
@@ -556,10 +565,10 @@
                 "rut" : rut
             },
             success: function(data) {
-                console.log(data);
+                //console.log(data);
 
                 $.each(data, function (key, value){
-                    console.log(value.comuna);
+                    //console.log(value.comuna);
                     document.getElementById("nombredestinatario").value = value.nombre
                     document.getElementById('dir').value = value.direccion
                     document.getElementById('numtel').value = value.telefono
@@ -582,11 +591,11 @@
 
     })
 
-
+    var firstwarehouse = true;
     var existbodegas=<?php echo $existbodegas;?>;
     $(document).ready(function(){
-        console.log(existbodegas);
-        console.log(countbodegas);
+        // console.log(existbodegas);
+        // console.log(countbodegas);
             if(existbodegas == 0){
                 Swal.fire({
                 position: 'center',
@@ -687,9 +696,11 @@ $("#select_region").on('change',function(){
                         "idregion" : idregion
                     },
                     success: function(data) {
+                        firstwarehouse = false
                         console.log(data);
                         let select = document.getElementById("select_comuna");
                         select.options[select.options.length] = new Option("","",false,false)
+
                         $.each(data, function (key, value){
                             
                                     
@@ -737,8 +748,120 @@ $("#select_regioncli").on('change',function(){
                     }
     })
 })
+
+$("#select_regioncli2").on('change',function(){
+    var idregion = this.value;
+    var comuna = document.getElementById("select_comunacli2");
+    comuna.options = new Option("");
+    comuna.options.length = 0;
+    $.ajax({
+                    type: "POST",
+                    url: "ws/pedidos/getComunaByRegion.php",
+                    dataType: 'json',
+                    data: {
+                        "idregion" : idregion
+                    },
+                    success: function(data) {
+                        console.log(data);
+
+                        $.each(data, function (key, value){
+                            let select = document.getElementById("select_comunacli2");
+                            select.options[select.options.length] = new Option(value.nombre,value.id);
+                        })
+                        
+                    },
+                        error: function(data){
+                    }
+    })
+})
     
-        $('#formdir').validate({
+        $('#formdir2').validate({
+                    rules:{
+                        form_dir2:{
+                            required :true,
+                            minlength : 4
+                        },
+                        form_numero2:{
+                            required: true
+                        },
+                        form_nombre2:{
+                            required:true
+                        },
+                        form_comunacli2:{
+                            required:true
+                        },
+                        form_regioncli2:{
+                            reqiured:true
+                        }
+                    },
+                    messages:{
+                        form_dir2:{
+                            required :"Debe ingresar una dirección para el retiro",
+                            minlength : "La direccion debe tener al menos 4 caracteres"
+                        },
+                        form_numero2:{
+                            required: "Debe ingresar un numero de dirección",
+                        },
+                        form_nombre2:{
+                            required:"Ingrese un nombre para su dirección"
+                        },
+                        form_comunacli2:{
+                            required:"Seleccione una comuna"
+                        },
+                        form_regioncli2:{
+                            required:"Debe Seleccionar una región"
+                        }
+                    },
+                    submitHandler: function(form){
+                            //console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                    
+                        try{
+                            let vdir = document.getElementById('form_dir2').value;
+                            let vnumero = document.getElementById('form_numero2').value;
+                            let vnombre = document.getElementById('form_nombre2').value;
+                            let vcomuna = document.getElementById('select_comunacli2');
+                            let vcomunavalue = vcomuna.value; 
+                            let vregion = document.getElementById('select_regioncli2').value;
+
+                            let dataajax = {direccion : vdir,
+                                            numero: vnumero,
+                                            nombre : vnombre,
+                                            comuna : vcomunavalue,
+                                            region: vregion};
+                            
+                    
+                            //alert(JSON.stringify(dataajax));
+                                    $.ajax({
+                                    url: "ws/bodega/newBodega.php",
+                                    type: "POST",
+                                    dataType: 'json',
+                                    data: JSON.stringify(dataajax),
+                                    success:function(resp){
+                                        console.log(resp);
+                                        if(existbodegas){
+                                        }
+                                        if(existbodegas == false){
+                                            location.reload()
+                                        }
+                                    }
+                                    
+                                })
+                        }
+                        catch(error){
+                            console.log(error);
+                            return false;
+                        }    
+                        
+                           
+                           
+                            
+                    }
+                        
+                    
+                })
+
+
+                $('#formdir').validate({
                     rules:{
                         form_dir:{
                             required :true,
@@ -785,6 +908,9 @@ $("#select_regioncli").on('change',function(){
                             let vcomuna = document.getElementById('select_comunacli');
                             let vcomunavalue = vcomuna.value;
                             let vregion = document.getElementById('select_regioncli').value;
+                            
+                            
+                            
 
                             let dataajax = {direccion : vdir,
                                             numero: vnumero,
@@ -797,22 +923,15 @@ $("#select_regioncli").on('change',function(){
                                     $.ajax({
                                     url: "ws/bodega/newBodega.php",
                                     type: "POST",
+                                    dataType: 'json',
                                     data: JSON.stringify(dataajax),
                                     success:function(resp){
-                                        console.log(resp);
+                                        console.log(resp.query);
                                         if(existbodegas){
-
+                                            location.reload()
                                         }
                                         if(existbodegas == false){
-                                            // location.reload()
-                                        }
-
-                                        if(resp==="error"){
-                                            console.log("creado");
-                                            return false; 
-                                        }
-                                        else{
-                                            return false;
+                                            location.reload()
                                         }
                                     }
                                     

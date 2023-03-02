@@ -12,6 +12,7 @@ $conexion = new bd();
 $conexion->conectar();
 
 $id_pedido = filter_input(INPUT_GET, "id_pedido", FILTER_SANITIZE_NUMBER_INT);
+echo $id_pedido;
 $token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
 
 
@@ -67,7 +68,7 @@ if($datos = $conexion->mysqli->query($query)) {
 				$dato['imagen_logo'] = 'https://via.placeholder.com/750x300/FFFFFF/000000/0/?text='.urlencode($dato['nombre_comercio']);
 			}
 			else {
-				$dato['imagen_logo'] = 'https://app.sendcargo.cl/uploads/logos/logo_'.md5($dato['id_cliente']).'.png';
+				$dato['imagen_logo'] = 'https://app.spread.cl/uploads/logos/logo_'.md5($dato['id_cliente']).'.png';
 			}
 			$dato['codigo_barras_completo'] = upca($dato['codigo_barras']);
 			array_push($bultos, $dato);

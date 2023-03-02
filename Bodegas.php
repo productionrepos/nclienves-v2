@@ -76,16 +76,22 @@ include_once('./include/head.php');
 
             <div class="page-heading">
                 <div class="row">
-                    <div class="col-sm-9">
-                        <h3>Mis Direcciones || Spread</h3>
+                    <div class="card" style="padding: 20px">
+                    <div class="row">
+                        <div class="col-sm-9">
+                                <h3>Mis Direcciones || Spread</h3>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+                                data-bs-target="#inlineForm">
+                                Agregar bodega
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-sm-3">
-                    <!-- Button trigger for Crear form modal -->
-                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-                        data-bs-target="#inlineForm">
-                        Agregar bodega
-                    </button>
+                        
                 </div>
+                    
+                    
             </div>
             <div class="page-content">
 
@@ -101,7 +107,7 @@ include_once('./include/head.php');
                                                     <div class="card-body" id="cardbodywarehouse" >
                                                         <div class="row">
                                                             <h4 class="card-title col-10"><?php echo $bodega->nombre?></h4>
-                                                            <input type="text" name="" id="idbod" value="<?=$bodega->id_bodega?>">
+                                                            <input style="display: none;" type="text" name="" id="idbod" value="<?=$bodega->id_bodega?>">
                                                             
                                                         </div>
                                                         <p style="flex-direction: column-reverse;"><?php echo $bodega->calle?></p>

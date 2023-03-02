@@ -6,7 +6,7 @@
     $data = json_decode($json);
     
 
-    include_once('./ws/bd/dbconn.php');
+    include_once('../bd/dbconn.php');
 
     $id_cliente = $_SESSION['cliente']->id_cliente;
     $direccion = $data->direccion;
@@ -32,7 +32,7 @@
                     echo json_encode(array("status"=> 2, "accion"=>"Creado y Principal"));
                 }
             }else{
-                echo json_encode(array("status"=> 1, "accion"=>"Creado","count"=>$count,"lsat"=>$last,"checkunique"=>$checkunique));
+                echo json_encode(array("status"=> 1, "accion"=>"Creado","count"=>$count,"query"=>$query,"checkunique"=>$checkunique));
             }
         } else {
             echo false;

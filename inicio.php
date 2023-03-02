@@ -116,10 +116,10 @@
                     <section class="row imgrowmenu" >
                         <div class="row ">
                             <div class="singleimgmenu col-lg-6 col-sm-12">
-                                <a href="./seleccionBultos.php">
                                     <div class="card">
-                                            <div class="card-body px-3 py-4-5" id="imgmenu">
-                                                <div class="row " >
+                                        <div class="card-body px-3 py-4-5" id="imgmenu">
+                                            <a href="./seleccionBultos.php">
+                                                <div class="row" >
                                                     <div class="col-md-4" id="cardicon">
                                                         <div class="stats-icon green">
                                                             <i class="fa-solid fa-paper-plane"></i>
@@ -129,28 +129,30 @@
                                                         <h4 class="font-semibold"> Envía Ahora </h4>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </a>
+                                        </div>
                                     </div>
-                                </a>
+                                
                             </div>
 
                             <div class="singleimgmenu col-lg-6 col-sm-12">
-                                <a href="./PedidosRealizados.php">
+                                
                                     <div class="card">
                                         <div class="card-body px-3 py-4-5" id="imgmenu">
-                                            <div class="row">
-                                                <div class="col-md-4 "id="cardicon">
-                                                    <div class="stats-icon green">
-                                                        <i class="fa-solid fa-box"></i>
+                                            <a href="./PedidosRealizados.php">
+                                                <div class="row">
+                                                    <div class="col-md-4 "id="cardicon">
+                                                        <div class="stats-icon green">
+                                                            <i class="fa-solid fa-box"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8 menutxt">
+                                                        <h4 class="font-semibold">Mis Envíos</h4>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-8 menutxt">
-                                                    <h4 class="font-semibold">Mis Envíos</h4>
-                                                </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
-                                </a>
                             </div>
 
                             <!-- <div class="singleimgmenu col-lg-3 col-sm-6 col-md-6">
@@ -174,7 +176,6 @@
                                     </div>
                                 </a>
                             </div> -->
-                            
                         </div>
                     </section>
                 </div>

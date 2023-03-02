@@ -16,13 +16,8 @@
     $id_paquete  = $data->tipo;
     $id_bulto  = $data ->id_bulto;
     
-    $id_tipo = 0;
-    if ($id_paquete == "Mini") {
-        $id_tipo = 1;
-    }
-    if ($id_paquete == "Medium") {
-        $id_tipo = 2;
-    }
+    $id_tipo = $id_paquete;
+    
 
 
     
@@ -45,11 +40,11 @@
                                       id_comuna ='. $id_comuna.', descripcion_bulto ="'. $descripcion_bulto.'", 
                                       valor_declarado_bulto ='. $valor_declarado_bulto.', id_paquete ='. $id_tipo.'
                                       where id_bulto ='. $id_bulto;  
-    // echo json_encode($querymodbulto);
+    //  echo json_encode($querymodbulto);
     if($resmodbulto = $conn->mysqli->query($querymodbulto)){
        echo json_encode(array("status"=>1,"response"=>"bulto modificado exitosamente"));
     }
     else{
-        echo json_encode(array("status"=>0,"response"=>"No se ha podido moficar el bulto ".$resmodbulto->mysqli->error_log));
+        echo json_encode(array("status"=>0,"response"=>"No se ha podido moficar el bulto ".$resmodbulto->mysqli->error_log,"query"=>$querymodbulto));
     }
 ?>

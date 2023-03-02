@@ -1,7 +1,7 @@
 <?php
 
     $id_bulto = $_POST['id_bulto'];
-    require_once('./ws/bd/dbconn.php');
+    require_once('../bd/dbconn.php');
 
     $conn = new bd();
 
@@ -58,5 +58,6 @@
                 );
         }
         echo json_encode($return_array);
+        //echo json_encode($query);
     } 
 ?>

@@ -16,7 +16,9 @@
     $query ='SELECT p.id_pedido,p.timestamp_pedido,b.nombre_bodega FROM pedido p
             INNER JOIN cliente c ON (p.id_cliente=c.id_cliente)
             INNER JOIN bodega b ON (p.id_bodega=b.id_bodega)
-            WHERE c.id_cliente='. $id_cli .' AND p.estado_pedido<2';
+            WHERE c.id_cliente='. $id_cli .' AND p.estado_pedido<2
+            AND IsDeleted = 0
+            order by p.timestamp_pedido desc';
 
 // 'Select pe.id_pedido, pe.timestamp_pedido from pedido pe
 // inner join cliente cli on cli.id_cliente = pe.Cliente
@@ -97,10 +99,8 @@
                                             <td><?=date("H:i:s", $pedido->timestamp_pedido)?></td>
                                             <td><?=$pedido->nombre_bodega?></td>
                                             <td>
-                                                <a href=""><span class="badge bg-light-success">Continuar</span></a>
-                                                <a><span class="badge  modpedido bg-light-warning">Modificar</span></a>
-                                                <span class="badge bg-light-danger"  style="cursor: pointer;" data-bs-toggle="modal"
-                                                    data-bs-target="#danger">Eliminar</span>
+                                                <a><span class="badge  modpedido bg-light-warning">Continuar</span></a>
+                                                <span class="badge deletepedido bg-light-danger" style="cursor: pointer;">Eliminar</span>
                                             </td>
                                         </tr>
                                     <?php 
@@ -117,37 +117,37 @@
             </div>
 
             <!--Danger theme Modal -->
-            <div class="modal fade text-left" id="danger" tabindex="-1" role="dialog"
-            aria-labelledby="myModalLabel120" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-                role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger">
-                        <h5 class="modal-title white" id="myModalLabel120">Eliminar Pedido
-                        </h5>
-                        <button type="button" class="close" data-bs-dismiss="modal"
-                            aria-label="Close">
-                            <i data-feather="x"></i>
-                        </button>
+            <!-- <div class="modal fade text-left" id="danger" tabindex="-1" role="dialog"
+                aria-labelledby="myModalLabel120" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                        role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger">
+                                <h5 class="modal-title white" id="myModalLabel120">Eliminar Pedido
+                                </h5>
+                                <button type="button" class="close" data-bs-dismiss="modal"
+                                    aria-label="Close">
+                                    <i data-feather="x"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Desea eliminar el pedido
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-secondary"
+                                    data-bs-dismiss="modal">
+                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Close</span>
+                                </button>
+                                <button type="button" class="btn btn-danger ml-1"
+                                    data-bs-dismiss="modal">
+                                    <i class="bx bx-check d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Accept</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        Desea eliminar el pedido
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-secondary"
-                            data-bs-dismiss="modal">
-                            <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
-                        </button>
-                        <button type="button" class="btn btn-danger ml-1"
-                            data-bs-dismiss="modal">
-                            <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Accept</span>
-                        </button>
-                    </div>
-                </div>
-         </div>
-        </div>
+            </div> -->
         </div>
 
     <!-- Footer contiene div de main app div -->
@@ -157,6 +157,50 @@
 </body>
 
 <script>
+
+    $('.deletepedido').on('click',function(){
+        var fila = $(this).closest('tr')
+        let id_pedido = $(this).closest('tr').find('.idpedido').text()
+        Swal.fire({
+            title: 'Eliminar pedido',
+            text: "Será Eliminado permanentemente, ¿Desea continuar?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si!',
+            cancelButtonText: 'No'
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    $.ajax({
+                        type: "POST",
+                        url: "ws/pedidos/deletepedido.php",
+                        dataType: 'json',
+                        data: JSON.stringify({
+                            "id_pedido" : id_pedido
+                        }),
+                        success: function(data) {
+                            // console.log(data.deletepedido);
+                            // console.log(data.querytemporal);
+                            if(data.status ==1){
+                                Swal.fire(
+                                    'Eliminado!',
+                                    'Tu pedido ha sido eliminado exitosamente!',
+                                    'success'
+                                )
+                                fila.remove();
+                            }
+                            if(data.status == 0){
+                                
+                            }
+
+                        }
+                    })
+                    
+                }
+        }) 
+    })
+
 $('.modpedido').on('click',function(){
     let id_pedido = $(this).closest('tr').find('.idpedido').text()
     console.log(id_pedido)

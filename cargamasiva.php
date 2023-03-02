@@ -4,6 +4,21 @@
         require_once('ws/bd/dbconn.php');
         $conn = new bd();
         $conn->conectar();
+        $existbodegas = 1;
+        $counterbodegas =0;
+        $bodegas = [];
+
+        $queryregion='Select Nombre_region as nombre,id_region as id from region where id_region in (6,7,8)';
+        if($res = $conn->mysqli->query($queryregion))
+        {
+            while($datares = $res ->fetch_object())
+            {
+                $regiones [] = $datares;
+            }
+        }
+        else{
+            echo $conn->mysqli->error;
+        }
 
 
 
@@ -18,20 +33,25 @@
         inner join comuna co on co.id_comuna = bo.id_comuna
         inner join provincia pro on pro.id_provincia = co.id_provincia
         inner join region re on re.id_region = pro.id_region
-        where bo.id_cliente ='.$id_cliente;
+        where bo.id_cliente ='.$id_cliente.' and IsDelete = 0';
 
-        if($resbod = $conn->mysqli->query($querybodega))
-        {
-            $bodegas = array();
+        
+        if( $res = $conn->mysqli->query($querybodega)){
+            while($datares = $res ->fetch_object()){
 
-            while($databod = $resbod ->fetch_object())
-            {
-                $bodegas [] = $databod;
+                $bodegas [] = $datares;
             }
-        }
-        else{
-            echo $conn->mysqli->error;
-        }
+            
+            $counterbodegas = mysqli_num_rows($res);
+                
+            if($counterbodegas > 0){
+
+                $existbodegas = 1;
+            }else{
+
+                $existbodegas = 0;
+            }
+	    }
 
 
 
@@ -72,185 +92,232 @@
                 include_once('./include/topbar.php');
             ?>
 
-<div class="page-content" >
-<div class="container">
-                <div class="card">
-                    <div class="dropdown">
-                        <button class="btn btn-primary col-12 " style="padding: 5px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                              
-                            <div class="row">
-                                <div class="col-4" style="text-align: start;">
-                                        <label for="">
-                                                Mis Datos
-                                        </label>
+                    <form class="form hidewhenbod1" id="formdir2">
+                            <div class="direnvio row" style="background-color: #66cab2;">
+                                <div class="col-8">
+                                    <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
                                 </div>
-                                <div class="col-4" style="text-align: start;">
-
-                                    <?php
-
-                                        foreach($bodegas as $bodega):
-                                            
-                                            $main = $bodega->principal;
-                                            if($main):
-                                        ?>
-                                            <label id="resumemyData" style="text-align: center;">
-                                             <?php echo $bodega->nombre.' | '. $bodega->calle.' '.$bodega->numero?>                                                   
-                                            </label>
-                                        <?php
-                                                endif;
-                                            endforeach;
-                                        ?>
+                                <div class="form-check form-switch col-4" style="justify-items: end;">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
                                 </div>
-                                <div class="col-4" style="text-align: right;">
-                                    <i class="fa-solid fa-arrow-down"></i>
+                                <div class="col-md-6 col-lg-6 col-sm-8" >
+                                    <div class="form-group">
+                                        <label for="form_dir">Dirección</label>
+                                        <input type="text" id="form_dir2" name="form_dir2" class="form-control"
+                                            placeholder="">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="form_numero">Número</label>
+                                        <input type="text" id="form_numero2" name="form_numero2" class="form-control"
+                                            placeholder="Número de dirección">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="first-name-column">Depto/casa/block etc.</label>
+                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
+                                            placeholder="Casa, Depto, Bodega, etc.">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3 col-lg-3 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="first-name-column">Nombre</label>
+                                        <input type="text" id="" name="" class="form-control"
+                                            placeholder="Nombre del punto de retiro">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-6 col-sm-8">
+                                    <label for="Comuna">Región </label>
+                                    <select class="form-select" name="select_regioncli2" id="select_regioncli2">
+                                        <option value=""></option>
+                                        <?php 
+                                            foreach($regiones as $reg)
+                                            {
+                                                echo '<option value="'.$reg->id.'">'.$reg->nombre.'</option>';
+                                            }
+                                        ?>  
+                                    </select>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-8">
+                                    <label for="Comuna">Comuna</label>
+                                    <select class="form-select" name="select_comunacli2" id="select_comunacli2">
+                                        <option value=""></option>
+                                    </select>
                                 </div>
                             </div>
+                            <div class="col-12 d-flex justify-content-end">
+                                <button  type="submit" class="submit btn btn-primary me-1 mb-1" value="Submit"> Usar esta dirección </button>
+                            </div>
+                    </form>
+            
 
-                        </button>
-                        <div class="collapse" id="collapseExample">
-                            <div class="row justify-content-center align-items-center g-2">
-                            <section id="multiple-column-form">
-                                <div class="row match-height">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-content">
-                                                    <div class="col-12" style="text-align: end;">
-                                                        <a class="btn rounded-pill" data-bs-toggle="collapse" data-bs-target="#collapseotherdir" 
-                                                            aria-expanded="false" aria-controls="collapseotherdir">
-                                                                    Enviaré desde otra dirección
-                                                        </a>
-                                                        
-                                                    </div>
-                                                <div class="card-bod">
-                                                   
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <div class="form-group">
-                                                                    <label for="dirchose">Dirección</label>
-                                                                    <input type="text" id="dirchose" class="form-control"
-                                                                        placeholder="" name="fname-column" <?php
+<div class="page-content" >
+            <div class="container">
+                        <div class="card">
+                    
+                            <div class="dropdown">
+                                <button class="btn btn-primary col-12 " style="padding: 5px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    <div class="row">
+                                        <div class="col-md-4 col-12" style="text-align: start;">
+                                                <label for="">
+                                                        Punto de retiro
+                                                </label>
+                                        </div>
+                                        <div class="col-md-4 col-12" style="text-align: start;">
 
-                                                                                                                    foreach($bodegas as $bodega):
-                                                                                                                        
-                                                                                                                        $main = $bodega->principal;
-                                                                                                                        if($main):
-                                                                                                                    ?>
-                                                                                                                            value="<?php echo $bodega->calle.' '.$bodega->numero.', '.$bodega->comuna.', '.$bodega->region?>">
-                                                                                                                    <?php
-                                                                                                                            endif;
-                                                                                                                        endforeach;
-                                                                                                                    ?>
+                                            <?php
+
+                                                foreach($bodegas as $bodega):
+                                                    
+                                                    $main = $bodega->principal;
+                                                    if($main):
+                                                ?>
+                                                    <label id="resumemyData" style="text-align: center;">
+                                                    <?php echo $bodega->nombre.' | '. $bodega->calle.' '.$bodega->numero?>                                                   
+                                                    </label>
+                                                <?php
+                                                        endif;
+                                                    endforeach;
+                                                ?>
+                                        </div>
+                                        <div class="col-md-4 col-12" style="text-align: right;">
+                                            <i class="fa-solid fa-arrow-down"></i>
+                                        </div>
+                                    </div>
+
+                                </button>
+                                <div class="collapse" id="collapseExample">
+                                    <div class="row justify-content-center align-items-center g-2">
+                                    <section id="multiple-column-form">
+                                        <div class="row match-height">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-content">
+                                                            <div class="row" style="justify-content: space-between;">
+                                                                <div class="col-sm-4 col-12">
+                                                                    <h4>Mis Direcciones</h4>
+                                                                </div>
+                                                                <div class="col-sm-4 col-12">
+                                                                    <a class="btn rounded-pill" data-bs-toggle="collapse" data-bs-target="#collapseotherdir" 
+                                                                        aria-expanded="false" aria-controls="collapseotherdir">
+                                                                                Enviaré desde otra dirección
+                                                                    </a>
                                                                 </div>
                                                             </div>
-                                                            
-                                                            <form >
-                                                                <div class="row carddireccion" id="<?php echo $bodega->id?>">
-                                                                    <?php
-                                                                        foreach($bodegas as $bodega):
-                                                                        $main = $bodega->principal;
-                                                                    ?>
-                                                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12" >
-                                                                                <div class="card bodega">
-                                                                                    <div class="card-content" style="justify-content: center;">
-                                                                                        <div class="card-body" id="cardbodywarehouse" >
-                                                                                            <div class="row">
-                                                                                                <h4 class="card-title col-10"><?php echo $bodega->nombre?></h4>
-                                                                                                <?php if($main==1):?>
-                                                                                                    <input class="col-2" style="align-items: flex-start;" value="<?php echo $bodega->id?>" type="radio" name="Usar" id="usardir" checked>
+                                                        <div class="card-bod">
+                                                                <div class="row">
+                                                                
+                                                                    
+                                                                    <form >
+                                                                        <div class="row carddireccion" style="justify-content: center;" id="<?php echo $bodega->id?>">
+                                                                            <?php
+                                                                                foreach($bodegas as $bodega):
+                                                                                $main = $bodega->principal;
+                                                                            ?>
+                                                                                <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
+                                                                                        <div class="card bodega">
+                                                                                            <div class="card-content" style="justify-content: center;">
+                                                                                                <div class="card-body" id="cardbodywarehouse" >
+                                                                                                    <div class="row">
+                                                                                                        <h4 class="card-title col-10"><?php echo $bodega->nombre?></h4>
+                                                                                                        <?php if($main==1):?>
+                                                                                                            <input class="col-2" style="align-items: flex-start;" value="<?php echo $bodega->id?>" type="radio" name="Usar" id="usardir" checked>
 
-                                                                                                <?php else:?>
-                                                                                                    <input class="col-2" style="align-items: flex-start;" value="<?php echo $bodega->id?>" type="radio" name="Usar" id="usardir" >
+                                                                                                        <?php else:?>
+                                                                                                            <input class="col-2" style="align-items: flex-start;" value="<?php echo $bodega->id?>" type="radio" name="Usar" id="usardir" >
+                                                                                                            
+                                                                                                        <?php endif;?>
+                                                                                                    </div>
                                                                                                     
-                                                                                                <?php endif;?>
+                                                                                                    <p style="flex-direction: column-reverse;"><?php echo $bodega->calle.' '.$bodega->numero?></p>
+                                                                                                    <p class="card-text">
+                                                                                                    <?php echo $bodega->comuna.', '.$bodega->region?>
+                                                                                                    </p>
+                                                                                                </div>
                                                                                             </div>
-                                                                                            
-                                                                                            <p style="flex-direction: column-reverse;"><?php echo $bodega->calle.' '.$bodega->numero?></p>
-                                                                                            <p class="card-text">
-                                                                                            <?php echo $bodega->comuna.', '.$bodega->region?>
-                                                                                            </p>
+                                                                                        </div>
+                                                                                </div>
+                                                                            <?php
+                                                                                    endforeach;                                                                    
+                                                                            ?>
+                                                                        </div>
+                                                                    </form>
+                                                            </div>
+                                                            <div class="row collapse  form" id=collapseotherdir>
+                                                                            <form class="form" id="formdir">
+                                                                                    <div class="direnvio row" style="background-color: #66cab2;">
+                                                                                        <div class="col-8">
+                                                                                            <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
+                                                                                        </div>
+                                                                                        <div class="form-check form-switch col-4" style="justify-items: end;">
+                                                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                                                                            <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
+                                                                                        </div>
+                                                                                        <div class="col-md-6 col-lg-6 col-sm-8" >
+                                                                                            <div class="form-group">
+                                                                                                <label for="form_dir">Dirección</label>
+                                                                                                <input type="text" id="form_dir" name="form_dir" class="form-control"
+                                                                                                    placeholder="">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-3 col-lg-3 col-sm-6">
+                                                                                            <div class="form-group">
+                                                                                                <label for="form_numero">Número</label>
+                                                                                                <input type="text" id="form_numero" name="form_numero" class="form-control"
+                                                                                                    placeholder="Casa, Depto, Bodega, etc." >
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-3 col-lg-3 col-sm-6">
+                                                                                            <div class="form-group">
+                                                                                                <label for="first-name-column">Nombre</label>
+                                                                                                <input type="text" id="form_nombre" name="form_nombre" class="form-control"
+                                                                                                    placeholder="Casa, Depto, Bodega, etc.">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6 col-lg-6 col-sm-8">
+                                                                                            <label for="Comuna">Región </label>
+                                                                                            <select class="form-select" name="select_regioncli" id="select_regioncli">
+                                                                                                <option value=""></option>
+                                                                                                <?php 
+                                                                                                    foreach($regiones as $reg)
+                                                                                                    {
+                                                                                                        echo '<option value="'.$reg->id.'">'.$reg->nombre.'</option>';
+                                                                                                    }
+                                                                                                ?>  
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-md-6 col-lg-6 col-sm-8">
+                                                                                            <label for="Comuna">Comuna</label>
+                                                                                            <select class="form-select" name="select_comunacli" id="select_comunacli">
+                                                                                                <option value=""></option>
+                                                                                            </select>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                        </div>
-                                                                    <?php
-                                                                            endforeach;                                                                    
-                                                                    ?>
-                                                                </div>
-                                                            </form>
-                                                            
-                                                          
-                                                                <div class="row collapse  form" id=collapseotherdir>
-                                                                <form class="form" id="formdir">
-                                                                        <div class="direnvio row" style="background-color: #66cab2;">
-                                                                            <div class="col-8">
-                                                                                <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
-                                                                            </div>
-                                                                            <div class="form-check form-switch col-4" style="justify-items: end;">
-                                                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                                                                                <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
-                                                                            </div>
-                                                                            <div class="col-md-6 col-lg-6 col-sm-8" >
-                                                                                <div class="form-group">
-                                                                                    <label for="form_dir">Dirección</label>
-                                                                                    <input type="text" id="form_dir" name="form_dir" class="form-control"
-                                                                                        placeholder="">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-3 col-lg-3 col-sm-6">
-                                                                                <div class="form-group">
-                                                                                    <label for="form_numero">Número</label>
-                                                                                    <input type="text" id="form_numero" name="form_numero" class="form-control"
-                                                                                        placeholder="Casa, Depto, Bodega, etc." >
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-3 col-lg-3 col-sm-6">
-                                                                                <div class="form-group">
-                                                                                    <label for="first-name-column">Nombre</label>
-                                                                                    <input type="text" id="form_nombre" name="form_nombre" class="form-control"
-                                                                                        placeholder="Casa, Depto, Bodega, etc.">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-6 col-lg-6 col-sm-8">
-                                                                                <label for="Comuna">Región </label>
-                                                                                <select class="form-select" name="select_regioncli" id="select_regioncli">
-                                                                                    <option value=""></option>
-                                                                                    <?php 
-                                                                                        foreach($comunas as $com)
-                                                                                        {
-                                                                                            echo '<option value="'.$com->id.'">'.$com->nombre.'</option>';
-                                                                                        }
-                                                                                    ?>  
-                                                                                </select>
-                                                                            </div>
-                                                                            <div class="col-md-6 col-lg-6 col-sm-8">
-                                                                                <label for="Comuna">Comuna</label>
-                                                                                <select class="form-select" name="select_comunacli" id="select_comunacli">
-                                                                                    <option value=""></option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-12 d-flex justify-content-end">
-                                                                            <button  type="submit" class="submit btn btn-primary me-1 mb-1" value="Submit"> Usar esta dirección </button>
-                                                                        </div>
+                                                                                    <div class="col-12 d-flex justify-content-end">
+                                                                                        <button  type="submit" class="submit btn btn-primary me-1 mb-1" value="Submit"> Usar esta dirección </button>
+                                                                                    </div>
+                                                                            </form>
                                                                     </div>
-                                                                </form>
-                                                           
-                                                            
-                                                      </div>
+                                                                        
+                                                                </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </section>
                                     </div>
                                 </div>
-                            </section>
                             </div>
+                            
+                            
                         </div>
+                        
                     </div>
-                    
-                    
-                </div>
-                
-            </div>
     <div class="container">
         <div class="row">
             <div class="card">
@@ -321,11 +388,263 @@ var tipo= ""
     endforeach;
 ?>
 
+    var countbodegas = <?php echo $counterbodegas;?>;
+	var existbodegas=<?php echo $existbodegas;?>;
+
+$(document).ready(function(){
+        console.log(existbodegas);
+        console.log(countbodegas);
+            if(existbodegas == 0){
+                Swal.fire({
+                position: 'center',
+                icon: 'info',
+                title: 'No tienes puntos de retiro!',
+                text: "No te preocupes. Crea uno ahora!",
+                confirmButtonText: 'Vamos'
+                })
+            $('.page-content').hide()
+            $('.hidewhenbod1').show()
+        }
+        else{
+            $('.hidewhenbod1').hide()
+        }  
+
+    })
+    $("#select_regioncli").on('change',function(){
+        var idregion = this.value;
+        var comuna = document.getElementById("select_comunacli");
+        comuna.options = new Option("");
+        comuna.options.length = 0;
+        $.ajax({
+            type: "POST",
+            url: "ws/pedidos/getComunaByRegion.php",
+            dataType: 'json',
+            data: {
+                "idregion" : idregion
+            },
+            success: function(data) {
+                console.log(data);
+
+                $.each(data, function (key, value){
+                    let select = document.getElementById("select_comunacli");
+                    select.options[select.options.length] = new Option(value.nombre,value.id);
+                })
+                
+            },
+                error: function(data){
+            }
+        })
+    })
+
+    $("#select_regioncli2").on('change',function(){
+        var idregion = this.value;
+        var comuna = document.getElementById("select_comunacli2");
+        comuna.options = new Option("");
+        comuna.options.length = 0;
+        $.ajax({
+                        type: "POST",
+                        url: "ws/pedidos/getComunaByRegion.php",
+                        dataType: 'json',
+                        data: {
+                            "idregion" : idregion
+                        },
+                        success: function(data) {
+                            console.log(data);
+
+                            $.each(data, function (key, value){
+                                let select = document.getElementById("select_comunacli2");
+                                select.options[select.options.length] = new Option(value.nombre,value.id);
+                            })
+                            
+                        },
+                            error: function(data){
+                        }
+        })
+    })
+
+    $('#formdir2').validate({
+                    rules:{
+                        form_dir2:{
+                            required :true,
+                            minlength : 4
+                        },
+                        form_numero2:{
+                            required: true
+                        },
+                        form_nombre2:{
+                            required:true
+                        },
+                        form_comunacli2:{
+                            required:true
+                        },
+                        form_regioncli2:{
+                            reqiured:true
+                        }
+                    },
+                    messages:{
+                        form_dir2:{
+                            required :"Debe ingresar una dirección para el retiro",
+                            minlength : "La direccion debe tener al menos 4 caracteres"
+                        },
+                        form_numero2:{
+                            required: "Debe ingresar un numero de dirección",
+                        },
+                        form_nombre2:{
+                            required:"Ingrese un nombre para su dirección"
+                        },
+                        form_comunacli2:{
+                            required:"Seleccione una comuna"
+                        },
+                        form_regioncli2:{
+                            required:"Debe Seleccionar una región"
+                        }
+                    },
+                    submitHandler: function(form){
+                            //console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                    
+                        try{
+                            let vdir = document.getElementById('form_dir2').value;
+                            let vnumero = document.getElementById('form_numero2').value;
+                            let vnombre = document.getElementById('form_nombre2').value;
+                            let vcomuna = document.getElementById('select_comunacli2');
+                            let vcomunavalue = vcomuna.value; 
+                            let vregion = document.getElementById('select_regioncli2').value;
+
+                            let dataajax = {direccion : vdir,
+                                            numero: vnumero,
+                                            nombre : vnombre,
+                                            comuna : vcomunavalue,
+                                            region: vregion};
+                            
+                    
+                            //alert(JSON.stringify(dataajax));
+                                    $.ajax({
+                                    url: "ws/bodega/newBodega.php",
+                                    type: "POST",
+                                    dataType: 'json',
+                                    data: JSON.stringify(dataajax),
+                                    success:function(resp){
+                                        console.log(resp);
+                                        if(existbodegas){
+                                        }
+                                        if(existbodegas == false){
+                                            location.reload()
+                                        }
+                                    }
+                                    
+                                })
+                        }
+                        catch(error){
+                            console.log(error);
+                            return false;
+                        }    
+                        
+                           
+                           
+                            
+                    }
+                        
+                    
+                })
+
+
+                $('#formdir').validate({
+                    rules:{
+                        form_dir:{
+                            required :true,
+                            minlength : 4
+                        },
+                        form_numero:{
+                            required: true
+                        },
+                        form_nombre:{
+                            required:true
+                        },
+                        form_comunacli:{
+                            required:true
+                        },
+                        form_regioncli:{
+                            reqiured:true
+                        }
+                    },
+                    messages:{
+                        form_dir:{
+                            required :"Debe ingresar una dirección para el retiro",
+                            minlength : "La direccion debe tener al menos 4 caracteres"
+                        },
+                        form_numero:{
+                            required: "Debe ingresar un numero de dirección",
+                        },
+                        form_nombre:{
+                            required:"Ingrese un nombre para su dirección"
+                        },
+                        form_comunacli:{
+                            required:"Seleccione una comuna"
+                        },
+                        form_regioncli:{
+                            required:"Debe Seleccionar una región"
+                        }
+                    },
+                    submitHandler: function(form){
+                            //console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                    
+                        try{
+                            let vdir = document.getElementById('form_dir').value;
+                            let vnumero = document.getElementById('form_numero').value;
+                            let vnombre = document.getElementById('form_nombre').value;
+                            let vcomuna = document.getElementById('select_comunacli');
+                            let vcomunavalue = vcomuna.value;
+                            let vregion = document.getElementById('select_regioncli').value;
+                            
+                            
+                            
+
+                            let dataajax = {direccion : vdir,
+                                            numero: vnumero,
+                                            nombre : vnombre,
+                                            comuna : vcomunavalue,
+                                            region: vregion};
+                            
+                    
+                            //alert(JSON.stringify(dataajax));
+                                    $.ajax({
+                                    url: "ws/bodega/newBodega.php",
+                                    type: "POST",
+                                    dataType: 'json',
+                                    data: JSON.stringify(dataajax),
+                                    success:function(resp){
+                                        console.log(resp.query);
+                                        if(existbodegas){
+                                            location.reload()
+                                        }
+                                        if(existbodegas == false){
+                                            location.reload()
+                                        }
+                                    }
+                                    
+                                })
+                        }
+                        catch(error){
+                            console.log(error);
+                            return false;
+                        }    
+                        
+                           
+                           
+                            
+                    }
+                        
+                    
+                })
+
+
+
+
 $('#presstest').on('click',function(){
      console.log(id_bodega);
 })
 
-$('.tbodyclick').on('click','#btnEliminar',function(){
+$('.tbodyclick').on('click','.btnEliminar',function(){
     Swal.fire({
         title: 'Quieres Eliminar este bulto?',
         text: "Se quitará este registro de tú pedido",
@@ -341,7 +660,21 @@ $('.tbodyclick').on('click','#btnEliminar',function(){
             'Tú bulto ha sido eliminado exitosamente',
             'success'
             )
-            $(this).closest('tr').remove()
+            
+            //$(this).closest('tr').addClass('displaynone')
+
+            
+
+            //  $(this).closest('tr').find('td').each(function(){
+            //     console.log($(this).attr('class'));
+            //     if($(this).hasClass('err')){
+            //         $(this).attr('class').split(' ')[0]
+            //     }
+            // })
+            
+
+
+
         }
         })
 })
@@ -362,7 +695,7 @@ $('.tbodyclick').on('change','#select_comuna',function(){
     {
         console.log("no hay Comuna");
     }
-    // console.log(comuna);
+    console.log("LA COMUNA ESSSSSSSSSS!"+comuna);
 })
 
 function validatenombre(valor,clase){
@@ -393,6 +726,18 @@ function getTableData(){
     let counter = 0
     var error = false 
 
+
+    // $(".tbodyclick tr ").find('td').each(function(){
+    //     if($(this).hasClass('err')){
+    //         if($(this).closest('tr').hasClass('displaynone')){
+
+    //         }
+    //         else{
+    //             error=true
+    //         }
+    //     }
+    // })
+
     $(".tbodyclick td").hasClass('err')? error = true : error=false;
     console.log(error)
 
@@ -409,15 +754,20 @@ function getTableData(){
     }
     else{
             $('.tbodyclick tr').each(function(){
-            let nombre = $(this).find('td').eq(0).text()
-            let direccion = $(this).find('td').eq(1).text()
-            let telefono = $(this).find('td').eq(2).text()
-            let correo = $(this).find('td').eq(3).text()
-            let comuna = $(this).find('#select_comuna').val()
-            let item = $(this).find('td').eq(5).text()
-            let valor = $(this).find('td').eq(6).text()
-            let ctipo = $(this).find('#select_type').val()
-            arraydatos.push(nombre,direccion,telefono,correo,comuna,item,valor,ctipo)
+                // if($(this).hasClass('displaynone')){
+                //     console.log("te encontre PERRA");
+                // }else{
+                    let nombre = $(this).find('td').eq(0).text()
+                    let direccion = $(this).find('td').eq(1).text()
+                    let telefono = $(this).find('td').eq(2).text()
+                    let correo = $(this).find('td').eq(3).text()
+                    let comuna = $(this).find('#select_comuna').val()
+                    let item = $(this).find('td').eq(5).text()
+                    let valor = $(this).find('td').eq(6).text()
+                    let ctipo = $(this).find('#select_type').val()
+                    arraydatos.push(nombre,direccion,telefono,correo,comuna,item,valor,ctipo)
+                // }
+                
         })
         console.log(arraydatos);
         for(i=0; i<=arraydatos.length; i++)
@@ -454,7 +804,7 @@ function getTableData(){
                         timer : 2500
                         
                     }).then(function() {
-                        window.location = "confirmarpedido.php?id_pedido="+data;
+                        //window.location = "confirmarpedido.php?id_pedido="+data;
                 })
             },error:function(data){
                 console.log("Volvi, pero no sirvo para nada");
@@ -464,17 +814,31 @@ function getTableData(){
     }
 }
 
+
 $('.tbodyclick').on('blur','td',function(){
     //$(this).css('border', 'none')
     let clase = $(this).attr('class').split(' ')[0]
     let valor = $(this).text().trim()    
-    
+    var letras="abcdefghyjklmnñopqrstuvwxyz-*/+,.<>/?|:;'{}[]-=()*&^%$#@!`~"
     // console.log("El valor de comuna es "+comuna);
     console.log(clase);
-    console.log("VALOR DEL TD INGRESADO" + valor+"|");
+    console.log("VALOR DEL TD INGRESADO" + valor+"|"+clase);
     console.log("cadena mide "+valor.trim().length);
     console.log("este es el valor del select tipo "+tipo);
-        if(clase == "tdnom" && valor == "" ){
+    var tn = 0;
+    if(clase == 'tdtel'){
+        texto = valor.toLowerCase();
+        for(i=0; i<texto.length; i++){
+                if (letras.indexOf(texto.charAt(i),0)!=-1){
+                    console.log("tiene letrassssss");
+                    tn++
+                }
+            }
+    }
+        if(clase == "tddelete"){
+
+        }
+        else if(clase == "tdnom" && valor == "" ){
             
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar un nombre')
@@ -498,13 +862,20 @@ $('.tbodyclick').on('blur','td',function(){
             $(this).prop('title','La dirección debe tener al menos 5 caracteres')
             $(this).addClass('err')
         }
-        else if(clase == "tdtel" && valor.trim == ""){
+        else if(clase == "tdtel" && valor == ""){
 
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar una dirección')
             $(this).addClass('err')
 
-        }else if(clase == "tdtel" && valor.trim.length < 9 ){
+        }else if(tn>0){
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','Solo se pueden ingresar numeros')
+            $(this).addClass('err')
+            $(this).text("")
+            
+            
+        }else if(clase == "tdtel" && valor.length < 9 ){
 
             $(this).css('border', '1px solid red')
             $(this).prop('title','El teléfono debe tener al menos 9 caracteres')
@@ -551,7 +922,13 @@ $('.tbodyclick').on('blur','td',function(){
             $(this).prop('title','El valor no puede exceder los $500000')
             $(this).addClass('err')
 
-        } else if(clase == "tdtype" && tipo == "" ){
+        }else if(clase == "tdval" && valor < 1000){
+
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','El valor no puede ser menora  $1000')
+            $(this).addClass('err')
+
+        }else if(clase == "tdtype" && tipo == "" ){
 
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar un tipo de envío')
@@ -631,10 +1008,9 @@ document.querySelectorAll("#usardir").forEach(el => {
 
                         $.each(data, function (key, value){
                             
-                            document.getElementById("dirchose").innerHTML = ""+value.direccion+' '+value.numero+', '+value.comuna+', '+value.region+"";
+                            // document.getElementById("dirchose").innerHTML = ""+value.direccion+' '+value.numero+', '+value.comuna+', '+value.region+"";
                             
                             document.getElementById("resumemyData").innerHTML = ""+value.nombre+'| '+value.direccion+' '+value.numero+"";
-                            
                         })
                         
                     },

@@ -5,7 +5,7 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
     try{
 
         
-        require_once('./ws/bd/dbconn.php');    
+        require_once('../bd/dbconn.php');    
         $json = file_get_contents('php://input');
 
         $conn = new bd();

@@ -68,7 +68,7 @@
 
         <div class="confirmar_pedido" >
             <div class="confirmar_pedidohead">
-                <h4>Resumen de Pedido</h4>
+                <h4>Resumen de Pedido #<?=$id_pedido?></h4>
             </div>
             <div class="confirmar_pedidoBody" id="reloadiv">
                 <table class="table" style="width: 100%;">
@@ -210,8 +210,8 @@
                                             <label for="Costo"> Tipo envío </label>
                                                 <select name="select_type" class="form-select" id="select_type" value="" >
                                                     <option value="0"></option>
-                                                    <option>Mini</option>
-                                                    <option>Medium</option>
+                                                    <option value="1">Mini (0 - 5 kg)</option>
+                                                    <option value="2">Medium (5 - 10 kg)</option>
                                                 </select>
                                             </div>
                                             <label id="tipoenvio">Rango de peso</label>
@@ -352,17 +352,19 @@
                         url: "ws/bulto/modBulto.php",
                         data: JSON.stringify(Arraymod),
                         success: function(data) {
-                            console.log(data);
+                            //console.log(data);
                             $("#xlarge").modal('hide');
                             $("#reloadiv").load(window.location.href +" #reloadiv");
                         },
                             error: function(data){
-                                console.log(data);
+                                console.log(data.query);
                         }
                     })
                     return false;  
              }       
     })
+
+    
 
     $('#checkpay').on('click',function(e){
         e.preventDefault()
@@ -371,6 +373,7 @@
     })
 
     $(".editbulto").click(function(){
+        $('#xlarge').modal({backdrop: 'static', keyboard: false})
         idbulto = $(this).closest('tr').find(".id_bulto").text();
         let look = $("#xlarge").find('input[name="vid_bulto"]').val(idbulto);
         if(look = ""){
@@ -403,10 +406,10 @@
                     $("#xlarge").find('input[name="item"]').val(value.item)
                     $("#xlarge").find('input[name="cost"]').val(value.valor)
                     if(value.servicio == 1){
-                        $("#xlarge").find('select[name="select_type"]').val("Mini").change()
+                        $("#xlarge").find('select[name="select_type"]').val("1").change()
                     }
                     if(value.servicio == 2){
-                        $("#xlarge").find('select[name="select_type"]').val("Medium").change()
+                        $("#xlarge").find('select[name="select_type"]').val("2").change()
                     }
                  })
             },error:function(resp){

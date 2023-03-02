@@ -72,9 +72,10 @@ $conn->conectar();
     </div>
     <button onclick="ExportToExcel('xlsx')">Export table to excel</button>
 
-    <a href="https://<?php echo $_SERVER['HTTP_HOST']?>/ws/pdf/?id_pedido=<?=$id_pedido?>&token=<?=md5($id_pedido."pdf_etiquetas")?>" 
-       type="button" class="btn btn-lg btn-block btn-success"><i class="fa fa-download" aria-hidden="true">
-       </i> Descargue aquí el archivo para imprimir las etiquetas que debe adherir en los bultos
+    <a href="https://<?php echo $_SERVER['HTTP_HOST']?>/ws/pdf/index.php?id_pedido=<?=$id_pedido?>&token=<?=md5($id_pedido."pdf_etiquetas")?>" 
+       type="button" class="btn btn-lg btn-block btn-success">
+       <i class="fa fa-download" aria-hidden="true"></i> 
+       Descargue aquí el archivo para imprimir las etiquetas que debe adherir en los bultos
     </a>
 
 

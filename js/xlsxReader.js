@@ -87,7 +87,7 @@ const excelInput = document.getElementById('excel-input');
 
 excelInput.addEventListener('change',async function(){
     const content = await readXlsxFile(excelInput.files[0])
-        $('tbody tr').remove();
+        //$('tbody tr').remove();
         const excel = new Excel(content);
         let arrays = excel.header();
         let headcorrect = ["NOMBRE CLIENTE FINAL","DIRECCION ENTREGA","TELEFONO","Email cliente (opcion)","COMUNA ENTREGA","NOMBRE ITEM","COSTO ITEM","PAQUETE"]
@@ -430,7 +430,7 @@ excelInput.addEventListener('change',async function(){
                                 // console.log(filatabla);
                                 // console.log("-------------------------");
 
-                                $('#excel_table > tbody:last').append("<tr>"+ filatabla +'<td> <button id="btnEliminar" class="btn btn-danger" data-bs-toggle="tooltip" title="Eliminar"> <i class="fa-solid fa-trash"></i></button></td>' +"<tr>");
+                                $('#excel_table > tbody:last').append("<tr>"+ filatabla +'<td class="tddelete"> <button id="btnEliminar" class="btn btn-danger btnEliminar" data-bs-toggle="tooltip" title="Eliminar"> <i class="fa-solid fa-trash"></i></button></td>' +"<tr>");
                             }
                         }
                     }

@@ -349,12 +349,25 @@
 	});
 
 
-	$('#toValdiateBulto1').on('click','.deploy',function(){
-		console.log(getpassStatus(0,"deploy"));
-		return false
+	$('.deploy').on('click',function(){
+		let index = $(this).closest('#row').find('.m-input').val()
+		index--
+		//console.log(getpassStatus(index,"tipo"));
+		let response = getpassStatus(index,"tipo")
+
+		console.log(response);
+		 
+
+		if(response){
+			$('.formdisplay').addClass('show');
+		}
+		
+		// console.log(getpassStatus(0,"deploy"));
+		// return false
 	})
-	// getpassStatus(index,action)
-	 $('#getarraydata').click(function() {
+	// $('#getarraydata').click(
+	
+	function getpassStatus(index,action){
 		let nombres = document.getElementsByName('nombredestinatario[]');
 		let telefono = document.getElementsByName('numtel[]');
 		let direccion = document.getElementsByName('dir[]');
@@ -370,9 +383,10 @@
 		
 		
 		var inps = document.getElementsByName('nombredestinatario[]');
+		pass =true
 		let countererr = 0;
-		
-			for (var i = 0; i < inps.length; i++){
+		if(action == "tipo"){
+			for (var i = index; i < inps.length; i++){
 				let anombres= nombres[i] 
 				let atelefono= telefono[i] 
 				let adireccion= direccion[i] 
@@ -386,16 +400,16 @@
 				// let amini = mini[i]
 				// let medium = medium[i]
 				
-				console.log("nombres  =>"+anombres.value)
-				console.log("telefono  =>"+atelefono.value)
-				console.log("direccion  =>"+adireccion.value)
-				console.log("correo  =>"+acorreo.value)
-				console.log("region  =>"+aregion.value)
-				console.log("comuna  =>"+acomuna.value)
-				console.log("item  =>"+aitem.value)
-				console.log("costo  =>"+acosto.value)
-				console.log("RUT  =>"+arut.value)
-				//Validar Nombre
+				// console.log("nombres  =>"+anombres.value)
+				// console.log("telefono  =>"+atelefono.value)
+				// console.log("direccion  =>"+adireccion.value)
+				// console.log("correo  =>"+acorreo.value)
+				// console.log("region  =>"+aregion.value)
+				// console.log("comuna  =>"+acomuna.value)
+				// console.log("item  =>"+aitem.value)
+				// console.log("costo  =>"+acosto.value)
+				// console.log("RUT  =>"+arut.value)
+				// Validar Nombre
 				if(anombres.value == ""){
 					console.log(nombres[i].classList.add("vlderr"));
 					countererr=+1
@@ -441,7 +455,7 @@
 					countererr=+1
 					console.log("dirvacio");
 				}
-				else if(adireccion.value.length <= 8){
+				else if(adireccion.value.length <= 5){
 					direccion[i].classList.add("vlderr")
 					countererr=+1
 				}
@@ -470,28 +484,29 @@
 					region[i].parentNode.classList.remove("vlderr");
 				}
 				// VALIDAR COMUNA 
-				if(acomuna.value == ""){
-					comuna[i].parentNode.classList.add('vlderr')
-					countererr=+1
-				}
-				else{
-					comuna[i].parentNode.classList.remove("vlderr");
-				}
+				// if(acomuna.value == ""){
+				// 	comuna[i].parentNode.classList.add('vlderr')
+				// 	countererr=+1
+				// }
+				// else{
+				// 	comuna[i].parentNode.classList.remove("vlderr");
+				// }
 
 				// console.log("tipo  =>"+arrtipo.value)
 				// console.log("RUT  =>"+amini.value)
 				// console.log("RUT  =>"+amedium.value)
 			}
+		}
 		
-		// if(countererr > 0 )
-		// {
-		// 	pass = false;
-		// 	return pass
-		// }
-		// else{
-		// 	return pass;
-		// }
-	})
+		if(countererr > 0 )
+		{
+			pass = false;
+			return pass
+		}
+		else{
+			return pass;
+		}
+	}
 
 
 
@@ -679,7 +694,7 @@
 					counter ++
 					console.log(counter);
 					let index = counter - 1
-					let clone = $('#row').clone()
+					let clone = $('#row').clone(true)
 					clone.find("#nombredestinatario").val("")
 
 					// let nombre = clone.find(".nombre").attr('name')

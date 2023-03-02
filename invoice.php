@@ -119,7 +119,7 @@
         }
     }
    
-    if($credito ==0) {
+    if($credito == 0) {
         $params = array(
             "commerceOrder" => $id_pedido,
             "subject" => "Pedido #$id_pedido",
@@ -132,12 +132,7 @@
             "urlReturn" => "https://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
             "optional" => ""
         );
-            $urlconf = "https://".$_SERVER['HTTP_HOST']."/confirmacionPago.php";
-            $urlReturn= "https://".$_SERVER['HTTP_HOST']."/confirmacionPago.php";
-            
-    
-      
-    
+        
         try {
             $flowApi = new FlowApi;
             $respuesta = $flowApi->send("payment/create", $params,"POST");
@@ -180,8 +175,6 @@
                             <div class="card">
                                 <div class="d-flex flex-row p-2"> <img src="../include/img/LogoInvoice.png"  width="450" height="60">
                                     <div class="d-flex flex-column"> <span class="font-weight-bold">ID Pedido</span> <h4><?=$id_pedido?></h4> </div>
-                                    <p>URLCONF <?=$urlconf?></p>
-                                    <p>URLRETURN <?=$urlReturn?></p>
                                 </div>
                                 <hr>
                                 <div class="table-responsive p-2">

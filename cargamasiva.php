@@ -328,8 +328,8 @@
                     <input type="file" class="form-control filepond--drop-label" id="excel-input">
                     <br>
                 </div>
-                <input class="filepond--browser" type="file" id="filepond--browser-amf70r6nq" aria-controls="filepond--assistant-amf70r6nq" aria-labelledby="filepond--drop-label-amf70r6nq" name="filepond">
-                <div class="filepond--drop-label" style="transform: translate3d(0px, 0px, 0px); opacity: 1;"><label for="filepond--browser-amf70r6nq" id="filepond--drop-label-amf70r6nq" aria-hidden="true">Drag &amp; Drop your files or <span class="filepond--label-action" tabindex="0">Browse</span></label></div>
+                <!-- <input class="filepond--browser" type="file" id="filepond--browser-amf70r6nq" aria-controls="filepond--assistant-amf70r6nq" aria-labelledby="filepond--drop-label-amf70r6nq" name="filepond">
+                <div class="filepond--drop-label" style="transform: translate3d(0px, 0px, 0px); opacity: 1;"><label for="filepond--browser-amf70r6nq" id="filepond--drop-label-amf70r6nq" aria-hidden="true">Drag &amp; Drop your files or <span class="filepond--label-action" tabindex="0">Browse</span></label></div> -->
             </div>
         </div>
     </div>

@@ -8,7 +8,8 @@ include_once('../bd/dbconn.php');
         $conn = new bd();
         $conn ->conectar();
 
-        $query ='SELECT nombre_bulto as name, direccion_bulto as dir, precio_bulto as precio from bulto where id_pedido ='.$idpedido;
+        $query ='SELECT nombre_bulto as name, direccion_bulto as dir, email_bulto as correo,
+                        telefono_bulto as telefono from bulto where id_pedido ='.$idpedido ;
 
         $existe = false;
 
@@ -19,12 +20,15 @@ include_once('../bd/dbconn.php');
                 {
                     $nombre = $datares['name'];
                     $dir = $datares['dir'];
-                    $precio = $datares['precio'];
+                    $correo = $datares['correo'];
+                    $telefono = $datares['telefono'];
+                    
 
                     $return_array[]=array(
                         "nombre" => $nombre,
                         "direccion"=>$dir,
-                        "precio" => $precio
+                        "correo" => $correo,
+                        "telefono" => $telefono
                     );
             }
             echo json_encode($return_array);

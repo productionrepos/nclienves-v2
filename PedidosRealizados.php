@@ -16,7 +16,8 @@
     $query ='SELECT p.id_pedido,p.timestamp_pedido,b.nombre_bodega FROM pedido p
             INNER JOIN cliente c ON (p.id_cliente=c.id_cliente)
             INNER JOIN bodega b ON (p.id_bodega=b.id_bodega)
-            WHERE c.id_cliente='. $id_cli .' AND p.estado_pedido>=2';
+            WHERE c.id_cliente='. $id_cli .' AND p.estado_pedido>=2 
+            order by p.timestamp_pedido desc';
 
     $existe = false;
     if($res = $conn->mysqli->query($query)){
@@ -104,11 +105,11 @@
                                                     <tr>
                                                         <td><span class="idpedido"><?=$pedido->id_pedido?></span></td>
                                                         <td><?=date('d/m/Y',$pedido->timestamp_pedido)?></td>
-                                                        <td><?=date('H:i:s',$pedido->timestamp_pedido)?></td>
-                                                        <td ><?=$total?></td>
+                                                        <td><?=$pedido->nombre_bodega?></td>
+                                                        <td ><?=$size?></td>
                                                         <td>
-                                                            <button
-                                                                class="btn btn-primary btnGetData"
+                                                            <a
+                                                                class="btnGetData"
                                                                 id="<?php echo$index?>"
                                                                 type="button"
                                                                 data-bs-toggle="collapse"
@@ -116,8 +117,9 @@
                                                                 aria-expanded="false"
                                                                 aria-controls="collapseExample<?php echo$index?>"
                                                             >
-                                                                Flecha desplegable
-                                                            </button>
+                                                                <i style="font-size: 35px; color:#60cbb196; cursor: pointer;" class="fa-solid fa-arrow-down"></i>
+
+                                                            </a>
                                                         </td>
                                                         <td>Check verde - Información rojo - reloj (pendientes)</td>
                                                         
@@ -164,7 +166,7 @@
                         data:  params,
                         url:   'ws/pedidos/getBultoByPedido.php',
                         type:  'post',
-                        dataType: 'JSON',
+                        dataType: 'json',
                          success:  function (response) {
                             var head =  " <tr>"+
                                         '<td style="font-weight:800">Destinatario</th>'+
@@ -183,12 +185,14 @@
                                         for(var i=0; i<len; i++){
                                             var nombre = response[i].nombre;
                                             var direccion = response[i].direccion;
-                                            var precio = response[i].precio;
+                                            var correo = response[i].correo;
+                                            var telefono = response[i].telefono;
                                             var tr_str = 
                                                 "<tr>" +
                                                 "<td align='center'>" + nombre + "</td>" +
                                                 "<td align='center'>" + direccion + "</td>" +
-                                                "<td align='center'>" + precio + "</td>" +
+                                                "<td align='center'>" + correo + "</td>" +
+                                                "<td align='center'>" + telefono + "</td>" +
                                                 "</tr>";
                                                 $("#"+exp).append(tr_str);
                                                 // $("#"+exp).html(response);

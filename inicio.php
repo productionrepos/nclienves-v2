@@ -118,7 +118,7 @@
                             <div class="singleimgmenu col-lg-6 col-sm-12">
                                     <div class="card">
                                         <div class="card-body px-3 py-4-5" id="imgmenu">
-                                            <a href="./seleccionBultos.php">
+                                            <a href="seleccionBultos.php">
                                                 <div class="row" >
                                                     <div class="col-md-4" id="cardicon">
                                                         <div class="stats-icon green">
@@ -139,7 +139,7 @@
                                 
                                     <div class="card">
                                         <div class="card-body px-3 py-4-5" id="imgmenu">
-                                            <a href="./PedidosRealizados.php">
+                                            <a href="PedidosRealizados.php">
                                                 <div class="row">
                                                     <div class="col-md-4 "id="cardicon">
                                                         <div class="stats-icon green">
@@ -176,6 +176,29 @@
                                     </div>
                                 </a>
                             </div> -->
+                        </div>
+                    </section>
+
+                    <section class=" imgrowmenu " >
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8 col-sm-12">
+                                <div id="faq" role="tablist" aria-multiselectable="true">
+                                    <div class="card">
+                                        <div class="card-header" role="tab" id="questionTwo" style="text-align: center;">
+                                            <h5 class="card-title">
+                                                <a class="collapsed" style="color: black;  font-family: arial; text-decoration: none" data-bs-toggle="collapse" data-parent="#faq" href="#answerTwo" aria-expanded="false" aria-controls="answerTwo">
+                                                    Revisa la información detallada de tu pedido aquí
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="answerTwo" class="collapse" role="tabcard" aria-labelledby="questionTwo">
+                                            <div class="card-body">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>

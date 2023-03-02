@@ -661,8 +661,7 @@ $('.tbodyclick').on('click','.btnEliminar',function(){
             'success'
             )
             
-            //$(this).closest('tr').addClass('displaynone')
-
+            $(this).closest('tr').remove()
             
 
             //  $(this).closest('tr').find('td').each(function(){
@@ -727,17 +726,6 @@ function getTableData(){
     var error = false 
 
 
-    // $(".tbodyclick tr ").find('td').each(function(){
-    //     if($(this).hasClass('err')){
-    //         if($(this).closest('tr').hasClass('displaynone')){
-
-    //         }
-    //         else{
-    //             error=true
-    //         }
-    //     }
-    // })
-
     $(".tbodyclick td").hasClass('err')? error = true : error=false;
     console.log(error)
 
@@ -754,9 +742,7 @@ function getTableData(){
     }
     else{
             $('.tbodyclick tr').each(function(){
-                // if($(this).hasClass('displaynone')){
-                //     console.log("te encontre PERRA");
-                // }else{
+                
                     let nombre = $(this).find('td').eq(0).text()
                     let direccion = $(this).find('td').eq(1).text()
                     let telefono = $(this).find('td').eq(2).text()
@@ -766,25 +752,12 @@ function getTableData(){
                     let valor = $(this).find('td').eq(6).text()
                     let ctipo = $(this).find('#select_type').val()
                     arraydatos.push(nombre,direccion,telefono,correo,comuna,item,valor,ctipo)
-                // }
+                
                 
         })
         console.log(arraydatos);
-        for(i=0; i<=arraydatos.length; i++)
-        {   
-            if(counter == 8)
-            {
-                counter = 0
-                i += 8
-            }
-            regularizar.push(arraydatos[i])
-            counter++
-        }
-        regularizar.unshift(id_bodega)
-        var filtrado = regularizar.filter(function(x){
-        return x !== undefined
-        })
-        var send_data = JSON.stringify(filtrado)
+        arraydatos.unshift(id_bodega)
+        var send_data = JSON.stringify(arraydatos)
         console.log(send_data);
 
 
@@ -804,7 +777,7 @@ function getTableData(){
                         timer : 2500
                         
                     }).then(function() {
-                        //window.location = "confirmarpedido.php?id_pedido="+data;
+                        window.location = "confirmarpedido.php?id_pedido="+data;
                 })
             },error:function(data){
                 console.log("Volvi, pero no sirvo para nada");

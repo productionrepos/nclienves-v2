@@ -312,16 +312,16 @@
                 
             </div>
                     <section>
-                        <div class="row match-height" style="margin-top: 20px;">
+                        <div class="match-height" style="margin-top: 20px;">
                             <div>
-                                <div class="card">
-                                    <div class="card-header row" style="margin: 0px 5px;">
-                                         <div class="col-md-5 col-10">
+                                <div class="card" style="background-color: #ffffffc7;">
+                                    <div class="row " style="margin: 10px 5px;background-color: #ffffff00; justify-content: space-between;">
+                                         <div class="col-md-5 col-10" style="align-items: center;">
                                             <h4 class="card-title">Formulario de envío(Datos destinatario)</h4>
                                         </div>
-                                        <div class="col-md-3 col-3">
+                                        <!-- <div class="col-md-3 col-3">
                                             <label ><h5>Guardar Cliente</h5><input id="savecliente"  type="checkbox"></label>                                                       
-                                        </div>
+                                        </div> -->
                                         <div class="col-md-4 col-10" style="justify-items: end;">
                                             <a class="btn btn-primary" id="showtipo" data-bs-toggle="collapse" href="#srchclientefrecuente" role="button" 
                                                             aria-expanded="false" aria-controls="collapseExample">
@@ -333,7 +333,7 @@
                                         <section class="section">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    Jquery Datatable
+                                                   Buscar cliente frecuente
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="form-group">
@@ -429,7 +429,7 @@
                                 </div>
                                 </div>
                             </div>
-                            <div class="card" id="packagedata" style="margin-top:20px; padding:30px">
+                            <div class="card" id="packagedata" style="margin-top:20px; padding:30px ;background-color: #ffffffc7;">
                                 <div class="card-content">
                                     <form id="deployform">
                                         <div class="row formdisplay justify-content-center align-items-end " >
@@ -535,7 +535,7 @@
     ?>
     
     var countbodegas = <?php echo $counterbodegas;?>;
-    var crearcliente = document.getElementById('savecliente')
+    var crearcliente = 1
     var selectcomuna = 0;
 
     // $('#buttonsubmit').on('click', function(){
@@ -850,10 +850,7 @@ $("#select_regioncli2").on('change',function(){
                         catch(error){
                             console.log(error);
                             return false;
-                        }    
-                        
-                           
-                           
+                        }     
                             
                     }
                         

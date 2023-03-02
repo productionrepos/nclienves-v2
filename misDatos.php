@@ -49,8 +49,8 @@
             </div>
             <div class="page-content">
                 
-                <div class="row personal">
-                    <div class="col-lg-6 col-md-12">
+                <div class="row personal" style="justify-content: space-between;">
+                    <div class="col-lg-5 col-md-12 resumen-envios">
                         <div>
                             <div class="card-header">
                                 <h4 class="card-title">Datos Personales</h4>
@@ -108,13 +108,9 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-                    <div class="col-lg-6 col-md-12">
-                        <div class="">
-                            <div class="card-header">
+                    <div class="col-lg-5 col-md-12 resumen-envios" style="margin: 10px;">
+                        <div class="card" style="background-color: #66cab2;">
+                            <div class="">
                                 <h4 class="card-title">Modificar contraseña</h4>
                             </div>
                             <div class="card-content">
@@ -174,14 +170,14 @@
 
 
           
-            <div class="row comercial">
-                        <div class="col-lg-5 col-md-12">
+            <div class="row" style="justify-content: space-between; margin: 10px;">
+                        <div class="col-lg-5 col-md-12 resumen-envios">
                             <div>
                                 <div class="card-header">
                                     <h4 class="card-title">Modificar Datos Comerciales</h4>
                                 </div>
-                                <div class="card-content" >
-                                    <div class="card-body" id="cngcd">
+                                <div class="" >
+                                    <div class="" id="cngcd">
                                         <form class="form form-vertical">
                                             <div class="form-body">
                                                 <h5>Datos comerciales</h5>
@@ -245,19 +241,19 @@
                             </div>
                         </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-5 col-md-12 resumen-envios">
                                 <div class="">
                                     <div class="card-header">
                                         <h4 class="card-title">Cambiar Logo</h4>
                                     </div>
-                                    <div class="card-content">
-                                        <div class="card-body" id="cngcd">
+                                    <div class="">
+                                        <div class="" id="cngcd">
                                             <form class="form form-vertical">
                                                 <div class="form-body">
                                                     <h5>Datos comerciales</h5>
                                                     <div class="row">
                                                         <div class="">
-                                                            <div class="card-content">
+                                                            <div class="card">
                                                                 <div class="card-body imgdrop" style="border:1px solid black; transition: all .5s ease; border-radius: 10px;">
                                                                     <p class="card-text">Seleccione un logotipo con las especificaciones mencionadas
                                                                     </p>

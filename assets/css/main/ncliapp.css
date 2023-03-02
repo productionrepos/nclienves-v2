@@ -36,7 +36,7 @@
 .imgrowmenu{
     margin-top: 50px;
     padding: 30px 0;
-    background-color: #66cab2;
+    background-color: #60cbb196;
     justify-content: center;
     align-items: center;
     border-radius: 50px ;
@@ -53,6 +53,7 @@
     max-width: 100%;
     min-height: 300px;
 }
+
 
 #cardbodywarehouse {
     transition: all .6s;
@@ -101,7 +102,7 @@
 }
 
 #cngpd:hover{
-    background-color: #cdede5;
+    
     border-radius: 0px 0px 10px;
 }
 
@@ -137,7 +138,7 @@
 
 
 .resumen-envios{
-    background-color: #66cab2;
+    background-color: #60cbb196;
     border: 1px solid 5db7a1;
     margin-bottom: 10px;
     border-radius: 50px;
@@ -211,9 +212,6 @@
         margin-left: 0;
     }
 } */
-
-
-
 
 .comercial{
     justify-content: space-between;

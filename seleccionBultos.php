@@ -22,12 +22,12 @@
                 <h3></h3>
             </div> -->
             <div class="page-content">
-                <div class="resumen-envios row mt-2">
+                <div class="resumen-envios row mt-2" >
                 <div class="row">
                     <h2 style="color:#3e3e3f; text-align: center" class="mb-5 mt-5">¿Cuántas entregas deseas realizar?</h2>
                 </div>
                 </div>
-                    <div class="resumen-envios row mt-2">
+                    <div class="resumen-envios row mt-2" style="justify-content: space-between;">
                         <div class="col-lg-1 col-md-12 mt-2 mb-2"></div>
                         <div class="col-lg-3 col-md-12 mt-2 mb-2">
                             <div class="card">

@@ -158,7 +158,7 @@ var tipo = 0;
                     };
 
                     console.log("EL CREAR CLIENTE ES :"+crearcliente.checked);
-                    if(crearcliente.checked){
+                    
                         $.ajax({
                             url: "ws/cliente/newclienteFrecuente.php",
                             type: "POST",
@@ -171,9 +171,6 @@ var tipo = 0;
                                     return false;
                                 }
                         });
-                    }else{
-                        console.log("Cliente No guardado");
-                    }
                     
                     
                     //alert(JSON.stringify(dataajax));

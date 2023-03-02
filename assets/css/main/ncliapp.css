@@ -1,0 +1,366 @@
+#sidebar{
+    background-color: #cdede5 !important;
+}
+#main{
+    background-image: url('/include/img/backgound-forest.jpg');
+    background-color: #00a77f !important;
+}
+#headpage{
+    background-color: #cdede5;
+}
+#navbarSupportedContent{
+    margin-left: auto;
+}
+
+.page-content{
+    margin: 50px;
+   
+    
+}
+#containermainmenu{
+    height: 100%;
+}
+
+#imgmenu {
+    border-radius: 10px;
+    transition: all .45s ease;
+}
+.card-body:hover{
+    box-shadow: 0 0 20px rgba(33,33,33,.9); 
+    
+}
+
+.unipack{
+
+}
+.imgrowmenu{
+    margin-top: 50px;
+    padding: 30px 0;
+    background-color: #66cab2;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px ;
+}
+.singleimgmenu{
+    
+    align-items: center;
+    justify-content: center;
+    padding-top: 35px;
+    transition: all .4s ease;
+    
+}
+.card.bodega img{
+    max-width: 100%;
+    min-height: 300px;
+}
+
+#cardbodywarehouse {
+    transition: all .6s;
+}
+
+#cardbodywarehouse:hover{
+    border-radius: 0.7rem;
+    background-color:  #cdede5!important;
+}
+
+.card-img-top{
+    border: 1px solid  #56ebc5;
+} 
+
+#cardicon{
+    justify-content: center;
+    display: flex;
+}
+
+.menutxt{
+    text-align: center; margin-top: 18px;
+}
+.btnwh{
+    margin: 5px;
+}
+.app .logo{
+    min-width: 300px !important;
+}
+
+.imgdrop{
+    border:1px solid black;
+    border-radius: 10px;
+    transition: all .5s ease; 
+}
+
+#cngcd{
+    transition: all .4s ease-out;
+}
+
+#cngcd{
+   border-radius: 0px  0px 10px 10px !important;
+}
+
+#cngpd{
+    transition: all .4s ease-out;
+}
+
+#cngpd:hover{
+    background-color: #cdede5;
+    border-radius: 0px 0px 10px;
+}
+
+#tablepp:hover{
+    background-color: initial !important;
+}
+
+#tablepr:hover{
+    background-color: initial !important;
+}
+
+#bultoslct {
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    height: 90px;
+}
+#bultoslct i{
+    font-size: 50px;
+}
+#bulto-card{
+    padding: 10px;
+    margin:5px;
+}
+.centerrows{
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+#bulto-card{
+    transition: all .4s ease-in-out;
+}
+
+
+.resumen-envios{
+    background-color: #66cab2;
+    border: 1px solid 5db7a1;
+    margin-bottom: 10px;
+    border-radius: 50px;
+    padding: 30px;
+}
+#rowresenv{
+    justify-content: center;
+    align-content: center;
+}
+
+.resumen-envios i{
+    font-size: 50px;
+}
+
+.envtitle{
+   justify-content: center;
+}
+.masteresume{
+    justify-content: center;
+}
+.colresume{
+    align-content: center;
+    text-align: center;
+    border: -2px solid #56ebc5;
+    margin: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all .4s ease;
+}
+
+.colresume:hover{
+    box-shadow: 0 0 20px rgba(33,33,33,.9); 
+}
+.colresume:hover{
+    opacity: 1;
+    transform: scale(1,1);
+}
+
+.dataresenv
+{
+    justify-content: center;
+}
+   
+
+.envresitems{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.envresitems i{
+    align-items:left;
+    
+}
+
+.session_close{
+    justify-content: right!important;
+    display: flex;
+    margin-right: 0px;
+}
+
+@media (max-width: 600px) {
+    .facet_sidebar {
+      display: none;
+    }
+}
+
+
+/* @media screen and (max-width: 1199px){
+    #headpage{
+        margin-left: 0;
+    }
+} */
+
+
+
+
+.comercial{
+    justify-content: space-between;
+    margin-top:80px;
+}
+
+.comercial{
+    justify-content: space-between;
+    margin-top:80px;
+    background-color: #66cab2;
+    padding: 20px;
+    border-radius: 50px;
+}
+.comercial input[type = "text"],.comercial input [type = "number"],
+.personal input[type = "text"],.personalinput[type = "number"],
+.personal input[type = "email"]{
+    border-radius: 30px;
+}
+
+
+.form-bodyenvio{
+    padding: 30px;
+    border-radius: 50px;
+}
+
+.form-bodyenvio input[type = "number"],[type="text"],[type="email"]{
+    border-radius: 30px;
+    border: 1px solid #00a77f;
+
+}
+
+.form-bodyenvio select{
+    border: 1px solid #00a77f;
+}
+
+
+.fa-arrow-down.open{
+    transform: rotate(180deg);
+    transition: all .3s ease-in;
+}
+
+.fa-arrow-down.close{
+    transform: rotate(360deg);
+    transition: all .3s ease-in;
+}
+
+.card-bod{
+    padding: 0px;
+    margin-left: 10px;
+    margin-left: 10px;
+    justify-content: center;
+}
+
+
+.direnvio{
+    padding: 20px;
+    margin: 8px;
+    border-radius: 50px;
+    opacity: .9;
+    justify-content: center;
+    
+}
+
+
+.resumen-bodegas{
+    background-color: #66cab2;
+    border: 1px solid #5db7a1;
+    margin-bottom: 10px;
+    border-radius: 50px;
+    padding: 30px;
+}
+
+.card_bodegas{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.confirmar_pedido{
+    padding: 30px;
+    background-color: #66cab2;
+    margin:50px 50px;
+    border-radius: 50px;
+}
+
+.confirmar_pedidoBody{
+    background-color:  beige;
+    font-weight: 500;
+    font-size: 18px;
+    border-radius: 10px;
+   
+}
+
+.confirmar_pedidoBody tr {
+    transition: all .4s ease;
+}
+.confirmar_pedidoBody tr:hover {
+    background-color: #00a77f;
+    color: beige;
+}
+
+#overlay{	
+    position: fixed;
+    top: 0;
+    z-index: 100000;
+    width: 100%;
+    height:100%;
+    display: none;
+    background: rgba(0,0,0,0.6);
+  }
+  .cv-spinner {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+  }
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px #ddd solid;
+    border-top: 4px #2e93e6 solid;
+    border-radius: 50%;
+    animation: sp-anime 0.8s infinite linear;
+  }
+  @keyframes sp-anime {
+    100% { 
+      transform: rotate(360deg); 
+    }
+  }
+  .is-hide{
+    display:none;
+  }
+
+ .formdisplay.show{
+    opacity: 1;
+ }
+
+.formdisplay{ 
+    opacity: 0;
+    transition: all .4s ease;
+} 
+
+.vlderr{
+    border: 1px solid red;
+}
+
+  
+
+
+

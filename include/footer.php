@@ -13,7 +13,6 @@
     <script src="../assets/js/bootstrap.js"></script>
     <script src="../assets/js/app.js"></script>
     <script src="../assets/extensions/jquery/jquery.min.js"></script>
-    <!-- <script src="../assets/js/pages/datatables.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/2.8.3/choices.js"></script>
     <script src="assets/js/pages/form-element-select.js"></script>
     <!-- <script src="/dist/assets/js/bootstrap.min.js"></script>-->

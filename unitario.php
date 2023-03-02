@@ -115,7 +115,7 @@
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="first-name-column">Depto/casa/block etc.</label>
-                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
+                                        <input type="text" id="form_nomb2" name="form_nomb2" class="form-control"
                                             placeholder="Casa, Depto, Bodega, etc.">
                                     </div>
                                 </div>
@@ -273,6 +273,13 @@
                                                                                         <label for="first-name-column">Nombre</label>
                                                                                         <input type="text" id="form_nombre" name="form_nombre" class="form-control"
                                                                                             placeholder="Casa, Depto, Bodega, etc.">
+                                                                                    </div>
+                                                                                    <div class="col-md-3 col-lg-3 col-sm-6">
+                                                                                        <div class="form-group">
+                                                                                            <label for="first-name-column">Depto/casa/block etc.</label>
+                                                                                            <input type="text" id="form_nomb2" name="form_nomb2" class="form-control"
+                                                                                                placeholder="Casa, Depto, Bodega, etc.">
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-md-6 col-lg-6 col-sm-8">

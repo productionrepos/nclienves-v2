@@ -78,7 +78,7 @@
                             <input type="search" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
                         </div>
                         <div class="card-body" id="tablepr">
-                            <table class="table table-striped" id="prtable">
+                            <table class="table table-striped" id="table">
                                 <thead>
                                     <tr>
                                         <th>Numero Pedido</th>
@@ -145,12 +145,17 @@
    <?php
         include_once('./include/footer.php')
     ?>
-
+    <!-- <script src="assets/js/plugins/jquery.dataTables.min.js"></script>
+    <script src="assets/js/plugins/dataTables.bootstrap4.min.js"></script> -->
+    <script src="./assets/extensions/datatables.net-bs5/js/dataTables.bootstrap4.min.js"></script>
+    <script src="./assets/extensions/datatables.net-bs5/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function(){
+
+        
         
 
-        $("#prtable").on('click', '.btnGetData', function() {
+        $("#table").on('click', '.btnGetData', function() {
             // get the current row
                     var currentRow = $(this).closest("tr");
                     var id = $(this).attr("id");
@@ -204,7 +209,20 @@
                         }
                     });
                 });
+
+        $('#table').DataTable({
+            "order": [
+                [0, "desc"]
+            ],
+            "pagingType": "full_numbers"
+        });
+
     });
+
+
+  
+
+    
 </script>
 </body>
 

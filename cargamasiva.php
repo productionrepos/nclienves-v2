@@ -1,5 +1,8 @@
 <?php 
         session_start();
+        if(!isset($_SESSION['cliente'])){
+            header('Location: index.php');
+        }
         $id_cliente = $_SESSION['cliente']->id_cliente;
         require_once('ws/bd/dbconn.php');
         $conn = new bd();
@@ -319,20 +322,33 @@
                         
                     </div>
     <div class="container">
-        <div class="row">
+        <div class="row m-2">
             <div class="card">
                 <div class="col-12 col">
-                    <input type="file" class="form-control" id="excel-input">
+                    <input type="file" class="form-control filepond--drop-label" id="excel-input">
+                    <br>
                 </div>
+                <input class="filepond--browser" type="file" id="filepond--browser-amf70r6nq" aria-controls="filepond--assistant-amf70r6nq" aria-labelledby="filepond--drop-label-amf70r6nq" name="filepond">
+                <div class="filepond--drop-label" style="transform: translate3d(0px, 0px, 0px); opacity: 1;"><label for="filepond--browser-amf70r6nq" id="filepond--drop-label-amf70r6nq" aria-hidden="true">Drag &amp; Drop your files or <span class="filepond--label-action" tabindex="0">Browse</span></label></div>
             </div>
         </div>
     </div>
-    <a download href="./xlsx/books.xlsx">Enlace para descargar mp3 con su nombre original</a>
+
+    
     <div style="background-color: beige; margin: 15px">
-        <div class="card-header">
-            <h3>Resumen Pedido</h3>
-            <h6>Si existen errores podrás editarlos en la misma tabla!</h6>
+        <div class="container" >
+            <div class="row card-header" >
+                    <div class="col-md-8 col-12 mt-3">
+                        <h3>Resumen Pedido</h3>
+                        <h6>Si existen errores podrás editarlos en la misma tabla!</h6>
+                    </div>
+                    <div class="col-md-4 col-12 justify-content-end  mt-3">
+                        <a class="btn btn-warning" download href="/xlsx/excel_tipo.xlsx">Descarga nuestro Excel tipo</a>
+                    </div>
+                </div>
+
         </div>
+        
         <div id="tablepp">
             <table class="table table-striped" id="excel_table">
                 <thead>
@@ -352,9 +368,13 @@
                 </tbody>
                 
             </table>
+            <div class="row" style="justify-content: right; margin:15px;">
+                <button class="btn btn-success col-4" onclick="getTableData()">Enviar</button>
+            </div>
+            
         </div>
     </div>
-    <button onclick="getTableData()">Enviar</button>
+    
     <script src="js/xlsxReader.js"></script>
     <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
 

@@ -1,6 +1,9 @@
 <?php
     session_start();
     include('ws/bd/dbconn.php');
+    if(!isset($_SESSION['cliente'])){
+        header('Location: index.php');
+    }
 
     $id_cliente = $_SESSION['cliente']->id_cliente;
     $conn = new bd();
@@ -18,10 +21,10 @@
                             co.nombre_comuna as comuna,
                             re.nombre_region as region
                         FROM bodega bo
-                        inner join comuna co on co.id_comuna = bo.id_comuna
-                        inner join provincia pro on pro.id_provincia = co.id_provincia
-                        inner join region re on re.id_region = pro.id_region
-                        where bo.id_cliente = '.$id_cliente.' and isDelete = 0';
+        inner join comuna co on co.id_comuna = bo.id_comuna
+        inner join provincia pro on pro.id_provincia = co.id_provincia
+        inner join region re on re.id_region = pro.id_region
+        where bo.id_cliente = '.$id_cliente.' and IsDelete = 0';
 
 
 

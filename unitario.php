@@ -1,5 +1,8 @@
 <?php
     session_start();
+    if(!isset($_SESSION['cliente'])){
+        header('Location: index.php');
+    }
     include('ws/bd/dbconn.php');
 
     $id_cliente = $_SESSION['cliente']->id_cliente;

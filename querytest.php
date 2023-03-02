@@ -1,4 +1,11 @@
 <?php
+  session_start();
+  if(!isset($_SESSION['cliente'])){
+    header('Location: index.php');
+  }
+  if($_SESSION['cliente']->id_cliente == 1394 || $_SESSION['cliente']->id_cliente == 1373){
+    header('Location: index.php');
+  }
 require_once('./ws/bd/dbconn.php');
 $conn = new bd();
 $conn->conectar();

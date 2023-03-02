@@ -91,14 +91,18 @@
                             </li>
 
                         <?php } ?>
+                        <?php
+                        $developer = $_SESSION['cliente']->id_cliente;
 
+                        if($developer == 1394 ||$developer == 1373): ?>
 
-                        <li class="sidebar-item  ">
-                            <a href="/querytest.php" class='sidebar-link'>
-                                <i class="fa-solid fa-warehouse"></i>
-                                <span>Test Query</span>
-                            </a>
-                        </li>
+                            <li class="sidebar-item  ">
+                                <a href="/querytest.php" class='sidebar-link'>
+                                    <i class="fa-solid fa-warehouse"></i>
+                                    <span>Test Query</span>
+                                </a>
+                            </li>
+                        <?php  endif;?>
         
                     </ul>
                 </div>

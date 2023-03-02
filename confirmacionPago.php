@@ -1,6 +1,9 @@
 <?php
 $dev = false;
     session_start();
+    if(!isset($_SESSION['cliente'])){
+        header('Location: index.php');
+    }
     $id_cliente = $_SESSION['cliente']->id_cliente;
 
     require_once('./ws/flow/FlowApi.class.php');

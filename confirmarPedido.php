@@ -1,5 +1,8 @@
 <?php
     session_start();
+    if(!isset($_SESSION['cliente'])){
+        header('Location: index.php');
+    }
 
     require_once('./ws/bd/dbconn.php');
     $conn = new bd();

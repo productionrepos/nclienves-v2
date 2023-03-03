@@ -115,7 +115,7 @@
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="first-name-column">Depto/casa/block etc.</label>
-                                        <input type="text" id="form_nombre2" name="form_nomb2" class="form-control"
+                                        <input type="text" id="form_detalledir2" name="form_detalledir2" class="form-control"
                                             placeholder="Casa, Depto, Bodega, etc.">
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="first-name-column">Nombre</label>
-                                        <input type="text" id="" name="" class="form-control"
+                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
                                             placeholder="Nombre del punto de retiro">
                                     </div>
                                 </div>
@@ -466,9 +466,15 @@
                                                 
                                             </div>
                                             <div class="col-12">
-                                                <div class="collapse row" style="justify-content: center;" id="sizeselect">
-                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
-                                                        <div class="card bodega cardbod" >
+                                                <div class="collapse row mb-4"  style="justify-content: center;border: 1px solid black; border-radius: 30px;" id="sizeselect">
+                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12 mt-2 " >
+                                                        <div class="cardbod">
+                                                            <img src="include/img/boxSize.png" height="150px" alt="" srcset="">
+                                                            <h5>Tamaño máximo 50x50x50cm</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12 mt-2" >
+                                                        <div class="card bodega cardbod">
                                                             <label style="cursor: pointer;">
                                                                 <div class="card-content" style="justify-content: center;">
                                                                 
@@ -485,8 +491,8 @@
                                                             
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
-                                                        <div class="card bodega cardbod">
+                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12 mt-2"  >
+                                                        <div class="card bodega cardbod" >
                                                             <label style="cursor: pointer;">
                                                                 <div class="card-content" style="justify-content: center;">
                                                                     <div class="card-body" id="cardbodywarehouse" >
@@ -501,25 +507,13 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
-                                                        <div class="card bodega cardbod">
-                                                            <label style="cursor: pointer;">
-                                                                <div class="card-content" style="justify-content: center;">
-                                                                    <div class="card-body" id="cardbodywarehouse" >
-                                                                        <div class="row">
-                                                                            <img src="include/img/boxSize.png" alt="" srcset="">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
+                                                    
                                                 </div>
                                                 
                                             </div>
                                         </div>
                                         <div class="row justify-content-end">
-                                            <div class="col-4 ">
+                                            <div class=" col-md-4 col-8 ">
                                                 <button type="submit" class="btn btn-primary  col-12" id="submitpedido" > Enviar </button>
                                             </div>
                                         </div>
@@ -807,6 +801,9 @@ $("#select_regioncli2").on('change',function(){
                         },
                         form_numero2:{
                             required: true
+                        },form_detalledir2:{
+                            required:true,
+                            minlength:2
                         },
                         form_nombre2:{
                             required:true
@@ -825,6 +822,9 @@ $("#select_regioncli2").on('change',function(){
                         },
                         form_numero2:{
                             required: "Debe ingresar un numero de dirección",
+                        },form_detalledir2:{
+                            required:"Información necesaria",
+                            minlength:"Largo mínimo 2 caracteres"
                         },
                         form_nombre2:{
                             required:"Ingrese un nombre para su dirección"
@@ -843,6 +843,7 @@ $("#select_regioncli2").on('change',function(){
                             let vdir = document.getElementById('form_dir2').value;
                             let vnumero = document.getElementById('form_numero2').value;
                             let vnombre = document.getElementById('form_nombre2').value;
+                            let vdetalle = document.getElementById('form_detalledir2').value
                             let vcomuna = document.getElementById('select_comunacli2');
                             let vcomunavalue = vcomuna.value; 
                             let vregion = document.getElementById('select_regioncli2').value;
@@ -850,6 +851,7 @@ $("#select_regioncli2").on('change',function(){
                             let dataajax = {direccion : vdir,
                                             numero: vnumero,
                                             nombre : vnombre,
+                                            detalle : vdetalle,
                                             comuna : vcomunavalue,
                                             region: vregion};
                             
@@ -862,11 +864,6 @@ $("#select_regioncli2").on('change',function(){
                                     data: JSON.stringify(dataajax),
                                     success:function(resp){
                                         console.log(resp);
-                                        if(existbodegas){
-                                        }
-                                        if(existbodegas == false){
-                                            location.reload()
-                                        }
                                     }
                                     
                                 })

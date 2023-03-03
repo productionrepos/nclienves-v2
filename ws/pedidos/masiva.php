@@ -35,16 +35,16 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
             {
                $counter ++;
                array_push($jsonbultotemporal,$data[$i]);
-               if($counter == 8) {
-                    $tipoenviostr = $jsonbultotemporal[7];
+               if($counter == 9) {
+                    $tipoenviostr = $jsonbultotemporal[8];
                     $counter = 0;
                     
                     // $querycomuna = 'SELECT co.id_comuna from comuna co where co.nombre_comuna="'.$jsonbultotemporal[4].'"';
-                    $querycomuna = 'SELECT co.id_comuna from comuna co where co.nombre_comuna = "'.$jsonbultotemporal[4].'"';
+                    $querycomuna = 'SELECT co.id_comuna from comuna co where co.nombre_comuna = "'.$jsonbultotemporal[5].'"';
                     
                    
                     $queryregionbodega = "Select re.id_region from bodega pe INNER join bodega bo on bo.id_bodega = pe.id_bodega INNER join comuna co on co.id_comuna = bo.id_comuna INNER join provincia pro on pro.id_provincia = co.id_provincia inner join region re on re.id_region = pro.id_region where pe.id_bodega = $data[0]";
-                    $queryregion = 'Select re.id_region from pedido pe INNER join bodega bo  on bo.id_bodega = pe.id_bodega INNER join comuna co on co.id_comuna = bo.id_comuna INNER join provincia pro on pro.id_provincia = co.id_provincia inner join region re on re.id_region = pro.id_region where co.nombre_comuna ="'. $jsonbultotemporal[4].'"';
+                    $queryregion = 'Select re.id_region from pedido pe INNER join bodega bo  on bo.id_bodega = pe.id_bodega INNER join comuna co on co.id_comuna = bo.id_comuna INNER join provincia pro on pro.id_provincia = co.id_provincia inner join region re on re.id_region = pro.id_region where co.nombre_comuna ="'. $jsonbultotemporal[5].'"';
                     
                     $querybultotemporal = "INSERT INTO bulto_temporal (id_bulto_temporal,json_bulto_temporal,json_error,id_archivo,id_pedido)
                                        VALUES(null,'a','a',1,$id_pedido)";
@@ -123,32 +123,32 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
                     $barcode = 78472947729 + $idbultotemporal;
                        
                     $querybulto = "INSERT INTO bulto (id_bulto, nombre_bulto, direccion_bulto, telefono_bulto,email_bulto,descripcion_bulto,
-                    valor_declarado_bulto, precio_bulto, tipo_servicio_bulto, codigo_bulto, codigo_barras_bulto,id_paquete, id_comuna, id_pedido, estado_logistico,track_spread)
+                    valor_declarado_bulto, precio_bulto, tipo_servicio_bulto, codigo_bulto, codigo_barras_bulto,id_paquete, id_comuna, id_pedido,rut_cliente, estado_logistico,track_spread)
                     VALUES (null,'".
                      $jsonbultotemporal[0]."','".
-                     $jsonbultotemporal[1]."',".
-                     $jsonbultotemporal[2].",'".
-                     $jsonbultotemporal[3]."','".
-                     $jsonbultotemporal[5]."',".
-                     $jsonbultotemporal[6].",".
+                     $jsonbultotemporal[2]."',".
+                     $jsonbultotemporal[3].",'".
+                     $jsonbultotemporal[4]."','".
+                     $jsonbultotemporal[6]."',".
+                     $jsonbultotemporal[7].",".
                      $valor.",'".
                      $tipo_servicio."','abc',".
                      $barcode.",".
                      $idpaquete.",".
                      $idcom.",".
-                     $id_pedido.",0,NULL);";
+                     $id_pedido.',"'.$jsonbultotemporal[1].'",0,NULL);';
                    
                     $jsonbultotemporal = [];
                     if($conn->mysqli->query($querybulto)){
-
+                        //echo $querybulto;
                         
                         // echo "El id_region de BODEGA ES =>> ".$idregionbodega." El id_region de ENVIO ES =>> ".$idregion;
                         // echo $querybulto;
                         // //print_r($data);
                        
                     }else{
-                        // echo $querybulto;
-                        echo $conn->mysqli->error;
+                        echo $querybulto;
+                        //echo $conn->mysqli->error;
                     }
                }
                 
@@ -163,6 +163,7 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
         // echo $returnjsin;
     }
     catch(Exception $e){
+            echo $querybulto;
          echo $e;
     }
     

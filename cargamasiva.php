@@ -354,6 +354,7 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Rut</th>
                         <th>Dirección</th>
                         <th>Teléfono</th>
                         <th>Correo</th>
@@ -764,16 +765,15 @@ function getTableData(){
             $('.tbodyclick tr').each(function(){
                 
                     let nombre = $(this).find('td').eq(0).text()
-                    let direccion = $(this).find('td').eq(1).text()
-                    let telefono = $(this).find('td').eq(2).text()
-                    let correo = $(this).find('td').eq(3).text()
+                    let rut = $(this).find('td').eq(1).text()
+                    let direccion = $(this).find('td').eq(2).text()
+                    let telefono = $(this).find('td').eq(3).text()
+                    let correo = $(this).find('td').eq(4).text()
                     let comuna = $(this).find('#select_comuna').val()
-                    let item = $(this).find('td').eq(5).text()
-                    let valor = $(this).find('td').eq(6).text()
+                    let item = $(this).find('td').eq(6).text()
+                    let valor = $(this).find('td').eq(7).text()
                     let ctipo = $(this).find('#select_type').val()
-                    arraydatos.push(nombre,direccion,telefono,correo,comuna,item,valor,ctipo)
-                
-                
+                    arraydatos.push(nombre,rut,direccion,telefono,correo,comuna,item,valor,ctipo)
         })
         console.log(arraydatos);
         arraydatos.unshift(id_bodega)
@@ -797,7 +797,7 @@ function getTableData(){
                         timer : 2500
                         
                     }).then(function() {
-                        window.location = "confirmarpedido.php?id_pedido="+data;
+                       // window.location = "confirmarpedido.php?id_pedido="+data;
                 })
             },error:function(data){
                 console.log("Volvi, pero no sirvo para nada");
@@ -836,15 +836,22 @@ $('.tbodyclick').on('blur','td',function(){
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar un nombre')
             $(this).addClass('err')
-        }
-        if(clase == "tdnom" && valor.length < 5){
+        }else if(clase == "tdnom" && valor.length < 5){
 
             $(this).css('border', '1px solid red')
             $(this).prop('title','El nombre debe tener 5 caracteres como min')
             $(this).addClass('err')
         
-        } else if(clase == "tddir" && valor == ""){
-
+        }else if(clase == "tdrut" && valor == ""){
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','Ingrese un rut')
+            $(this).addClass('err')
+        } else if(clase == "tdrut" && valor.length < 9){
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','El rut debe tener 8 caracteres como min')
+            $(this).addClass('err')
+        }
+        else if(clase == "tddir" && valor == ""){
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar una dirección')
             $(this).addClass('err')

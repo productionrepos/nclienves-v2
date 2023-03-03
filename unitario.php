@@ -26,7 +26,7 @@
                         inner join comuna co on co.id_comuna = bo.id_comuna
                         inner join provincia pro on pro.id_provincia = co.id_provincia
                         inner join region re on re.id_region = pro.id_region
-                        where bo.id_cliente ='.$id_cliente.' and IsDelete = 0 ';
+                        where bo.id_cliente ='.$id_cliente.' and IsDelete = 0';
 
 
    
@@ -115,7 +115,7 @@
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="first-name-column">Depto/casa/block etc.</label>
-                                        <input type="text" id="form_nombre2" name="form_nomb2" class="form-control"
+                                        <input type="text" id="form_detalledir2" name="form_detalledir2" class="form-control"
                                             placeholder="Casa, Depto, Bodega, etc.">
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="first-name-column">Nombre</label>
-                                        <input type="text" id="" name="" class="form-control"
+                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
                                             placeholder="Nombre del punto de retiro">
                                     </div>
                                 </div>
@@ -274,14 +274,14 @@
                                                                                         <input type="text" id="form_nombre" name="form_nombre" class="form-control"
                                                                                             placeholder="Casa, Depto, Bodega, etc.">
                                                                                     </div>
-                                                                                    <div class="col-md-3 col-lg-3 col-sm-6">
+                                                                                </div>
+                                                                                <div class="col-md-3 col-lg-3 col-sm-6">
                                                                                         <div class="form-group">
                                                                                             <label for="first-name-column">Depto/casa/block etc.</label>
-                                                                                            <input type="text" id="form_nomb2" name="form_nomb2" class="form-control"
+                                                                                            <input type="text" id="form_detalledir" name="form_detalledir" class="form-control"
                                                                                                 placeholder="Casa, Depto, Bodega, etc.">
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
                                                                                 <div class="col-md-6 col-lg-6 col-sm-8">
                                                                                     <label for="Comuna">Región </label>
                                                                                     <select class="form-select" name="select_regioncli" id="select_regioncli">
@@ -466,9 +466,15 @@
                                                 
                                             </div>
                                             <div class="col-12">
-                                                <div class="collapse row" style="justify-content: center;" id="sizeselect">
-                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
-                                                        <div class="card bodega cardbod" >
+                                                <div class="collapse row mb-4"  style="justify-content: center;border: 1px solid black; border-radius: 30px;" id="sizeselect">
+                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12 mt-2 " >
+                                                        <div class="cardbod">
+                                                            <img src="include/img/boxSize.png" height="150px" alt="" srcset="">
+                                                            <h5>Tamaño máximo 50x50x50cm</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12 mt-2" >
+                                                        <div class="card bodega cardbod">
                                                             <label style="cursor: pointer;">
                                                                 <div class="card-content" style="justify-content: center;">
                                                                 
@@ -485,8 +491,8 @@
                                                             
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
-                                                        <div class="card bodega cardbod">
+                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12 mt-2"  >
+                                                        <div class="card bodega cardbod" >
                                                             <label style="cursor: pointer;">
                                                                 <div class="card-content" style="justify-content: center;">
                                                                     <div class="card-body" id="cardbodywarehouse" >
@@ -501,25 +507,13 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
-                                                        <div class="card bodega cardbod">
-                                                            <label style="cursor: pointer;">
-                                                                <div class="card-content" style="justify-content: center;">
-                                                                    <div class="card-body" id="cardbodywarehouse" >
-                                                                        <div class="row">
-                                                                            <img src="include/img/boxSize.png" alt="" srcset="">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
+                                                    
                                                 </div>
                                                 
                                             </div>
                                         </div>
                                         <div class="row justify-content-end">
-                                            <div class="col-4 ">
+                                            <div class=" col-md-4 col-8 ">
                                                 <button type="submit" class="btn btn-primary  col-12" id="submitpedido" > Enviar </button>
                                             </div>
                                         </div>
@@ -807,6 +801,9 @@ $("#select_regioncli2").on('change',function(){
                         },
                         form_numero2:{
                             required: true
+                        },form_detalledir2:{
+                            required:true,
+                            minlength:2
                         },
                         form_nombre2:{
                             required:true
@@ -825,6 +822,9 @@ $("#select_regioncli2").on('change',function(){
                         },
                         form_numero2:{
                             required: "Debe ingresar un numero de dirección",
+                        },form_detalledir2:{
+                            required:"Información necesaria",
+                            minlength:"Largo mínimo 2 caracteres"
                         },
                         form_nombre2:{
                             required:"Ingrese un nombre para su dirección"
@@ -843,6 +843,7 @@ $("#select_regioncli2").on('change',function(){
                             let vdir = document.getElementById('form_dir2').value;
                             let vnumero = document.getElementById('form_numero2').value;
                             let vnombre = document.getElementById('form_nombre2').value;
+                            let vdetalle = document.getElementById('form_detalledir2').value
                             let vcomuna = document.getElementById('select_comunacli2');
                             let vcomunavalue = vcomuna.value; 
                             let vregion = document.getElementById('select_regioncli2').value;
@@ -850,11 +851,12 @@ $("#select_regioncli2").on('change',function(){
                             let dataajax = {direccion : vdir,
                                             numero: vnumero,
                                             nombre : vnombre,
+                                            detalle : vdetalle,
                                             comuna : vcomunavalue,
                                             region: vregion};
                             
                     
-                            //alert(JSON.stringify(dataajax));
+                            alert(JSON.stringify(dataajax));
                                     $.ajax({
                                     url: "ws/bodega/newBodega.php",
                                     type: "POST",
@@ -862,11 +864,22 @@ $("#select_regioncli2").on('change',function(){
                                     data: JSON.stringify(dataajax),
                                     success:function(resp){
                                         console.log(resp);
+                                        console.log(existbodegas);
                                         if(existbodegas){
+                                            location.reload()
                                         }
                                         if(existbodegas == false){
                                             location.reload()
                                         }
+                                    },error:function(resp){
+                                        console.log(resp);
+                                            console.log(existbodegas);
+                                            if(existbodegas){
+                                                location.reload()
+                                            }
+                                            if(existbodegas == false){
+                                                location.reload()
+                                            }
                                     }
                                     
                                 })
@@ -890,6 +903,9 @@ $("#select_regioncli2").on('change',function(){
                         },
                         form_numero:{
                             required: true
+                        },form_detalledir:{
+                            required:true,
+                            minlength:2
                         },
                         form_nombre:{
                             required:true
@@ -908,6 +924,9 @@ $("#select_regioncli2").on('change',function(){
                         },
                         form_numero:{
                             required: "Debe ingresar un numero de dirección",
+                        },form_detalledir:{
+                            required:"Información necesaria",
+                            minlength:"Largo mínimo 2 caracteres"
                         },
                         form_nombre:{
                             required:"Ingrese un nombre para su dirección"
@@ -925,6 +944,7 @@ $("#select_regioncli2").on('change',function(){
                         try{
                             let vdir = document.getElementById('form_dir').value;
                             let vnumero = document.getElementById('form_numero').value;
+                            let vdetalle = document.getElementById('form_detalledir').value
                             let vnombre = document.getElementById('form_nombre').value;
                             let vcomuna = document.getElementById('select_comunacli');
                             let vcomunavalue = vcomuna.value;
@@ -935,6 +955,7 @@ $("#select_regioncli2").on('change',function(){
 
                             let dataajax = {direccion : vdir,
                                             numero: vnumero,
+                                            detalle : vdetalle,
                                             nombre : vnombre,
                                             comuna : vcomunavalue,
                                             region: vregion};
@@ -954,8 +975,15 @@ $("#select_regioncli2").on('change',function(){
                                         if(existbodegas == false){
                                             location.reload()
                                         }
+                                    },error:function(resp){
+                                        console.log(resp.query);
+                                        if(existbodegas){
+                                            location.reload()
+                                        }
+                                        if(existbodegas == false){
+                                            location.reload()
+                                        }
                                     }
-                                    
                                 })
                         }
                         catch(error){

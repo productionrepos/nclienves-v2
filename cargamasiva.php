@@ -121,15 +121,14 @@
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="first-name-column">Depto/casa/block etc.</label>
-                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
+                                        <input type="text" id="form_detalledir2" name="form_detalledir2" class="form-control"
                                             placeholder="Casa, Depto, Bodega, etc.">
                                     </div>
                                 </div>
-                                
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="first-name-column">Nombre</label>
-                                        <input type="text" id="" name="" class="form-control"
+                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
                                             placeholder="Nombre del punto de retiro">
                                     </div>
                                 </div>
@@ -277,6 +276,14 @@
                                                                                         </div>
                                                                                         <div class="col-md-3 col-lg-3 col-sm-6">
                                                                                             <div class="form-group">
+                                                                                                <label for="first-name-column">Depto/casa/block etc.</label>
+                                                                                                <input type="text" id="form_detalledir" name="form_detalledir" class="form-control"
+                                                                                                    placeholder="Casa, Depto, Bodega, etc.">
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="col-md-3 col-lg-3 col-sm-6">
+                                                                                            <div class="form-group">
                                                                                                 <label for="first-name-column">Nombre</label>
                                                                                                 <input type="text" id="form_nombre" name="form_nombre" class="form-control"
                                                                                                     placeholder="Casa, Depto, Bodega, etc.">
@@ -354,6 +361,7 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Rut</th>
                         <th>Dirección</th>
                         <th>Teléfono</th>
                         <th>Correo</th>
@@ -490,7 +498,11 @@ $(document).ready(function(){
                         },
                         form_numero2:{
                             required: true
+                        },form_detalledir2:{
+                            required:true,
+                            minlength:2
                         },
+
                         form_nombre2:{
                             required:true
                         },
@@ -508,6 +520,9 @@ $(document).ready(function(){
                         },
                         form_numero2:{
                             required: "Debe ingresar un numero de dirección",
+                        },form_detalledir2:{
+                            required:"Información necesaria",
+                            minlength:"Largo mínimo 2 caracteres"
                         },
                         form_nombre2:{
                             required:"Ingrese un nombre para su dirección"
@@ -525,6 +540,7 @@ $(document).ready(function(){
                         try{
                             let vdir = document.getElementById('form_dir2').value;
                             let vnumero = document.getElementById('form_numero2').value;
+                            let vdetalle = document.getElementById('form_detalledir2').value
                             let vnombre = document.getElementById('form_nombre2').value;
                             let vcomuna = document.getElementById('select_comunacli2');
                             let vcomunavalue = vcomuna.value; 
@@ -532,6 +548,7 @@ $(document).ready(function(){
 
                             let dataajax = {direccion : vdir,
                                             numero: vnumero,
+                                            detalle : vdetalle,
                                             nombre : vnombre,
                                             comuna : vcomunavalue,
                                             region: vregion};
@@ -546,6 +563,14 @@ $(document).ready(function(){
                                     success:function(resp){
                                         console.log(resp);
                                         if(existbodegas){
+                                        }
+                                        if(existbodegas == false){
+                                            location.reload()
+                                        }
+                                    },error:function(resp){
+                                        console.log(resp.query);
+                                        if(existbodegas){
+                                            location.reload()
                                         }
                                         if(existbodegas == false){
                                             location.reload()
@@ -576,6 +601,9 @@ $(document).ready(function(){
                         },
                         form_numero:{
                             required: true
+                        },form_detalledir:{
+                            required:true,
+                            minlength:2
                         },
                         form_nombre:{
                             required:true
@@ -594,6 +622,9 @@ $(document).ready(function(){
                         },
                         form_numero:{
                             required: "Debe ingresar un numero de dirección",
+                        },form_detalledir:{
+                            required:"Información necesaria",
+                            minlength:"Largo mínimo 2 caracteres"
                         },
                         form_nombre:{
                             required:"Ingrese un nombre para su dirección"
@@ -611,6 +642,7 @@ $(document).ready(function(){
                         try{
                             let vdir = document.getElementById('form_dir').value;
                             let vnumero = document.getElementById('form_numero').value;
+                            let vdetalle = document.getElementById('form_detalledir').value
                             let vnombre = document.getElementById('form_nombre').value;
                             let vcomuna = document.getElementById('select_comunacli');
                             let vcomunavalue = vcomuna.value;
@@ -621,6 +653,7 @@ $(document).ready(function(){
 
                             let dataajax = {direccion : vdir,
                                             numero: vnumero,
+                                            detalle : vdetalle,
                                             nombre : vnombre,
                                             comuna : vcomunavalue,
                                             region: vregion};
@@ -633,6 +666,14 @@ $(document).ready(function(){
                                     dataType: 'json',
                                     data: JSON.stringify(dataajax),
                                     success:function(resp){
+                                        console.log(resp.query);
+                                        if(existbodegas){
+                                            location.reload()
+                                        }
+                                        if(existbodegas == false){
+                                            location.reload()
+                                        }
+                                    },error:function(resp){
                                         console.log(resp.query);
                                         if(existbodegas){
                                             location.reload()
@@ -764,16 +805,15 @@ function getTableData(){
             $('.tbodyclick tr').each(function(){
                 
                     let nombre = $(this).find('td').eq(0).text()
-                    let direccion = $(this).find('td').eq(1).text()
-                    let telefono = $(this).find('td').eq(2).text()
-                    let correo = $(this).find('td').eq(3).text()
+                    let rut = $(this).find('td').eq(1).text()
+                    let direccion = $(this).find('td').eq(2).text()
+                    let telefono = $(this).find('td').eq(3).text()
+                    let correo = $(this).find('td').eq(4).text()
                     let comuna = $(this).find('#select_comuna').val()
-                    let item = $(this).find('td').eq(5).text()
-                    let valor = $(this).find('td').eq(6).text()
+                    let item = $(this).find('td').eq(6).text()
+                    let valor = $(this).find('td').eq(7).text()
                     let ctipo = $(this).find('#select_type').val()
-                    arraydatos.push(nombre,direccion,telefono,correo,comuna,item,valor,ctipo)
-                
-                
+                    arraydatos.push(nombre,rut,direccion,telefono,correo,comuna,item,valor,ctipo)
         })
         console.log(arraydatos);
         arraydatos.unshift(id_bodega)
@@ -797,7 +837,7 @@ function getTableData(){
                         timer : 2500
                         
                     }).then(function() {
-                        window.location = "confirmarpedido.php?id_pedido="+data;
+                       // window.location = "confirmarpedido.php?id_pedido="+data;
                 })
             },error:function(data){
                 console.log("Volvi, pero no sirvo para nada");
@@ -836,15 +876,22 @@ $('.tbodyclick').on('blur','td',function(){
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar un nombre')
             $(this).addClass('err')
-        }
-        if(clase == "tdnom" && valor.length < 5){
+        }else if(clase == "tdnom" && valor.length < 5){
 
             $(this).css('border', '1px solid red')
             $(this).prop('title','El nombre debe tener 5 caracteres como min')
             $(this).addClass('err')
         
-        } else if(clase == "tddir" && valor == ""){
-
+        }else if(clase == "tdrut" && valor == ""){
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','Ingrese un rut')
+            $(this).addClass('err')
+        } else if(clase == "tdrut" && valor.length < 9){
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','El rut debe tener 8 caracteres como min')
+            $(this).addClass('err')
+        }
+        else if(clase == "tddir" && valor == ""){
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar una dirección')
             $(this).addClass('err')

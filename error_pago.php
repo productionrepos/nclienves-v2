@@ -1,4 +1,6 @@
 <?php
+session_start();
+print_r($_SESSION);
 require_once('./ws/bd/dbconn.php');
 $conexion = new bd();
 $conexion->conectar();
@@ -23,22 +25,13 @@ $query = "SELECT p.id_pedido,dc.nombres_datos_contacto,dc.apellidos_datos_contac
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-
-	<title>Error pago de pago</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="description" content="" />
-	<meta name="keywords" content="">
-	<meta name="author" content="Send Cargo" />
-	<link rel="icon" href="assets/images/Logotipo_Spread_13.png" type="image/x-icon">
-	<link rel="stylesheet" href="assets/css/style.css">
-</head>
+<?php
+    $head = 'Pedidos Pendites';
+    include_once('./include/head.php')
+?>
 
 <div class="auth-wrapper">
 	<div class="blur-bg-images"></div>
-	<!-- [ profile-settings ] start -->
 	<div class="auth-content">
 		<div class="auth-bg">
 			<span class="r"></span>
@@ -53,16 +46,11 @@ $query = "SELECT p.id_pedido,dc.nombres_datos_contacto,dc.apellidos_datos_contac
 				<p>Estimado <?=$datos_cliente->nombres_datos_contacto?> <?=$datos_cliente->apellidos_datos_contacto?>, hemos tenido problemas para confirmar su pedido #<?=$id_pedido?>.</p>
 				<p>No se he realizado ningún cargo a su cuenta.</p>
 				<p>Lamentamos las molestias, usted podría volver a intentarlo en este enlace.</p>
-				<a href="confirmarpedido.php?id_pedido=<?=$id_pedido?>" class="btn btn-primary mb-4 btn-block text-white">Ir al pedido y reintentar el pago.</a>
+				<a href="confirmarPedido.php?id_pedido=<?=$id_pedido?>" class="btn btn-primary mb-4 btn-block text-white">Ir al pedido y reintentar el pago.</a>
 			</div>
 		</div>
 	</div>
 </div>
-<script src="assets/js/vendor-all.min.js"></script>
-<script src="assets/js/plugins/bootstrap.min.js"></script>
-<script src="assets/js/ripple.js"></script>
-<script src="assets/js/pcoded.min.js"></script>
-
 
 <style>
 .auth-wrapper .auth-content:not(.container) {

@@ -3,7 +3,8 @@
   if(!isset($_SESSION['cliente'])){
     header('Location: index.php');
   }
-  if($_SESSION['cliente']->id_cliente != 1394 || $_SESSION['cliente']->id_cliente != 1373){
+  echo $_SESSION['cliente']->id_cliente;
+  if($_SESSION['cliente']->id_cliente != 1394 && $_SESSION['cliente']->id_cliente != 1373){
     header('Location: index.php');
   }
 require_once('./ws/bd/dbconn.php');
@@ -79,7 +80,7 @@ $conn->conectar();
     </div>
     <button onclick="ExportToExcel('xlsx')">Export table to excel</button>
 
-    <a href="https://<?php echo $_SERVER['HTTP_HOST']?>/ws/pdf/index.php?id_pedido=<?=$id_pedido?>&token=<?=md5($id_pedido."pdf_etiquetas")?>" 
+    <a href="http://<?php echo $_SERVER['HTTP_HOST']?>/ws/pdf/index.php?id_pedido=<?=$id_pedido?>&token=<?=md5($id_pedido."pdf_etiquetas")?>" 
        type="button" class="btn btn-lg btn-block btn-success">
        <i class="fa fa-download" aria-hidden="true"></i> 
        Descargue aquí el archivo para imprimir las etiquetas que debe adherir en los bultos

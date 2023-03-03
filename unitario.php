@@ -90,66 +90,66 @@
                 include_once('./include/topbar.php');
             ?>
             <form class="form hidewhenbod1" id="formdir2">
-                            <div class="direnvio row" style="background-color: #66cab2;">
-                                <div class="col-8">
-                                    <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
-                                </div>
-                                <div class="form-check form-switch col-4" style="justify-items: end;">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
-                                </div>
-                                <div class="col-md-6 col-lg-6 col-sm-8" >
-                                    <div class="form-group">
-                                        <label for="form_dir">Dirección</label>
-                                        <input type="text" id="form_dir2" name="form_dir2" class="form-control"
-                                            placeholder="">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-lg-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="form_numero">Número</label>
-                                        <input type="text" id="form_numero2" name="form_numero2" class="form-control"
-                                            placeholder="Número de dirección">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-lg-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="first-name-column">Depto/casa/block etc.</label>
-                                        <input type="text" id="form_detalledir2" name="form_detalledir2" class="form-control"
-                                            placeholder="Casa, Depto, Bodega, etc.">
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-3 col-lg-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="first-name-column">Nombre</label>
-                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
-                                            placeholder="Nombre del punto de retiro">
-                                    </div>
-                                </div>
+                <div class="direnvio row" style="background-color: #66cab2;">
+                    <div class="col-8">
+                        <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
+                    </div>
+                    <div class="form-check form-switch col-4" style="justify-items: end;">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-8" >
+                        <div class="form-group">
+                            <label for="form_dir">Dirección</label>
+                            <input type="text" id="form_dir2" name="form_dir2" class="form-control"
+                                placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-6">
+                        <div class="form-group">
+                            <label for="form_numero">Número</label>
+                            <input type="text" id="form_numero2" name="form_numero2" class="form-control"
+                                placeholder="Número de dirección">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-6">
+                        <div class="form-group">
+                            <label for="first-name-column">Depto/casa/block etc.</label>
+                            <input type="text" id="form_detalledir2" name="form_detalledir2" class="form-control"
+                                placeholder="Casa, Depto, Bodega, etc.">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 col-lg-3 col-sm-6">
+                        <div class="form-group">
+                            <label for="first-name-column">Nombre</label>
+                            <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
+                                placeholder="Nombre del punto de retiro">
+                        </div>
+                    </div>
 
-                                <div class="col-md-6 col-lg-6 col-sm-8">
-                                    <label for="Comuna">Región </label>
-                                    <select class="form-select" name="select_regioncli2" id="select_regioncli2">
-                                        <option value=""></option>
-                                        <?php 
-                                            foreach($regiones as $reg)
-                                            {
-                                                echo '<option value="'.$reg->id.'">'.$reg->nombre.'</option>';
-                                            }
-                                        ?>  
-                                    </select>
-                                </div>
-                                <div class="col-md-6 col-lg-6 col-sm-8">
-                                    <label for="Comuna">Comuna</label>
-                                    <select class="form-select" name="select_comunacli2" id="select_comunacli2">
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-12 d-flex justify-content-end">
-                                <button  type="submit" class="submit btn btn-primary me-1 mb-1" value="Submit"> Usar esta dirección </button>
-                            </div>
+                    <div class="col-md-6 col-lg-6 col-sm-8">
+                        <label for="Comuna">Región </label>
+                        <select class="form-select" name="select_regioncli2" id="select_regioncli2">
+                            <option value=""></option>
+                            <?php 
+                                foreach($regiones as $reg)
+                                {
+                                    echo '<option value="'.$reg->id.'">'.$reg->nombre.'</option>';
+                                }
+                            ?>  
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-8">
+                        <label for="Comuna">Comuna</label>
+                        <select class="form-select" name="select_comunacli2" id="select_comunacli2">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <button  type="submit" class="submit btn btn-spread me-1 mb-1" value="Submit"> Usar esta dirección </button>
+                </div>
             </form>
             
             <div class="page-content" >
@@ -157,7 +157,7 @@
                 <div class="card">
                
                     <div class="dropdown">
-                        <button class="btn btn-primary col-12 " style="padding: 5px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <button class="btn btn-spread col-12" style="padding: 5px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                             <div class="row">
                                 <div class="col-md-4 col-12" style="text-align: start;">
                                         <label for="">
@@ -199,7 +199,7 @@
                                                             <h4>Mis Direcciones</h4>
                                                         </div>
                                                         <div class="col-sm-4 col-12">
-                                                            <a class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#collapseotherdir" 
+                                                            <a class="btn btn-spread" data-bs-toggle="collapse" data-bs-target="#collapseotherdir" 
                                                                 aria-expanded="false" aria-controls="collapseotherdir">
                                                                         Enviaré desde otra dirección
                                                             </a>
@@ -302,7 +302,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-12 d-flex justify-content-end">
-                                                                                <button  type="submit" class="submit btn btn-primary me-1 mb-1" value="Submit"> Usar esta dirección </button>
+                                                                                <button  type="submit" class="submit btn btn-spread me-1 mb-1" value="Submit"> Usar esta dirección </button>
                                                                             </div>
                                                                     </form>
                                                             </div>
@@ -333,7 +333,7 @@
                                             <label ><h5>Guardar Cliente</h5><input id="savecliente"  type="checkbox"></label>                                                       
                                         </div> -->
                                         <div class="col-md-4 col-10" style="justify-items: end;">
-                                            <a class="btn btn-primary" id="showtipo" data-bs-toggle="collapse" href="#srchclientefrecuente" role="button" 
+                                            <a class="btn btn-spread" id="showtipo" data-bs-toggle="collapse" href="#srchclientefrecuente" role="button" 
                                                             aria-expanded="false" aria-controls="collapseExample">
                                                                 Busque a un cliente frecuente
                                             </a>
@@ -420,14 +420,14 @@
                                             </div>
                                             
                                             <!-- <div class="col-4 justify-content-start">
-                                                <button type="submit" class="submit btn btn-primary me-1 mb-1 col-12" value="Submit"> Enviar </button>
+                                                <button type="submit" class="submit btn btn-spread me-1 mb-1 col-12" value="Submit"> Enviar </button>
                                             </div> -->
                                             <div class="row mt-3" style="justify-content: space-between;">
                                                 <div class="col-md-2 col-2">
                                                     <a onclick="resetClienteData()" style="cursor: pointer" title="Limpiar formulario"> <i class="fa-solid fa-hand-sparkles" style="font-size: 30px;"></i> </a>
                                                 </div>
                                                 <div class="col-md-6 col-12">
-                                                    <button type="submit" class="submit btn btn-primary me-1 mb-1 col-12" id="deploy"> Continuar</button>
+                                                    <button type="submit" class="submit btn btn-spread me-1 mb-1 col-12" id="deploy"> Continuar</button>
                                                 </div>
                                                
                                             </div>        
@@ -458,7 +458,7 @@
                                             <div class="col-lg-4 col-md-4 col-sm-8 col-12  align-items-end  mb-3" style="text-align: center;">
                                             <label for="Usar"></label>
                                             
-                                                <a class="btn btn-primary" id="showtipo" data-bs-toggle="collapse" href="#sizeselect" role="button" 
+                                                <a class="btn btn-spread" id="showtipo" data-bs-toggle="collapse" href="#sizeselect" role="button" 
                                                     aria-expanded="false" aria-controls="collapseExample">
                                                         Seleccione el rango de peso
                                                 </a>
@@ -514,7 +514,7 @@
                                         </div>
                                         <div class="row justify-content-end">
                                             <div class=" col-md-4 col-8 ">
-                                                <button type="submit" class="btn btn-primary  col-12" id="submitpedido" > Enviar </button>
+                                                <button type="submit" class="btn btn-spread  col-12" id="submitpedido" > Enviar </button>
                                             </div>
                                         </div>
                                     </form>

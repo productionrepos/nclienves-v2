@@ -92,7 +92,7 @@ excelInput.addEventListener('change',async function(){
         //$('tbody tr').remove();
         const excel = new Excel(content);
         let arrays = excel.header();
-        let headcorrect = ["NOMBRE CLIENTE FINAL","RUT","DIRECCION ENTREGA","TELEFONO","Email cliente (opcion)","COMUNA ENTREGA","NOMBRE ITEM","COSTO ITEM","PAQUETE"]
+        let headcorrect = ["NOMBRE DESTINATARIO","RUT (sin punto ni guion)","DIRECCION ENTREGA","TELEFONO","EMAIL CLIENTE","COMUNA ENTREGA","NOMBRE ITEM","COSTO ITEM","PAQUETE"]
         let rows = excel.rows()
         let length = excel.rows().count()
         counter = 0
@@ -120,12 +120,12 @@ excelInput.addEventListener('change',async function(){
         {
             heads.push(arrays.row[i]);
 
-            console.log(arrays.row[i])
+            // console.log(arrays.row[i])
             if(headcorrect[i] == heads[i]){
-                //console.log("correcto")
+                // console.log("correcto")
             }
             else if(heads[i] == null){
-                //console.log("incorrecto");
+                // console.log("nulo");
                 incorrecto ++
             }else{
                 //console.log("incorrecto");
@@ -175,14 +175,14 @@ excelInput.addEventListener('change',async function(){
                             if(i==0 && row[i] == null)
                             {
                                 nomerr = "Debe ingresar un nombre";
-                                console.log(nomerr);
+                                // console.log(nomerr);
                                 arrayerr.push(nomerr)
                                 countererr++
                             }
                             else if(i==0 && row[i].length < 5){
                                 nomerr = "El nombre debe tener al menos 5 caracteres";
                                 arrayerr.push(nomerr)
-                                console.log(direrr);
+                                // console.log(direrr);
                             }
                             else if(i==0 && nomerr == ""){
                                 
@@ -193,14 +193,14 @@ excelInput.addEventListener('change',async function(){
                             if(i==1 && row[i] == null)
                             {
                                 ruterr = "Debe ingresar un rut";
-                                console.log(ruterr);
+                                // console.log(ruterr);
                                 arrayerr.push(ruterr)
                                 countererr++
                             }
                             else if(i==1 && row[i].length < 5){
                                 ruterr = "El debe tener al menos 8 caracteres";
                                 arrayerr.push(ruterr)
-                                console.log(ruterr);
+                                // console.log(ruterr);
                             }
                             else if(i==1 && direrr == ""){
                                 arrayerr.push("")
@@ -209,14 +209,14 @@ excelInput.addEventListener('change',async function(){
                             if(i==2 && row[i] == null)
                             {
                                 direrr = "Debe ingresar una dirección";
-                                console.log(direrr);
+                                // console.log(direrr);
                                 arrayerr.push(direrr)
                                 countererr++
                             }
                             else if(i==2 && row[i].length < 5){
                                 direrr = "La dirección debe tener al menos 5 caracteres";
                                 arrayerr.push(direrr)
-                                console.log(direrr);
+                                // console.log(direrr);
                             }
                             else if(i==2 && direrr == ""){
                                 
@@ -227,7 +227,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==3 && row[i] == null)
                             {
                                 telerr = "Debe ingresar un telefono";
-                                console.log(telerr);
+                                // console.log(telerr);
                                 arrayerr.push(telerr)
 
                                 countererr++
@@ -245,7 +245,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==4 && row[i] == null)
                             {
                                 corerr = "Debe ingresar un correo";
-                                console.log(corerr);
+                                // console.log(corerr);
                                 arrayerr.push(corerr)
                                 countererr++
                             }else if(i==4 && row[i].length < 7){
@@ -261,7 +261,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==5 && row[i] == null)
                             {
                                 comerr = "Debe ingresar una comuna";
-                                console.log(comerr);
+                                // console.log(comerr);
                                 arrayerr.push(comerr)
                                 countererr++
                             }
@@ -275,7 +275,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==6 && row[i] == null)
                             {
                                 deserr = "Debe ingresar una descripcion";
-                                console.log(deserr);
+                                // console.log(deserr);
                                 arrayerr.push(deserr)
                                 countererr++
                             }else if(i==6 && row[i].length < 3){
@@ -291,7 +291,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==7 && row[i] == null)
                             {
                                 coserr = "Debe ingresar el costo";
-                                console.log(coserr);
+                                // console.log(coserr);
                                 arrayerr.push(coserr)
 
                                 countererr++
@@ -299,7 +299,7 @@ excelInput.addEventListener('change',async function(){
                                 coserr = "El valor declarado no puede superar los $500.000";
                                 countererr ++
                                 arrayerr.push(coserr)
-                                console.log(coserr);
+                                // console.log(coserr);
                             }
                             else if(i==7 && coserr == ""){
                                 
@@ -310,14 +310,14 @@ excelInput.addEventListener('change',async function(){
                             if(i==8 && row[i] == null)
                             {
                                 typeerr = "Debe ingresar el tipo de envio";
-                                console.log(typeerr);
+                                // console.log(typeerr);
                                 arrayerr.push(typeerr)
                                 countererr++
                             }
                             else if(i==8 && typeerr == ""){
                                 
                                 arrayerr.push("")
-                                console.log(typeerr);
+                                // console.log(typeerr);
 
                             }
                             counter ++
@@ -330,7 +330,7 @@ excelInput.addEventListener('change',async function(){
                             else if(counter == 9){
                                 
                                 let index =0
-                                console.log(tdrow);
+                                // console.log(tdrow);
                                 tdrow.forEach(td=>{
                                     index++
                                     if(td == null){
@@ -368,7 +368,7 @@ excelInput.addEventListener('change',async function(){
                                         let arrerr = arrayerr[3]
                                         if(arrerr != ""){
                                             filatabla += `<td class="tdtel err" style="border:1px solid red" title="${arrerr}" contenteditable>`+ td +"</td>"
-                                            console.log("SE CREO LA FILA DE TELEFONO ERRONEO");
+                                            // console.log("SE CREO LA FILA DE TELEFONO ERRONEO");
                                         }
                                         else{
                                             filatabla += `<td class="tdtel" contenteditable>`+ td +"</td>"
@@ -378,7 +378,7 @@ excelInput.addEventListener('change',async function(){
                                         let arrerr = arrayerr[4]
                                         if(arrerr != ""){
                                             filatabla += `<td class="tdcorr err" style="border:1px solid red" title="${arrerr}" contenteditable>`+ td +"</td>"
-                                            console.log(arrerr);
+                                            // console.log(arrerr);
                                             //console.log("SE CREO LA FILA DE CORREO ERRONEO");
                                         }
                                         else{
@@ -462,7 +462,7 @@ excelInput.addEventListener('change',async function(){
                         }
                     }
                 })
-                console.log("HE SALIDO DEL INFIERNO => DEMASIADOS ERRORES");
+                // console.log("HE SALIDO DEL INFIERNO => DEMASIADOS ERRORES");
 
             
                

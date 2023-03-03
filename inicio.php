@@ -115,9 +115,8 @@
                     <section class="resumen-envios  mt-1" >
 
                         <div class="row justify-content-center">
-                            <div ></div>
                             <div class="singleimgmenu col-lg-8 col-sm-12">
-                                <a href="./PedidosPendientes.php">
+                                <a href="./PedidosPendientes.php">    
                                     <div class="card" style="overflow-y: auto">
                                         <div class="card-body"  id="imgmenu">
                                             <div class="row">
@@ -200,7 +199,7 @@
 
                                                         </div>
                                                         <div class="col-2">
-                                                            <button type="btn" id="datapackage" class="btn collapsed btn-primary" data-bs-toggle="collapse" href="#answerTwo"><i style="font-size:20px" class="fa-solid fa-magnifying-glass"></i></button>
+                                                            <button type="btn btn-success" id="datapackage" class="btn collapsed btn-success" data-bs-toggle="collapse" href="#answerTwo"><i style="font-size:20px" class="fa-solid fa-magnifying-glass"></i></button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -223,17 +222,15 @@
                 include_once('./include/footer.php')
             ?>
            
-
-<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
-
 </body>
 <script>
     $(document).ready(function(e){
-        $(".singleimgmenu").click(function(e){
-            e.preventDefault();
-            var url = $(this).attr('data-url');
-            window.location.href = url;
-        })
+        // $(".singleimgmenu").click(function(e){
+        //     e.preventDefault();
+        //     var url = $(this).attr('data-url');
+        //     console.log(url);
+        //     window.location.href = url;
+        // })
 
         $('#datapackage').on('click',function(event){
             event.preventDefault()

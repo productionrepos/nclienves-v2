@@ -1,47 +1,47 @@
 <?php
-    session_start();
-    
-    if(!isset($_SESSION['cliente']))
-    {
-        header("Location: index.php");
-    }
-    $id_cli = $_SESSION['cliente']->id_cliente;
+session_start();
 
-    include_once('./ws/bd/dbconn.php');
+if(!isset($_SESSION['cliente']))
+{
+    header("Location: index.php");
+}
+$id_cli = $_SESSION['cliente']->id_cliente;
 
-    $conn = new bd();
-    $conn->conectar();
+include_once('./ws/bd/dbconn.php');
+
+$conn = new bd();
+$conn->conectar();
 
 
 
-    $query ='SELECT p.id_pedido,p.timestamp_pedido,b.nombre_bodega FROM pedido p
-            INNER JOIN cliente c ON (p.id_cliente=c.id_cliente)
-            INNER JOIN bodega b ON (p.id_bodega=b.id_bodega)
-            WHERE c.id_cliente='. $id_cli .' AND p.estado_pedido<2
-            AND IsDeleted = 0
-            order by p.timestamp_pedido desc';
+$query ='SELECT p.id_pedido,p.timestamp_pedido,b.nombre_bodega FROM pedido p
+        INNER JOIN cliente c ON (p.id_cliente=c.id_cliente)
+        INNER JOIN bodega b ON (p.id_bodega=b.id_bodega)
+        WHERE c.id_cliente='. $id_cli .' AND p.estado_pedido<2
+        AND IsDeleted = 0
+        order by p.timestamp_pedido desc';
 
 // 'Select pe.id_pedido, pe.timestamp_pedido from pedido pe
 // inner join cliente cli on cli.id_cliente = pe.Cliente
 // where cli.id_cliente ='.$id_cli.' and estado_pedido < 2;';
 
 
-    if($res = $conn->mysqli->query($query)){
-        $datapedido = array();
-        while($datares = $res ->fetch_object())
-        {
-            $datapedido [] = $datares;
-        }
-        $res -> close();
-        $datapedido = (object)$datapedido;
+if($res = $conn->mysqli->query($query)){
+    $datapedido = array();
+    while($datares = $res ->fetch_object())
+    {
+        $datapedido [] = $datares;
     }
-    else{
-        echo $conn->mysqli->error;
-        exit();
-    }
+    $res -> close();
+    $datapedido = (object)$datapedido;
+}
+else{
+    echo $conn->mysqli->error;
+    exit();
+}
 
-    $conn -> desconectar();
-    
+$conn -> desconectar();
+
 
 ?>
 
@@ -49,7 +49,8 @@
 <html lang="en">
 
 <?php
-     include_once('./include/head.php')
+    $head = 'Pedidos Pendites';
+    include_once('./include/head.php')
 ?>
 
 <body>
@@ -100,7 +101,7 @@
                                             <td><?=date("H:i:s", $pedido->timestamp_pedido)?></td>
                                             <td><?=$pedido->nombre_bodega?></td>
                                             <td>
-                                                <a><span class="badge  modpedido bg-light-warning">Continuar</span></a>
+                                                <a><span class="badge  modpedido bg-light-warning" style="cursor: pointer;">Continuar</span></a>
                                                 <span class="badge deletepedido bg-light-danger" style="cursor: pointer;">Eliminar</span>
                                             </td>
                                         </tr>
@@ -204,7 +205,7 @@
 
 $('.modpedido').on('click',function(){
     let id_pedido = $(this).closest('tr').find('.idpedido').text()
-    console.log(id_pedido)
+    // console.log(id_pedido)
     $.ajax({
             type: "POST",
             url: "ws/pedidos/hasrows.php",
@@ -213,7 +214,7 @@ $('.modpedido').on('click',function(){
                 "id_pedido" : id_pedido
             }),
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 if(data.status ==1){
                     window.location = "confirmarpedido.php?id_pedido="+id_pedido
                 }

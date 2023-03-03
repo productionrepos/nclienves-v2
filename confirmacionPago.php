@@ -231,8 +231,4 @@ else {
     <?php
         include_once('./include/footer.php')
     ?>
-    
-
-<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
-
 </body>

@@ -1,77 +1,77 @@
 <?php 
-        session_start();
-        if(!isset($_SESSION['cliente'])){
-            header('Location: index.php');
-        }
-        $id_cliente = $_SESSION['cliente']->id_cliente;
-        require_once('ws/bd/dbconn.php');
-        $conn = new bd();
-        $conn->conectar();
-        $existbodegas = 1;
-        $counterbodegas =0;
-        $bodegas = [];
+session_start();
+if(!isset($_SESSION['cliente'])){
+    header('Location: index.php');
+}
+$id_cliente = $_SESSION['cliente']->id_cliente;
+require_once('ws/bd/dbconn.php');
+$conn = new bd();
+$conn->conectar();
+$existbodegas = 1;
+$counterbodegas =0;
+$bodegas = [];
 
-        $queryregion='Select Nombre_region as nombre,id_region as id from region where id_region in (6,7,8)';
-        if($res = $conn->mysqli->query($queryregion))
-        {
-            while($datares = $res ->fetch_object())
-            {
-                $regiones [] = $datares;
-            }
-        }
-        else{
-            echo $conn->mysqli->error;
-        }
+$queryregion='Select Nombre_region as nombre,id_region as id from region where id_region in (6,7,8)';
+if($res = $conn->mysqli->query($queryregion))
+{
+    while($datares = $res ->fetch_object())
+    {
+        $regiones [] = $datares;
+    }
+}
+else{
+    echo $conn->mysqli->error;
+}
 
 
 
-        $querybodega =  'SELECT bo.nombre_bodega as nombre,
-                                bo.calle_bodega as calle, 
-                                bo.numero_bodega as numero,
-                                bo.principal_bodega as principal, 
-                                co.nombre_comuna as comuna,
-                                re.nombre_region as region,
-                                bo.id_bodega as id
-        FROM bodega bo
-        inner join comuna co on co.id_comuna = bo.id_comuna
-        inner join provincia pro on pro.id_provincia = co.id_provincia
-        inner join region re on re.id_region = pro.id_region
-        where bo.id_cliente ='.$id_cliente.' and IsDelete = 0';
+$querybodega =  'SELECT bo.nombre_bodega as nombre,
+                        bo.calle_bodega as calle, 
+                        bo.numero_bodega as numero,
+                        bo.principal_bodega as principal, 
+                        co.nombre_comuna as comuna,
+                        re.nombre_region as region,
+                        bo.id_bodega as id
+FROM bodega bo
+inner join comuna co on co.id_comuna = bo.id_comuna
+inner join provincia pro on pro.id_provincia = co.id_provincia
+inner join region re on re.id_region = pro.id_region
+where bo.id_cliente ='.$id_cliente.' and IsDelete = 0';
 
+
+if( $res = $conn->mysqli->query($querybodega)){
+    while($datares = $res ->fetch_object()){
+
+        $bodegas [] = $datares;
+    }
+    
+    $counterbodegas = mysqli_num_rows($res);
         
-        if( $res = $conn->mysqli->query($querybodega)){
-            while($datares = $res ->fetch_object()){
+    if($counterbodegas > 0){
 
-                $bodegas [] = $datares;
-            }
-            
-            $counterbodegas = mysqli_num_rows($res);
-                
-            if($counterbodegas > 0){
+        $existbodegas = 1;
+    }else{
 
-                $existbodegas = 1;
-            }else{
-
-                $existbodegas = 0;
-            }
-	    }
+        $existbodegas = 0;
+    }
+}
 
 
 
-        $query='Select Nombre_region as nombre,id_region as id from region';
+$query='Select Nombre_region as nombre,id_region as id from region';
 
-        if($res = $conn->mysqli->query($query))
-        {
-            $comunas = array();
-            
-            while($datares = $res ->fetch_object())
-            {
-                $comunas [] = $datares;
-            }
-        }
-        else{
-            echo $conn->mysqli->error;
-        }
+if($res = $conn->mysqli->query($query))
+{
+    $comunas = array();
+    
+    while($datares = $res ->fetch_object())
+    {
+        $comunas [] = $datares;
+    }
+}
+else{
+    echo $conn->mysqli->error;
+}
 
 ?>
 
@@ -153,7 +153,7 @@
                                 </div>
                             </div>
                             <div class="col-12 d-flex justify-content-end">
-                                <button  type="submit" class="submit btn btn-primary me-1 mb-1" value="Submit"> Usar esta dirección </button>
+                                <button  type="submit" class="submit btn btn-spread me-1 mb-1" value="Submit"> Usar esta dirección </button>
                             </div>
                     </form>
             
@@ -163,7 +163,7 @@
                         <div class="card">
                     
                             <div class="dropdown">
-                                <button class="btn btn-primary col-12 " style="padding: 5px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <button class="btn btn-spread col-12 " style="padding: 5px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                     <div class="row">
                                         <div class="col-md-4 col-12" style="text-align: start;">
                                                 <label for="">
@@ -205,7 +205,7 @@
                                                                     <h4>Mis Direcciones</h4>
                                                                 </div>
                                                                 <div class="col-sm-4 col-12">
-                                                                    <a class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#collapseotherdir" 
+                                                                    <a class="btn btn-spread" data-bs-toggle="collapse" data-bs-target="#collapseotherdir" 
                                                                         aria-expanded="false" aria-controls="collapseotherdir">
                                                                                 Enviaré desde otra dirección
                                                                     </a>
@@ -309,7 +309,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="col-12 d-flex justify-content-end">
-                                                                                        <button  type="submit" class="submit btn btn-primary me-1 mb-1" value="Submit"> Usar esta dirección </button>
+                                                                                        <button  type="submit" class="submit btn btn-spread me-1 mb-1" value="Submit"> Usar esta dirección </button>
                                                                                     </div>
                                                                             </form>
                                                                     </div>
@@ -329,31 +329,27 @@
                         
                     </div>
     <div class="container">
-        <div class="row m-2">
-            <div class="card">
-                <div class="col-12 col">
-                    <input type="file" class="form-control filepond--drop-label" id="excel-input">
-                    <br>
-                </div>
-                <!-- <input class="filepond--browser" type="file" id="filepond--browser-amf70r6nq" aria-controls="filepond--assistant-amf70r6nq" aria-labelledby="filepond--drop-label-amf70r6nq" name="filepond">
-                <div class="filepond--drop-label" style="transform: translate3d(0px, 0px, 0px); opacity: 1;"><label for="filepond--browser-amf70r6nq" id="filepond--drop-label-amf70r6nq" aria-hidden="true">Drag &amp; Drop your files or <span class="filepond--label-action" tabindex="0">Browse</span></label></div> -->
-            </div>
-        </div>
-    </div>
-
-    
-    <div style="background-color: beige; margin: 15px">
-        <div class="container" >
-            <div class="row card-header" >
-                    <div class="col-md-8 col-12 mt-3">
-                        <h3>Resumen Pedido</h3>
-                        <h6>Si existen errores podrás editarlos en la misma tabla!</h6>
+            <div class="card" style="background-color: #d3ffe7d6; margin: 12px">
+                <div class="row m-2">
+                    <div class="col-lg-6 col-sm-12 m-1">
+                        <input type="file" class="form-control filepond--drop-label" id="excel-input">
                     </div>
-                    <div class="col-md-4 col-12 justify-content-end  mt-3">
+                    <div class="col-lg-4 col-sm-12 m-1 justify-content-end">
                         <a class="btn btn-warning" download href="/xlsx/excel_tipo.xlsx">Descarga nuestro Excel tipo</a>
                     </div>
                 </div>
+            </div>
+    </div>
 
+    
+    <div class="card" style="background-color: #d3ffe7d6; margin: 12px">
+        <div class="container" >
+            <!-- <div class="row card-header" > -->
+                <div class="col-md-8 col-12 mt-3">
+                    <h3>Resumen Pedido</h3>
+                    <h6>Si existen errores podrás editarlos en la misma tabla!</h6>
+                </div>
+            <!-- </div> -->
         </div>
         
         <div id="tablepp">
@@ -371,15 +367,18 @@
                         <th>Tipo Envío</th>
                     </tr>
                 </thead>
+
                 <tbody class="tbodyclick">
-                    
                 </tbody>
+                    
+                </table>
                 
-            </table>
-            <div class="row" style="justify-content: right; margin:15px;">
-                <button class="btn btn-success col-4" onclick="getTableData()">Enviar</button>
-            </div>
-            
+                <div class="row">
+                    <div class="mb-2" style="justify-content: right; margin:15px;">
+                        <button class="btn btn-spread col-4" onclick="getTableData()">Enviar</button>
+                    </div>
+                </div>
+
         </div>
     </div>
     
@@ -420,8 +419,8 @@ var tipo= ""
 	var existbodegas=<?php echo $existbodegas;?>;
 
 $(document).ready(function(){
-        console.log(existbodegas);
-        console.log(countbodegas);
+        // console.log(existbodegas);
+        // console.log(countbodegas);
             if(existbodegas == 0){
                 Swal.fire({
                 position: 'center',
@@ -451,7 +450,7 @@ $(document).ready(function(){
                 "idregion" : idregion
             },
             success: function(data) {
-                console.log(data);
+                // console.log(data);
 
                 $.each(data, function (key, value){
                     let select = document.getElementById("select_comunacli");
@@ -477,7 +476,7 @@ $(document).ready(function(){
                             "idregion" : idregion
                         },
                         success: function(data) {
-                            console.log(data);
+                            // console.log(data);
 
                             $.each(data, function (key, value){
                                 let select = document.getElementById("select_comunacli2");
@@ -561,7 +560,7 @@ $(document).ready(function(){
                                     dataType: 'json',
                                     data: JSON.stringify(dataajax),
                                     success:function(resp){
-                                        console.log(resp);
+                                        // console.log(resp);
                                         if(existbodegas){
                                         }
                                         if(existbodegas == false){
@@ -666,7 +665,7 @@ $(document).ready(function(){
                                     dataType: 'json',
                                     data: JSON.stringify(dataajax),
                                     success:function(resp){
-                                        console.log(resp.query);
+                                        // console.log(resp.query);
                                         if(existbodegas){
                                             location.reload()
                                         }
@@ -702,7 +701,7 @@ $(document).ready(function(){
 
 
 $('#presstest').on('click',function(){
-     console.log(id_bodega);
+    //  console.log(id_bodega);
 })
 
 $('.tbodyclick').on('click','.btnEliminar',function(){
@@ -743,7 +742,7 @@ $('.tbodyclick').on('change','#select_type',function(){
     tipo = $(this).val()
     if(tipo=="")
     {
-        console.log("no hay Tipo");
+        // console.log("no hay Tipo");
     }
     // console.log(tipo);
     
@@ -753,7 +752,7 @@ $('.tbodyclick').on('change','#select_comuna',function(){
     comuna = $(this).val()
     if(comuna=="")
     {
-        console.log("no hay Comuna");
+        // console.log("no hay Comuna");
     }
     console.log("LA COMUNA ESSSSSSSSSS!"+comuna);
 })
@@ -762,18 +761,18 @@ function validatenombre(valor,clase){
     let check =true
         if( valor == "" ){
             check = false
-            console.log(check);
+            // console.log(check);
             return "vacio"
             
         }
         if(valor.length < 5){
             check = false
-           console.log(check);
+        //    console.log(check);
            return "corto"
            
         } 
         if(check == true){
-            console.log(check);
+            // console.log(check);
            return "bien"
         }
 }
@@ -815,10 +814,10 @@ function getTableData(){
                     let ctipo = $(this).find('#select_type').val()
                     arraydatos.push(nombre,rut,direccion,telefono,correo,comuna,item,valor,ctipo)
         })
-        console.log(arraydatos);
+        // console.log(arraydatos);
         arraydatos.unshift(id_bodega)
         var send_data = JSON.stringify(arraydatos)
-        console.log(send_data);
+        // console.log(send_data);
 
 
         $.ajax({
@@ -826,8 +825,8 @@ function getTableData(){
             type: "POST",
             data: send_data,    
             success:function(data){
-                console.log(data);
-                console.log("Estoy de vuelta");
+                // console.log(data);
+                // console.log("Estoy de vuelta");
                 swal.fire({
                         title : "Hecho",
                         text : "Tú pedido fue creado exitosamente!",
@@ -854,16 +853,16 @@ $('.tbodyclick').on('blur','td',function(){
     let valor = $(this).text().trim()    
     var letras="abcdefghyjklmnñopqrstuvwxyz-*/+,.<>/?|:;'{}[]-=()*&^%$#@!`~"
     // console.log("El valor de comuna es "+comuna);
-    console.log(clase);
-    console.log("VALOR DEL TD INGRESADO" + valor+"|"+clase);
-    console.log("cadena mide "+valor.trim().length);
-    console.log("este es el valor del select tipo "+tipo);
+    // console.log(clase);
+    // console.log("VALOR DEL TD INGRESADO" + valor+"|"+clase);
+    // console.log("cadena mide "+valor.trim().length);
+    // console.log("este es el valor del select tipo "+tipo);
     var tn = 0;
     if(clase == 'tdtel'){
         texto = valor.toLowerCase();
         for(i=0; i<texto.length; i++){
                 if (letras.indexOf(texto.charAt(i),0)!=-1){
-                    console.log("tiene letrassssss");
+                    // console.log("tiene letrassssss");
                     tn++
                 }
             }
@@ -1019,7 +1018,7 @@ $('#select_comuna').on('click', function(){
                         "idregion" : idregion
                     },
                     success: function(data) {
-                        console.log(data);
+                        // console.log(data}});
 
                         $.each(data, function (key, value){
                             let select = document.getElementById("select_comunacli");
@@ -1044,7 +1043,7 @@ document.querySelectorAll("#usardir").forEach(el => {
                         "id_bodega" : id
                     },
                     success: function(data) {
-                        console.log(data);
+                        // console.log(data);
 
                         $.each(data, function (key, value){
                             
@@ -1121,7 +1120,7 @@ document.querySelectorAll("#usardir").forEach(el => {
                                     success:function(resp){
                                         
                                         if(resp==="error"){
-                                            console.log("creado");
+                                            // console.log("creado");
                                             return false; 
                                         }
                                         else{

@@ -132,8 +132,8 @@ if($credito == 0) {
         "amount" => $totalneto-$descuento,
         "email" => $correo,
         "paymentMethod" => 9,
-        "urlConfirmation" => "https://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
-        "urlReturn" => "https://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
+        "urlConfirmation" => "http://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
+        "urlReturn" => "http://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
         "optional" => ""
     );
     

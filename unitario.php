@@ -833,29 +833,29 @@ $("#select_regioncli2").on('change',function(){
                             let vcomunavalue = vcomuna.value; 
                             let vregion = document.getElementById('select_regioncli2').value;
 
-                            // let dataajax = {direccion : vdir,
-                            //                 numero: vnumero,
-                            //                 nombre : vnombre,
-                            //                 comuna : vcomunavalue,
-                            //                 region: vregion};
+                            let dataajax = {direccion : vdir,
+                                            numero: vnumero,
+                                            nombre : vnombre,
+                                            comuna : vcomunavalue,
+                                            region: vregion};
                             
                     
                             //alert(JSON.stringify(dataajax));
-                                //     $.ajax({
-                                //     url: "ws/bodega/newBodega.php",
-                                //     type: "POST",
-                                //     dataType: 'json',
-                                //     data: JSON.stringify(dataajax),
-                                //     success:function(resp){
-                                //         console.log(resp);
-                                //         if(existbodegas){
-                                //         }
-                                //         if(existbodegas == false){
-                                //             location.reload()
-                                //         }
-                                //     }
+                                    $.ajax({
+                                    url: "ws/bodega/newBodega.php",
+                                    type: "POST",
+                                    dataType: 'json',
+                                    data: JSON.stringify(dataajax),
+                                    success:function(resp){
+                                        console.log(resp);
+                                        if(existbodegas){
+                                        }
+                                        if(existbodegas == false){
+                                            location.reload()
+                                        }
+                                    }
                                     
-                                // })
+                                })
                         }
                         catch(error){
                             console.log(error);

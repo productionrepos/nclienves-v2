@@ -1,153 +1,152 @@
 <?php
 
-    session_start();
-    
-
-    if(!isset($_SESSION['cliente'])):
-        header("Location: index.php");
-    endif;
-    
-    if(!isset($_GET['id_pedido'])):
-        header("Location: index.php");
-    endif;
-
-    require_once('./ws/bd/dbconn.php');
-    require_once('./ws/flow/FlowApi.class.php');
-    $conn = new bd();
-    $conn->conectar();
-    $id_pedido = $_GET['id_pedido'];
-    $credito = $_SESSION['cliente']->alta_cliente;
-    $id_cliente = $_SESSION['cliente']->id_cliente;
-    $correo = $_SESSION['cliente']->email_cliente;
-    $busquedaget = 116367;
-    
-    //HARDCODE DESCUENTO 
-    $descuento = 0;
-    //HARDCODE DESCUENTO
+session_start();
 
 
+if(!isset($_SESSION['cliente'])):
+    header("Location: index.php");
+endif;
 
-    $querypedido = "SELECT estado_pedido as estado FROM pedido
-        INNER JOIN bodega ON (pedido.id_bodega=bodega.id_bodega)
-        INNER JOIN comuna ON (bodega.id_comuna=comuna.id_comuna)
-        INNER JOIN provincia ON (comuna.id_provincia=provincia.id_provincia)
-        INNER JOIN cliente ON (pedido.id_cliente=cliente.id_cliente)
-        AND pedido.id_pedido=$id_pedido AND cliente.id_cliente=$id_cliente";
+if(!isset($_GET['id_pedido'])):
+    header("Location: index.php");
+endif;
 
-    if($pedido = $conn->mysqli->query($querypedido)){
-        $datos_pedido = $pedido->fetch_object();
+require_once('./ws/bd/dbconn.php');
+require_once('./ws/flow/FlowApi.class.php');
+$conn = new bd();
+$conn->conectar();
+$id_pedido = $_GET['id_pedido'];
+$credito = $_SESSION['cliente']->alta_cliente;
+$id_cliente = $_SESSION['cliente']->id_cliente;
+$correo = $_SESSION['cliente']->email_cliente;
+$busquedaget = 116367;
+
+//HARDCODE DESCUENTO 
+$descuento = 0;
+//HARDCODE DESCUENTO
+
+
+
+$querypedido = "SELECT estado_pedido as estado FROM pedido
+    INNER JOIN bodega ON (pedido.id_bodega=bodega.id_bodega)
+    INNER JOIN comuna ON (bodega.id_comuna=comuna.id_comuna)
+    INNER JOIN provincia ON (comuna.id_provincia=provincia.id_provincia)
+    INNER JOIN cliente ON (pedido.id_cliente=cliente.id_cliente)
+    AND pedido.id_pedido=$id_pedido AND cliente.id_cliente=$id_cliente";
+
+if($pedido = $conn->mysqli->query($querypedido)){
+    $datos_pedido = $pedido->fetch_object();
+}
+
+if($datos_pedido->estado >= 2){
+    header("Location: detallepedido.php?id_pedido=$id_pedido");
+    exit();
+}
+// if($datos_pedido->estado >= 2){
+//     header("Location: detalleFpedido.php?id_pedido=$id_pedido");
+//     exit();
+// }
+
+
+
+
+$querytotal = 'SELECT sum(precio_bulto) as total from bulto where id_pedido='.$id_pedido;
+if($restotal = $conn->mysqli->query($querytotal)){
+    $totalneto = $restotal->fetch_object()->total;
+}
+
+
+
+// $querybulto = 'SELECT id_bulto as guide, nombre_bulto as nombre, email_bulto as correo, telefono_cliente as telefono,
+//                       direccion_bulto as direccion, , precio_bulto as precio
+//                     FROM bulto where id_pedido ='.$id_pedido;
+
+
+$querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
+                    bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
+                    bu.codigo_barras_bulto as barcode
+                FROM bulto bu 
+                INNER JOIN comuna co on co.id_comuna = bu.id_comuna
+                INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
+                INNER JOIN region re on re.id_region = pro.id_region
+                where bu.id_pedido ='. $id_pedido .' and bu.Deleted = 0';
+
+if($resdatabulto = $conn->mysqli->query($querybulto)){
+    while($datares = $resdatabulto->fetch_object())
+    {
+        $datosbultos [] = $datares;
     }
+    $dataAppolo =[];
+    foreach($datosbultos as $databul){
+        $dataAppolo[]= Array(
+            "guide" => $databul->barcode,
+            "name_client" => $databul->nombre,
+            "email" => $databul->correo,
+            "phone"=> $databul->telefono ,
+            "street"=> $databul->direccion,
+            "number"=> "" ,
+            "commune" => $databul->comuna,
+            "region"=> $databul->region,
+            "dpto_bloque"=> "",
+            "id_pedido"=> $id_pedido,
+            "valor"=> "",
+            "descripcion"=> ""
+        );
+    }
+}
 
-    if($datos_pedido->estado >= 2){
-        header("Location: detallepedido.php?id_pedido=$id_pedido");
+
+
+
+$querydatcomerciales = 'SELECT * FROM cliente cli
+                            inner join datos_comerciales dc on cli.id_cliente = dc.id_cliente
+                            inner join datos_contacto dco on dco.id_cliente = cli.id_cliente
+                            where cli.id_cliente='.$id_cliente;
+
+$querydatpersonales = 'SELECT * FROM cliente cli
+                            inner join datos_contacto dco on dco.id_cliente = cli.id_cliente
+                            where cli.id_cliente='.$id_cliente;
+
+if(mysqli_num_rows($resdatacomercial = $conn->mysqli->query($querydatcomerciales))>0){
+    while($datares = mysqli_fetch_array($resdatacomercial))
+    {
+        $nombre= $datares['nombre_fantasia_datos_comerciales'];
+        $rut = $datares['rut_datos_comerciales'];
+    }
+}
+else if($datospersonales = $conn->mysqli->query($querydatpersonales)){
+    
+    while($datares = mysqli_fetch_array($datospersonales))
+    {
+        $nombre= $datares['nombres_datos_contacto'].' '.$datares['apellidos_datos_contacto'];
+        
+        $rut = $datares['rut_datos_contacto'];
+    }
+}
+
+if($credito == 0) {
+    $params = array(
+        "commerceOrder" => $id_pedido,
+        "subject" => "Pedido #$id_pedido",
+        "currency" => "CLP",
+        "amount" => $totalneto-$descuento,
+        "email" => $correo,
+        "paymentMethod" => 9,
+        "urlConfirmation" => "https://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
+        "urlReturn" => "https://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
+        "optional" => ""
+    );
+    
+    try {
+        $flowApi = new FlowApi;
+        $respuesta = $flowApi->send("payment/create", $params,"POST");
+        $url_pago = $respuesta["url"] . "?token=" . $respuesta["token"];
+    } catch (Exception $e) {
+        echo $e->getCode() . " - " . $e->getMessage();
         exit();
     }
-    // if($datos_pedido->estado >= 2){
-    //     header("Location: detalleFpedido.php?id_pedido=$id_pedido");
-    //     exit();
-    // }
-    
 
-
-
-    $querytotal = 'SELECT sum(precio_bulto) as total from bulto where id_pedido='.$id_pedido;
-    if($restotal = $conn->mysqli->query($querytotal)){
-        $totalneto = $restotal->fetch_object()->total;
-    }
-
-
-
-    // $querybulto = 'SELECT id_bulto as guide, nombre_bulto as nombre, email_bulto as correo, telefono_cliente as telefono,
-    //                       direccion_bulto as direccion, , precio_bulto as precio
-    //                     FROM bulto where id_pedido ='.$id_pedido;
-
-
-    $querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
-                        bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
-                        bu.codigo_barras_bulto as barcode
-                    FROM bulto bu 
-                    INNER JOIN comuna co on co.id_comuna = bu.id_comuna
-                    INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
-                    INNER JOIN region re on re.id_region = pro.id_region
-                    where bu.id_pedido ='. $id_pedido .' and bu.Deleted = 0';
-
-    if($resdatabulto = $conn->mysqli->query($querybulto)){
-        while($datares = $resdatabulto->fetch_object())
-        {
-            $datosbultos [] = $datares;
-        }
-        $dataAppolo =[];
-        foreach($datosbultos as $databul){
-            $dataAppolo[]= Array(
-                "guide" => $databul->barcode,
-                "name_client" => $databul->nombre,
-                "email" => $databul->correo,
-                "phone"=> $databul->telefono ,
-                "street"=> $databul->direccion,
-                "number"=> "" ,
-                "commune" => $databul->comuna,
-                "region"=> $databul->region,
-                "dpto_bloque"=> "",
-                "id_pedido"=> $id_pedido,
-                "valor"=> "",
-                "descripcion"=> ""
-            );
-        }
-    }
-
-
-
-
-    $querydatcomerciales = 'SELECT * FROM cliente cli
-                                inner join datos_comerciales dc on cli.id_cliente = dc.id_cliente
-                                inner join datos_contacto dco on dco.id_cliente = cli.id_cliente
-                                where cli.id_cliente='.$id_cliente;
-
-    $querydatpersonales = 'SELECT * FROM cliente cli
-                                inner join datos_contacto dco on dco.id_cliente = cli.id_cliente
-                                where cli.id_cliente='.$id_cliente;
-
-    if(mysqli_num_rows($resdatacomercial = $conn->mysqli->query($querydatcomerciales))>0){
-        while($datares = mysqli_fetch_array($resdatacomercial))
-        {
-            $nombre= $datares['nombre_fantasia_datos_comerciales'];
-            $rut = $datares['rut_datos_comerciales'];
-        }
-    }
-    else if($datospersonales = $conn->mysqli->query($querydatpersonales)){
-        
-        while($datares = mysqli_fetch_array($datospersonales))
-        {
-            $nombre= $datares['nombres_datos_contacto'].' '.$datares['apellidos_datos_contacto'];
-            
-            $rut = $datares['rut_datos_contacto'];
-        }
-    }
-   
-    if($credito == 0) {
-        $params = array(
-            "commerceOrder" => $id_pedido,
-            "subject" => "Pedido #$id_pedido",
-            "currency" => "CLP",
-            //dejar desc en 0
-            "amount" => $totalneto-$descuento,
-            "email" => $correo,
-            "paymentMethod" => 9,
-            "urlConfirmation" => "https://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
-            "urlReturn" => "https://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
-            "optional" => ""
-        );
-        
-        try {
-            $flowApi = new FlowApi;
-            $respuesta = $flowApi->send("payment/create", $params,"POST");
-            $url_pago = $respuesta["url"] . "?token=" . $respuesta["token"];
-        } catch (Exception $e) {
-            echo $e->getCode() . " - " . $e->getMessage();
-            exit();
-        }
-
-    }
+}
   
 
 ?>
@@ -260,9 +259,8 @@
                                                     <?php else:?>
                                                         <a href="<?=$url_pago?>" class="col-md-4 col-6 btn btn-success">Pagar</a>
                                                         <div class="row justify-content-end">
-                                                            
 
-                                                            <i  style="color:#1a1f71; font-size: 40px;" class=" fa-brands fa-cc-visa"></i>
+                                                            <i style="color:#1a1f71; font-size: 40px;" class=" fa-brands fa-cc-visa"></i>
                                                             <i style="color:#1a1f71; font-size: 40px;" class=" fa-brands fa-cc-mastercard"></i>
                                                         </div>
                                                     
@@ -270,16 +268,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <table class="table table-borderless">
-                                        <tbody>
-                                            <tr class="add">
-                                                <td>Bank Details</td>
-                                            </tr>
-                                            <tr class="content">
-                                                <td> Bank Name : ADS BANK <br> Swift Code : ADS1234Q <br> Account Holder : Jelly Pepper <br> Account Number : 5454542WQR <br> </td>
-                                            </tr>
-                                        </tbody>
-                                    </table> -->
                                 </div>
                             </div>
                         </div>
@@ -290,7 +278,7 @@
             <?php
                 include_once('./include/footer.php')
             ?>
-<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+
     <script>
         var appoloData =<?php echo json_encode($dataAppolo);?>;
         var id_pedido = <?= $id_pedido;?>;

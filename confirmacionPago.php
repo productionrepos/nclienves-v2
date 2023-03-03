@@ -1,106 +1,100 @@
 <?php
-$dev = false;
-    session_start();
-    if(!isset($_SESSION['cliente'])){
-        header('Location: index.php');
-    }
-    $id_cliente = $_SESSION['cliente']->id_cliente;
+session_start();
 
-    require_once('./ws/flow/FlowApi.class.php');
-    require_once('./ws/bd/dbconn.php');
+// if(!isset($_SESSION['cliente'])){
+//     header('Location: index.php');
+// }
 
-   if($dev) {
-		if(!isset($_GET["token"])) {
-			header("Location: resultado_pago.php?token=CF80BE4D0C061BFC8EE01D80D3615D491EA726CN");
-		}
-		$token = filter_input(INPUT_GET, 'token');
-	}
-	else {
-		if(!isset($_POST["token"])) {
-			throw new Exception("No se recibio el token", 1);
-		}
-		$token = filter_input(INPUT_POST, 'token');
-	}
+$id_cliente = $_SESSION['cliente']->id_cliente;
+
+require_once('./ws/flow/FlowApi.class.php');
+require_once('./ws/bd/dbconn.php');
+
+if(!isset($_POST["token"])) {
+    throw new Exception("No se recibio el token", 1);
+}
+$token = filter_input(INPUT_POST, 'token');
+
     
-	$params = array(
-		"token" => $token
-	);
-	$serviceName = "payment/getStatus";
-	$flowApi = new FlowApi();
-	$respuesta = (object)$flowApi->send($serviceName, $params, "GET");
-	$informacion_pago_pedido = json_encode($respuesta);
+$params = array(
+    "token" => $token
+);
+$serviceName = "payment/getStatus";
+$flowApi = new FlowApi();
+$respuesta = (object)$flowApi->send($serviceName, $params, "GET");
+$informacion_pago_pedido = json_encode($respuesta);
 
-    $id_pedido = $respuesta->commerceOrder;
-
-
-    $conexion = new bd();
-	$conexion->conectar();
+$id_pedido = $respuesta->commerceOrder;
 
 
-    if($respuesta->status==2) {
-		$query = "UPDATE pedido SET estado_pedido=2 WHERE id_pedido=$id_pedido";
-		if(!$conexion->mysqli->query($query)) {
-			echo $conexion->mysqli->error;
-			$conexion->desconectar();
-			exit();
-		}
-		//importante!!!!!!!!!!!!!!!!!!!!!!!!!!
-		if($datos = $conexion->mysqli->query("SELECT * FROM pago_pedido WHERE codigo_transaccion='$token' AND timestamp_pago_pedido>0 AND importe_pago_pedido>0")) {
-			if($datos->num_rows==0) {
-				$timestamp_pago_pedido = time();
-				$id_comercio = 1;
-				$importe_pago_pedido = $respuesta->paymentData['amount'];
-				$query = "INSERT INTO pago_pedido (id_pago_pedido, id_pedido, timestamp_pago_pedido, importe_pago_pedido, 
-                                      codigo_transaccion, informacion_pago_pedido, id_comercio) 
-                          VALUES (NULL, $id_pedido, $timestamp_pago_pedido, $importe_pago_pedido, '$token', '$informacion_pago_pedido', 1)";
-				if(!$conexion->mysqli->query($query)) {
-					echo $conexion->mysqli->error;
-					$conexion->desconectar();
-					exit();
-				}
-			}
-		}
-		else {
-			echo $conexion->mysqli->error;
-			$conexion->desconectar();
-			exit();
-		}
-	}
+$conexion = new bd();
+$conexion->conectar();
 
 
-    if($respuesta->status!=2){
-		$querynotpay = "INSERT INTO pago_pedido (id_pago_pedido, id_pedido, timestamp_pago_pedido, importe_pago_pedido, 
-                              codigo_transaccion, informacion_pago_pedido, id_comercio) 
-                  VALUES (NULL, $id_pedido, 0, 0, '$token', '$informacion_pago_pedido', 1)";
-		if(!$conexion->mysqli->query($querynotpay)) {
-			echo $conexion->mysqli->error;
-			$conexion->desconectar();
-			exit();
-		}
-		else {
-			header("Location: error_pago.php?token=$token&id_pedido=$id_pedido");
-		}
-		exit();
-	}
+if($respuesta->status==2) {
+    $query = "UPDATE pedido SET estado_pedido=2 WHERE id_pedido=$id_pedido";
+    if(!$conexion->mysqli->query($query)) {
+        echo $conexion->mysqli->error;
+        $conexion->desconectar();
+        exit();
+    }
+    //importante!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if($datos = $conexion->mysqli->query("SELECT * FROM pago_pedido WHERE codigo_transaccion='$token' AND timestamp_pago_pedido>0 AND importe_pago_pedido>0")) {
+        if($datos->num_rows==0) {
+            $timestamp_pago_pedido = time();
+            $id_comercio = 1;
+            $importe_pago_pedido = $respuesta->paymentData['amount'];
+            $query = "INSERT INTO pago_pedido (id_pago_pedido, id_pedido, timestamp_pago_pedido, importe_pago_pedido, 
+                                    codigo_transaccion, informacion_pago_pedido, id_comercio) 
+                        VALUES (NULL, $id_pedido, $timestamp_pago_pedido, $importe_pago_pedido, '$token', '$informacion_pago_pedido', 1)";
+            if(!$conexion->mysqli->query($query)) {
+                echo $conexion->mysqli->error;
+                $conexion->desconectar();
+                exit();
+            }
+        }
+    }
+    else {
+        echo $conexion->mysqli->error;
+        $conexion->desconectar();
+        exit();
+    }
+}
+
+
+if($respuesta->status!=2){
+    $querynotpay = "INSERT INTO pago_pedido (id_pago_pedido, id_pedido, timestamp_pago_pedido, importe_pago_pedido, 
+                            codigo_transaccion, informacion_pago_pedido, id_comercio) 
+                VALUES (NULL, $id_pedido, 0, 0, '$token', '$informacion_pago_pedido', 1)";
+    if(!$conexion->mysqli->query($querynotpay)) {
+        echo $conexion->mysqli->error;
+        $conexion->desconectar();
+        exit();
+    }
+    else {
+        header("Location: error_pago.php?token=$token&id_pedido=$id_pedido");
+    }
+    exit();
+}
 
 
 
-    $querydatos = "SELECT * from pedido
-                    INNER JOIN cliente ON (pedido.id_cliente=cliente.id_cliente)
-                    INNER JOIN datos_contacto ON (cliente.id_cliente=datos_contacto.id_cliente)
-                    WHERE id_pedido=$id_pedido";
-	if($datos = $conexion->mysqli->query($querydatos)) {
-		if($datos->num_rows==1) {
-			$datos_cliente = $datos->fetch_object();
-		}
-		else {
-			echo $datos->num_rows;
-			exit();
-		}
-	}
-	else {
-		echo $conexion->mysqli->error;
-	}
+$querydatos = "SELECT * from pedido
+                INNER JOIN cliente ON (pedido.id_cliente=cliente.id_cliente)
+                INNER JOIN datos_contacto ON (cliente.id_cliente=datos_contacto.id_cliente)
+                WHERE id_pedido=$id_pedido";
+if($datos = $conexion->mysqli->query($querydatos)) {
+    if($datos->num_rows==1) {
+        $datos_cliente = $datos->fetch_object();
+    }
+    else {
+        echo $datos->num_rows;
+        exit();
+    }
+}
+else {
+    echo $conexion->mysqli->error;
+}
 
 
 

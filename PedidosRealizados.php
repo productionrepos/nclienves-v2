@@ -83,7 +83,7 @@
                             <table class="table table-striped" id="table">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        <!-- <th>Id</th> -->
                                         <th>Numero Pedido</th>
                                         <th>Fecha creación pedido</th>
                                         <th>Dirección retiro</th>
@@ -155,9 +155,6 @@
 <script>
     $(document).ready(function(){
 
-        
-        
-
         $("#table").on('click', '.btnGetData', function() {
             // get the current row
                     var currentRow = $(this).closest("tr");
@@ -181,7 +178,7 @@
                                         '<td style="font-weight:800">Direccion</th>'+
                                         '<td style="font-weight:800">Correo</th>'+
                                         '<td style="font-weight:800">Telefono</th>'+
-                                        '<td style="font-weight:800">Estado (beetrack)</th>'+
+                                        '<td style="font-weight:800; text-align:center;" colspan="2">Estado</th>'+
                                     "</tr>";
                             if(filas > 0)
                             {
@@ -195,12 +192,47 @@
                                             var direccion = response[i].direccion;
                                             var correo = response[i].correo;
                                             var telefono = response[i].telefono;
+                                            var estado = response[i].estado;
+                                            var fecha_creacion = response[i].fecha_creacion;
+                                            var img = "";
+                                            var title = "";
+                                            if(estado == 0){
+                                                img = 'include/img/status/1_creado.PNG'
+                                                title = 'Creado\n ' + fecha_creacion;
+                                            }
+                                            else if(estado == 2){
+                                                img = 'include/img/status/2_retirado.PNG'
+                                                title = 'retirado';
+                                            }
+                                            else if(estado == 3){
+                                                img = 'include/img/status/3_recepcion_bodega.PNG'
+                                                title = 'recepcion_bodega';
+                                            }
+                                            else if(estado == 4){
+                                                img = 'include/img/status/4_en_ruta.PNG'
+                                                title = 'en_ruta';
+                                            }
+                                            else if(estado == 5){
+                                                img = 'include/img/status/5_entregado.PNG'
+                                                title = 'entregado';
+                                            }
+                                            else if(estado == 6){
+                                                img = 'include/img/status/5_no_entregado.PNG'
+                                                title = 'no_entregado';
+                                            }
                                             var tr_str = 
                                                 "<tr>" +
                                                 "<td align='center'>" + nombre + "</td>" +
                                                 "<td align='center'>" + direccion + "</td>" +
                                                 "<td align='center'>" + correo + "</td>" +
                                                 "<td align='center'>" + telefono + "</td>" +
+                                                "<td align='center' colspan='2'>" +
+                                                            "<a " +
+                                                            "href='#'" +
+                                                            "data-bs-toggle='tooltip'" +
+                                                            "title='" + title + "'>" +
+                                                            "<img src='" + img + "'>" +
+                                                            "</a></td>"+
                                                 "</tr>";
                                                 $("#"+exp).append(tr_str);
                                                 // $("#"+exp).html(response);
@@ -213,19 +245,28 @@
                     });
                 });
 
-        $('#table').DataTable({
-            "order": [
-                [0, "desc"]
-            ],
-            "pagingType": "full_numbers"
-        });
+        // $('#table').DataTable({
+        //     "order": [
+        //         [0, "desc"]
+        //     ],
+        //     "pagingType": "full_numbers"
+        // });
 
     });
 
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+          var tooltipTriggerList = [].slice.call(
+            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+          );
+          var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+          });
+        },
+        false
+      );
 
-  
-
-    
 </script>
 </body>
 

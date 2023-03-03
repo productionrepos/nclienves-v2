@@ -8,8 +8,11 @@ include_once('../bd/dbconn.php');
         $conn = new bd();
         $conn ->conectar();
 
-        $query ='SELECT nombre_bulto as name, direccion_bulto as dir, email_bulto as correo,
-                        telefono_bulto as telefono from bulto where id_pedido ='.$idpedido ;
+        $query ='SELECT b.nombre_bulto as name, b.direccion_bulto as dir, b.email_bulto as correo,
+                b.telefono_bulto as telefono,b.estado_logistico,p.timestamp_pedido
+                from bulto b
+                inner join pedido  p on b.id_pedido = p.id_pedido
+                where b.id_pedido = '.$idpedido ;
 
         $existe = false;
 
@@ -22,13 +25,16 @@ include_once('../bd/dbconn.php');
                     $dir = $datares['dir'];
                     $correo = $datares['correo'];
                     $telefono = $datares['telefono'];
-                    
+                    $estado = $datares['estado_logistico'];
+                    $fecha_creacion = date("d-m-Y H:i:s",$datares['timestamp_pedido']);
 
                     $return_array[]=array(
                         "nombre" => $nombre,
                         "direccion"=>$dir,
                         "correo" => $correo,
-                        "telefono" => $telefono
+                        "telefono" => $telefono,
+                        "estado" => $estado,
+                        "fecha_creacion" => $fecha_creacion
                     );
             }
             echo json_encode($return_array);

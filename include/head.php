@@ -27,4 +27,5 @@
 
 
     <link rel="stylesheet" href="./assets/css/shared/iconly.css" />
+    <link rel="stylesheet" href="../assets/css/main/timeline.sass">
 </head>

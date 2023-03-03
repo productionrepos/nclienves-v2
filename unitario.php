@@ -500,6 +500,20 @@
                                                             </label>
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
+                                                        <div class="card bodega cardbod">
+                                                            <label style="cursor: pointer;">
+                                                                <div class="card-content" style="justify-content: center;">
+                                                                    <div class="card-body" id="cardbodywarehouse" >
+                                                                        <div class="row">
+                                                                            <img src="include/img/boxSize.png" alt="" srcset="">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 
                                             </div>

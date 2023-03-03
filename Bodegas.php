@@ -77,25 +77,35 @@ include_once('./include/head.php');
                 include_once('./include/topbar.php');
             ?>
 
-            <div class="page-heading">
+    <div class="page-heading">
+        <div class="row">
+            <div class="card" style="padding: 20px">
                 <div class="row">
-                    <div class="card" style="padding: 20px">
-                    <div class="row">
-                        <div class="col-sm-9">
+                    <div class="col-sm-8">
                                 <h3>Mis Direcciones || Spread</h3>
-                        </div>
-                        <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-3 mr-5 ">
+                        <div class="row d-flex ">
                             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
                                 data-bs-target="#inlineForm">
-                                Agregar bodega
+                                <div class="row justify-content-center" style="align-items: center;">
+                                    <div class="col-10" id="dnonemini">
+                                        <p >Nueva dirección de retiro</p> 
+                                    </div>
+                                    <div class="col-2">
+                                        <i style="font-size: 40px;" class="fa-solid fa-plus"></i>
+                                    </div>
+
+                                </div>
+                                    
                             </button>
                         </div>
                     </div>
-                        
                 </div>
-                    
-                    
             </div>
+        </div>
+
+
             <div class="page-content">
 
                 <div class="resumen-bodegas" id="resumen-bodegas">
@@ -141,9 +151,7 @@ include_once('./include/head.php');
                 </div>
                     
             </div>
-
-            
-        </div>
+    </div>
        
 
 

@@ -39,9 +39,14 @@
     }
 
     if($datos_pedido->estado >= 2){
-        header("Location: detalleFpedido.php?id_pedido=$id_pedido");
+        header("Location: detallepedido.php?id_pedido=$id_pedido");
         exit();
     }
+    // if($datos_pedido->estado >= 2){
+    //     header("Location: detalleFpedido.php?id_pedido=$id_pedido");
+    //     exit();
+    // }
+    
 
 
 
@@ -174,7 +179,11 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="d-flex flex-row p-2"> <img src="../include/img/LogoInvoice.png"  width="450" height="60">
-                                    <div class="d-flex flex-column"> <span class="font-weight-bold">ID Pedido</span> <h4><?=$id_pedido?></h4> </div>
+                                    <div class="d-flex flex-column">
+                                         <span class="font-weight-bold">ID Pedido</span> 
+                                         <h4><?=$id_pedido?></h4> 
+                                         <h6>Pendiente de pago</h6>
+                                        </div>
                                 </div>
                                 <hr>
                                 <div class="table-responsive p-2">
@@ -246,10 +255,16 @@
                                                 <?php
                                                         if($credito == 1):
                                                     ?>
-                                                        <a id="procesarcredito" class="col-2 btn btn-success">Procesar credito</a>
+                                                        <a id="procesarcredito" class="col-md-4 col-6 btn btn-success">Procesar credito</a>
                                                         
                                                     <?php else:?>
-                                                        <a href="<?=$url_pago?>" class="col-2 btn btn-success">Flow</a>
+                                                        <a href="<?=$url_pago?>" class="col-md-4 col-6 btn btn-success">Pagar</a>
+                                                        <div class="row justify-content-end">
+                                                            
+
+                                                            <i  style="color:#1a1f71; font-size: 40px;" class=" fa-brands fa-cc-visa"></i>
+                                                            <i style="color:#1a1f71; font-size: 40px;" class=" fa-brands fa-cc-mastercard"></i>
+                                                        </div>
                                                     
                                                 <?php endif;?>
                                             </div>

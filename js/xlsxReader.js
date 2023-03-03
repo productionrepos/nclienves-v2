@@ -171,14 +171,14 @@ excelInput.addEventListener('change',async function(){
                             if(i==0 && row[i] == null)
                             {
                                 nomerr = "Debe ingresar un nombre";
-                                // console.log(nomerr);
+                                console.log(nomerr);
                                 arrayerr.push(nomerr)
                                 countererr++
                             }
                             else if(i==0 && row[i].length < 5){
                                 nomerr = "El nombre debe tener al menos 5 caracteres";
                                 arrayerr.push(nomerr)
-                                //console.log(direrr);
+                                console.log(direrr);
                             }
                             else if(i==0 && nomerr == ""){
                                 
@@ -189,14 +189,14 @@ excelInput.addEventListener('change',async function(){
                             if(i==1 && row[i] == null)
                             {
                                 direrr = "Debe ingresar una dirección";
-                                // console.log(direrr);
+                                console.log(direrr);
                                 arrayerr.push(direrr)
                                 countererr++
                             }
                             else if(i==1 && row[i].length < 5){
                                 direrr = "La dirección debe tener al menos 5 caracteres";
                                 arrayerr.push(direrr)
-                                //console.log(direrr);
+                                console.log(direrr);
                             }
                             else if(i==1 && direrr == ""){
                                 
@@ -207,7 +207,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==2 && row[i] == null)
                             {
                                 telerr = "Debe ingresar un telefono";
-                                // console.log(telerr);
+                                console.log(telerr);
                                 arrayerr.push(telerr)
 
                                 countererr++
@@ -225,7 +225,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==3 && row[i] == null)
                             {
                                 corerr = "Debe ingresar un correo";
-                                //console.log(corerr);
+                                console.log(corerr);
                                 arrayerr.push(corerr)
                                 countererr++
                             }else if(i==3 && row[i].length < 7){
@@ -241,7 +241,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==4 && row[i] == null)
                             {
                                 comerr = "Debe ingresar una comuna";
-                                //console.log(comerr);
+                                console.log(comerr);
                                 arrayerr.push(comerr)
                                 countererr++
                             }
@@ -255,7 +255,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==5 && row[i] == null)
                             {
                                 deserr = "Debe ingresar una descripcion";
-                                //console.log(deserr);
+                                console.log(deserr);
                                 arrayerr.push(deserr)
                                 countererr++
                             }else if(i==5 && row[i].length < 3){
@@ -271,7 +271,7 @@ excelInput.addEventListener('change',async function(){
                             if(i==6 && row[i] == null)
                             {
                                 coserr = "Debe ingresar el costo";
-                                // console.log(coserr);
+                                console.log(coserr);
                                 arrayerr.push(coserr)
 
                                 countererr++
@@ -279,7 +279,7 @@ excelInput.addEventListener('change',async function(){
                                 coserr = "El valor declarado no puede superar los $500.000";
                                 countererr ++
                                 arrayerr.push(coserr)
-                                // console.log(coserr);
+                                console.log(coserr);
                             }
                             else if(i==6 && coserr == ""){
                                 
@@ -290,14 +290,14 @@ excelInput.addEventListener('change',async function(){
                             if(i==7 && row[i] == null)
                             {
                                 typeerr = "Debe ingresar el tipo de envio";
-                                // console.log(typeerr);
+                                console.log(typeerr);
                                 arrayerr.push(typeerr)
                                 countererr++
                             }
                             else if(i==7 && typeerr == ""){
                                 
                                 arrayerr.push("")
-                                // console.log(typeerr);
+                                console.log(typeerr);
 
                             }
                             counter ++
@@ -370,7 +370,7 @@ excelInput.addEventListener('change',async function(){
                                         }
                                         else{
                                             comunas.forEach(comuna => {
-                                                if(comuna == td){
+                                                if(comuna.toUpperCase() == td.toUpperCase()){
                                                     options += "<option selected>"+comuna+"</option>"
                                                 }
                                                 else{
@@ -410,7 +410,7 @@ excelInput.addEventListener('change',async function(){
                                         }
                                         else{
                                             tipos.forEach(tipo =>{
-                                                if(tipo == td){
+                                                if(tipo.toUpperCase() == td.toUpperCase()){
                                                     options += "<option selected>"+tipo+"</option>"
                                                 }
                                                 else{

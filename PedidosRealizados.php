@@ -62,14 +62,16 @@
             <?php
                 include_once('./include/topbar.php');
             ?>
-
-            <div class="page-heading" style="position: relative !important; margin-top: 10px; margin-bottom: 15px;">
-                <div class="row">
-                    <div class="col-sm-9">
-                        <h3>Pedidos Realizados || Spread</h3>
+            <div class="row">
+                <div class="card" style="padding: 20px">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h3>Pedidos Realizados || Spread</h3>
+                        </div>
                     </div>
                 </div>
             </div>
+            
             <div class="page-content">
 
                 <section class="section">
@@ -81,6 +83,7 @@
                             <table class="table table-striped" id="table">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Numero Pedido</th>
                                         <th>Fecha creación pedido</th>
                                         <th>Dirección retiro</th>

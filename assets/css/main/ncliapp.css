@@ -206,6 +206,16 @@
     }
 }
 
+#dnonemini{
+    transition: all .2s ease;
+}
+@media (max-width: 400px) {
+    #dnonemini{
+        display: none;
+        
+    }
+}
+
 
 /* @media screen and (max-width: 1199px){
     #headpage{
@@ -366,6 +376,8 @@
 .card-content{
     margin: 10px 10px !important;
 }
+
+
 
   
 

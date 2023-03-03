@@ -114,9 +114,9 @@
 
                     <section class="resumen-envios  mt-1" >
 
-                        <div class="row">
-                            <div class="col-lg-2 col-sm-2 col-md-2"></div>
-                            <div class="singleimgmenu col-lg-8 col-sm-8 col-md-8">
+                        <div class="row justify-content-center">
+                            <div ></div>
+                            <div class="singleimgmenu col-lg-8 col-sm-12">
                                 <a href="./PedidosPendientes.php">
                                     <div class="card" style="overflow-y: auto">
                                         <div class="card-body"  id="imgmenu">
@@ -134,7 +134,6 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-lg-2 col-sm-2 col-md-2"></div>
                         </div>
 
                         <div class="row ">
@@ -181,19 +180,30 @@
 
                     <div class="resumen-envios mt-1" >
                         
-                        <div class="row">
-                            <h4 style="color:#3e3e3f">Sigue un envío</h4>
-                        </div>
+                        
                         <div class="row justify-content-center">
                             <div class="col-lg-8 col-sm-12">
                                 <div id="faq" role="tablist" aria-multiselectable="true">
                                     <div class="card">
                                         <div class="card-header" role="tab" id="questionTwo" style="text-align: center;">
-                                            <h5 class="card-title">
-                                                <a class="collapsed" style="color: black;  font-family: arial; text-decoration: none" data-bs-toggle="collapse" data-parent="#faq" href="#answerTwo" aria-expanded="false" aria-controls="answerTwo">
-                                                    Sigue tu pedido aquí
-                                                </a>
-                                            </h5>
+                                            <div class="row">
+                                                <h4 style="color:#3e3e3f">Sigue un envío</h4>
+                                            </div>
+                                                <form>
+                                                    <div class="row">
+                                                        <div class="mb-3 col-10 justify-content-end" >
+                                                        <input type="text"class="form-control" 
+                                                                name="" id="" aria-describedby="helpId" 
+                                                                placeholder="Número de pedido">
+
+                                                        <small id="helpId" class="form-text text-muted"></small>
+
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <button type="btn" id="datapackage" class="btn collapsed btn-primary" data-bs-toggle="collapse" href="#answerTwo"><i style="font-size:20px" class="fa-solid fa-magnifying-glass"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                         </div>
                                         <div id="answerTwo" class="collapse" role="tabcard" aria-labelledby="questionTwo">
                                             <div class="card-body">
@@ -224,6 +234,12 @@
             var url = $(this).attr('data-url');
             window.location.href = url;
         })
+
+        $('#datapackage').on('click',function(event){
+            event.preventDefault()
+        })
     })
+   
+
 </script>
 </html>

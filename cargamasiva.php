@@ -121,15 +121,14 @@
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="first-name-column">Depto/casa/block etc.</label>
-                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
+                                        <input type="text" id="form_detalledir2" name="form_detalledir2" class="form-control"
                                             placeholder="Casa, Depto, Bodega, etc.">
                                     </div>
                                 </div>
-                                
                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                     <div class="form-group">
                                         <label for="first-name-column">Nombre</label>
-                                        <input type="text" id="" name="" class="form-control"
+                                        <input type="text" id="form_nombre2" name="form_nombre2" class="form-control"
                                             placeholder="Nombre del punto de retiro">
                                     </div>
                                 </div>
@@ -275,6 +274,14 @@
                                                                                                     placeholder="Casa, Depto, Bodega, etc." >
                                                                                             </div>
                                                                                         </div>
+                                                                                        <div class="col-md-3 col-lg-3 col-sm-6">
+                                                                                            <div class="form-group">
+                                                                                                <label for="first-name-column">Depto/casa/block etc.</label>
+                                                                                                <input type="text" id="form_detalledir" name="form_detalledir" class="form-control"
+                                                                                                    placeholder="Casa, Depto, Bodega, etc.">
+                                                                                            </div>
+                                                                                        </div>
+
                                                                                         <div class="col-md-3 col-lg-3 col-sm-6">
                                                                                             <div class="form-group">
                                                                                                 <label for="first-name-column">Nombre</label>
@@ -491,7 +498,11 @@ $(document).ready(function(){
                         },
                         form_numero2:{
                             required: true
+                        },form_detalledir2:{
+                            required:true,
+                            minlength:2
                         },
+
                         form_nombre2:{
                             required:true
                         },
@@ -509,6 +520,9 @@ $(document).ready(function(){
                         },
                         form_numero2:{
                             required: "Debe ingresar un numero de dirección",
+                        },form_detalledir2:{
+                            required:"Información necesaria",
+                            minlength:"Largo mínimo 2 caracteres"
                         },
                         form_nombre2:{
                             required:"Ingrese un nombre para su dirección"
@@ -526,6 +540,7 @@ $(document).ready(function(){
                         try{
                             let vdir = document.getElementById('form_dir2').value;
                             let vnumero = document.getElementById('form_numero2').value;
+                            let vdetalle = document.getElementById('form_detalledir2').value
                             let vnombre = document.getElementById('form_nombre2').value;
                             let vcomuna = document.getElementById('select_comunacli2');
                             let vcomunavalue = vcomuna.value; 
@@ -533,6 +548,7 @@ $(document).ready(function(){
 
                             let dataajax = {direccion : vdir,
                                             numero: vnumero,
+                                            detalle : vdetalle,
                                             nombre : vnombre,
                                             comuna : vcomunavalue,
                                             region: vregion};
@@ -547,6 +563,14 @@ $(document).ready(function(){
                                     success:function(resp){
                                         console.log(resp);
                                         if(existbodegas){
+                                        }
+                                        if(existbodegas == false){
+                                            location.reload()
+                                        }
+                                    },error:function(resp){
+                                        console.log(resp.query);
+                                        if(existbodegas){
+                                            location.reload()
                                         }
                                         if(existbodegas == false){
                                             location.reload()
@@ -577,6 +601,9 @@ $(document).ready(function(){
                         },
                         form_numero:{
                             required: true
+                        },form_detalledir:{
+                            required:true,
+                            minlength:2
                         },
                         form_nombre:{
                             required:true
@@ -595,6 +622,9 @@ $(document).ready(function(){
                         },
                         form_numero:{
                             required: "Debe ingresar un numero de dirección",
+                        },form_detalledir:{
+                            required:"Información necesaria",
+                            minlength:"Largo mínimo 2 caracteres"
                         },
                         form_nombre:{
                             required:"Ingrese un nombre para su dirección"
@@ -612,6 +642,7 @@ $(document).ready(function(){
                         try{
                             let vdir = document.getElementById('form_dir').value;
                             let vnumero = document.getElementById('form_numero').value;
+                            let vdetalle = document.getElementById('form_detalledir').value
                             let vnombre = document.getElementById('form_nombre').value;
                             let vcomuna = document.getElementById('select_comunacli');
                             let vcomunavalue = vcomuna.value;
@@ -622,6 +653,7 @@ $(document).ready(function(){
 
                             let dataajax = {direccion : vdir,
                                             numero: vnumero,
+                                            detalle : vdetalle,
                                             nombre : vnombre,
                                             comuna : vcomunavalue,
                                             region: vregion};
@@ -634,6 +666,14 @@ $(document).ready(function(){
                                     dataType: 'json',
                                     data: JSON.stringify(dataajax),
                                     success:function(resp){
+                                        console.log(resp.query);
+                                        if(existbodegas){
+                                            location.reload()
+                                        }
+                                        if(existbodegas == false){
+                                            location.reload()
+                                        }
+                                    },error:function(resp){
                                         console.log(resp.query);
                                         if(existbodegas){
                                             location.reload()

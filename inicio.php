@@ -28,7 +28,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php
-        include_once('./include/head.php');
+    $head = 'Dashboard Spread';
+    include_once('./include/head.php');
     ?>
 
 

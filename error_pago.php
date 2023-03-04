@@ -1,6 +1,7 @@
 <?php
 session_start();
 print_r($_SESSION);
+
 require_once('./ws/bd/dbconn.php');
 $conexion = new bd();
 $conexion->conectar();
@@ -26,7 +27,7 @@ $query = "SELECT p.id_pedido,dc.nombres_datos_contacto,dc.apellidos_datos_contac
 <html lang="en">
 
 <?php
-    $head = 'Pedidos Pendites';
+    $head = 'Error en el pago';
     include_once('./include/head.php')
 ?>
 

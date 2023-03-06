@@ -390,7 +390,7 @@ if($credito == 0) {
                                                 'Tú pedido fue procesado por credito!',
                                                 'success'
                                                 );
-                                                window.location="detallepedido.php?id_pedido="+id_pedido;
+                                                window.location="detallepedido.php?id_pedido="+<?=$id_pedido?>;
                                             },error:function(data){
                                                 console.log(data.responseText);
                                                 // procesado = 1;

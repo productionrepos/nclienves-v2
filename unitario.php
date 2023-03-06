@@ -1029,7 +1029,6 @@ $("#select_regioncli2").on('change',function(){
 	// }
 
 
-
     $(".dropdown").click(function(){
 
         if($(".fa-arrow-down").hasClass("open")){

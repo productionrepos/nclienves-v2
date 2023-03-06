@@ -356,10 +356,11 @@
 
  .formdisplay.show{
     opacity: 1;
+   
  }
 
 .formdisplay{ 
-    opacity: 0;
+    opacity: 1;
     transition: all .4s ease;
 } 
 
@@ -383,4 +384,13 @@
     color: #fff;
     background-color: #00a77f;
     border-color: #00a77f;
-  }
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}

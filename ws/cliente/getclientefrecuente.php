@@ -4,7 +4,7 @@
     $conn->conectar();
     $rut = $_POST['rut'];
 
-    $query = 'Select nombre, rut, telefono,direccion, correo,region, comuna from cliente_frecuente
+    $query = 'Select nombre, rut, telefono,calle,numero,casablock, correo,region, comuna from cliente_frecuente
                 where rut="'.$rut.'"';
 
 

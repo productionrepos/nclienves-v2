@@ -359,6 +359,8 @@ else{
                         <th>Nombre</th>
                         <th>Rut</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Depto/Bloque</th>
                         <th>Teléfono</th>
                         <th>Correo</th>
                         <th>Comuna</th>
@@ -806,13 +808,16 @@ function getTableData(){
                     let nombre = $(this).find('td').eq(0).text()
                     let rut = $(this).find('td').eq(1).text()
                     let direccion = $(this).find('td').eq(2).text()
-                    let telefono = $(this).find('td').eq(3).text()
-                    let correo = $(this).find('td').eq(4).text()
+                    let numdireccion = $(this).find('td').eq(3).text()
+                    let casablock = $(this).find('td').eq(4).text()
+                    // 
+                    let telefono = $(this).find('td').eq(5).text()
+                    let correo = $(this).find('td').eq(6).text()
                     let comuna = $(this).find('#select_comuna').val()
-                    let item = $(this).find('td').eq(6).text()
-                    let valor = $(this).find('td').eq(7).text()
+                    let item = $(this).find('td').eq(8).text()
+                    let valor = $(this).find('td').eq(9).text()
                     let ctipo = $(this).find('#select_type').val()
-                    arraydatos.push(nombre,rut,direccion,telefono,correo,comuna,item,valor,ctipo)
+                    arraydatos.push(nombre,rut,direccion,telefono,correo,comuna,item,valor,ctipo,numdireccion,casablock)
         })
         // console.log(arraydatos);
         arraydatos.unshift(id_bodega)
@@ -885,12 +890,11 @@ $('.tbodyclick').on('blur','td',function(){
             $(this).css('border', '1px solid red')
             $(this).prop('title','Ingrese un rut')
             $(this).addClass('err')
-        } else if(clase == "tdrut" && valor.length < 9){
+        }else if(clase == "tdrut" && valor.length < 9){
             $(this).css('border', '1px solid red')
             $(this).prop('title','El rut debe tener 8 caracteres como min')
             $(this).addClass('err')
-        }
-        else if(clase == "tddir" && valor == ""){
+        }else if(clase == "tddir" && valor == ""){
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar una dirección')
             $(this).addClass('err')
@@ -900,8 +904,19 @@ $('.tbodyclick').on('blur','td',function(){
             $(this).css('border', '1px solid red')
             $(this).prop('title','La dirección debe tener al menos 5 caracteres')
             $(this).addClass('err')
-        }
-        else if(clase == "tdtel" && valor == ""){
+        }else if(clase == "tdnumdir" && valor == ""){
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','Debe ingresar un número de dirección')
+            $(this).addClass('err')
+        }else if(clase == "tdcablo" && valor == ""){
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','Complete este campo')
+            $(this).addClass('err')
+        }else if(clase == "tdcablo" && valor.trim().length < 2 ){
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','Largo mínimo 2 caracteres')
+            $(this).addClass('err')
+        }else if(clase == "tdtel" && valor == ""){
 
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar una dirección')

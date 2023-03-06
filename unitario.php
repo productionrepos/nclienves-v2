@@ -353,7 +353,7 @@
                                                                 <?php
                                                                     foreach($clientesfre as $key=>$cliente ):
                                                                 ?>
-                                                                <option value="<?=$cliente->rut?>"><?php echo $cliente->nombre.' | '.$cliente->direccion?></option>
+                                                                <option value="<?=$cliente->rut?>"><?php echo $cliente->nombre.' | '.$cliente->calle?></option>
                                                                 <?php endforeach;?>
                                                             </optgroup>
                                                         </select>
@@ -395,13 +395,13 @@
                                             <div class="col-lg-6 col-md-6 col-sm-9 col-12">
                                                 <div class="form-group">
                                                     <label for="email-id">Número</label>
-                                                    <input type="text" id="numerodir" class="form-control" name="numerodir[]" placeholder="Dirección"/>
+                                                    <input type="text" id="numerodir" class="form-control" name="numerodir" placeholder="Dirección"/>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-9 col-12">
                                                 <div class="form-group">
                                                     <label for="email-id">Casa/Depto/Bloque etc.</label>
-                                                    <input type="text" id="detalle" class="form-control" name="detalle[]" placeholder="Casa/Depto/Bloque etc."/>
+                                                    <input type="text" id="detalle" class="form-control" name="detalle" placeholder="Casa/Depto/Bloque etc."/>
                                                 </div>
                                             </div>
                     
@@ -493,7 +493,7 @@
                                                                     <div class="card-body" id="cardbodywarehouse" >
                                                                         <div class="row">
                                                                             <h4 class="card-title col-10">Mini</h4>
-                                                                            <input class="col-2 chcksize" style="align-items: flex-start;" value="1" type="radio" name="Usar" id="useMini" required>
+                                                                            <input class="col-2  chcksize" style="align-items: flex-start;" value="1" type="radio" name="Usar" id="useMini" required>
                                                                         </div>
                                                                         <p style="flex-direction: column-reverse;">Bulto con un peso máximo de 5kg</p>
                                                                     </div>
@@ -644,8 +644,7 @@
 
 
     $('#submitpedido').on('click',function(){
-        console.log("El vaor de tipo es ::" + tipo);
-        if(tipo == 0 ){
+        if($('#useMini').checked == false && $('#useMini').checked == false){
                 Swal.fire({
                 position: 'bottom',
                 icon: 'error',
@@ -655,6 +654,7 @@
             })
             let clickit = document.getElementById('showtipo').click()
         }
+        
     })
 
     // var select_box_element = document.querySelector('#select_box');

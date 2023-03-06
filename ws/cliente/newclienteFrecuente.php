@@ -24,19 +24,34 @@
     $region = $data->region;
     $id_bodega = $data->idbodega;
     $rut = $data->rut;
+    $numerodir = $data->numerodir;
+    $casablock = $data->casablock;
     $timestamp = time();
+    $conn ->conectar();
+
+    
+    $querybuscarclifre = 'SELECT rut from cliente_frecuente where LOWER(nombre) ="'.strtolower($nombre).'" and LOWER(calle)= "'.strtolower($direccion) .'"';
+            
+    if(mysqli_num_rows($conn->mysqli->query($querybuscarclifre))==0){
+       
+        
+        $queryinsertclifre = 'INSERT INTO cliente_frecuente (rut, nombre, calle, numero,casablock,correo, telefono, comuna, region, id_cliente)
+        VALUES("'.$rut.'","'.$nombre.'","'.$direccion.'","'.$numerodir.'","'.$detalle.'","'.$correo.'",'.$telefono.','.$comuna.','.$region.','.$id_cliente.')';
+           
+        
+        if( $conn->mysqli->query($queryinsertclifre))
+        {
+            echo json_encode(array("status"=>"1","Resultado"=>"Creado","insert"=>$conn->mysqli->insert_id));
+        }else{
+            echo json_encode(array("status"=>"0","Resultado"=>"Error","Errorlog"=>$conn->mysqli->error));
+        }
+    }
+
+
+
+
+
 
 
    
-    $conn ->conectar();
-
-    $query = 'INSERT INTO cliente_frecuente (rut, nombre, direccion, descripciondir,correo, telefono, comuna, region, id_cliente)
-                    VALUES("'.$rut.'","'.$nombre.'","'.$direccion.'",null,"'.$correo.'",'.$telefono.','.$comuna.','.$region.','.$id_cliente.')';
-
-    if($conn->mysqli->query($query))
-    {
-        echo json_encode(array("status"=>"1","Resultado"=>"Creado","insert"=>$conn->mysqli->insert_id));
-    }else{
-        echo json_encode(array("status"=>"0","Resultado"=>"Error","Errorlog"=>$conn->mysqli->error));
-    }
 ?>

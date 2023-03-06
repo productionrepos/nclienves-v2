@@ -86,13 +86,13 @@ const excelInput = document.getElementById('excel-input');
 
 
 excelInput.addEventListener('change',async function(){
-    try{
+    // try{
         const content = await readXlsxFile(excelInput.files[0])
     
         //$('tbody tr').remove();
         const excel = new Excel(content);
         let arrays = excel.header();
-        let headcorrect = ["NOMBRE DESTINATARIO","RUT (sin punto ni guion)","DIRECCION ENTREGA","TELEFONO","EMAIL CLIENTE","COMUNA ENTREGA","NOMBRE ITEM","COSTO ITEM","PAQUETE"]
+        let headcorrect = ["NOMBRE CLIENTE FINAL","RUT","DIRECCION ENTREGA","NÚMERO","CASA / DEPTO / BLOQUE","TELEFONO","EMAIL CLIENTE","COMUNA ENTREGA","NOMBRE ITEM","COSTO ITEM","PAQUETE"]
         let rows = excel.rows()
         let length = excel.rows().count()
         counter = 0
@@ -106,6 +106,8 @@ excelInput.addEventListener('change',async function(){
         var nomerr = ""  
         var ruterr = ""      
         var direrr = ""
+        let numdirerr = ""
+        let detalleerr = ""
         var telerr = ""
         var corerr = ""
         var comerr = ""
@@ -116,23 +118,23 @@ excelInput.addEventListener('change',async function(){
         const heads = []
         let tdrow = []
         let incorrecto = 0
-        for(i=0; i < 8;i++ )
+        for(i=0; i < 11;i++ )
         {
             heads.push(arrays.row[i]);
 
-            // console.log(arrays.row[i])
+            console.log(arrays.row[i])
             if(headcorrect[i] == heads[i]){
-                // console.log("correcto")
+                console.log("correcto")
             }
             else if(heads[i] == null){
-                // console.log("nulo");
+                console.log("nulo");
                 incorrecto ++
             }else{
-                //console.log("incorrecto");
+                console.log("incorrecto");
                 incorrecto ++
             }
         }
-        //console.log(incorrecto);
+        console.log(incorrecto);
         // 
         if(incorrecto>0)
         {
@@ -149,8 +151,8 @@ excelInput.addEventListener('change',async function(){
 
                     }
                     else{
-                        for(i=0 ; i<9 ; i++){
-                            if(counter == 9){
+                        for(i=0 ; i<11 ; i++){
+                            if(counter == 11){
                                 counter = 0
                                 countererr = 0
                                 // console.log("FILA 2 COUNTER = 0");
@@ -160,6 +162,8 @@ excelInput.addEventListener('change',async function(){
                                 nomerr = ""
                                 ruterr = ""
                                 direrr = ""
+                                numdirerr = ""
+                                detalleerr = ""
                                 telerr = ""
                                 corerr = ""
                                 comerr = ""
@@ -169,7 +173,7 @@ excelInput.addEventListener('change',async function(){
                             }
                             
                             // console.log("EL CONTADOR VA EN"+counter)
-                            // console.log(row[i])
+                            console.log("INDEX EN "+counter +"      "+row[i])
                             tdrow.push(row[i])
 
                             if(i==0 && row[i] == null)
@@ -226,17 +230,12 @@ excelInput.addEventListener('change',async function(){
 
                             if(i==3 && row[i] == null)
                             {
-                                telerr = "Debe ingresar un telefono";
-                                // console.log(telerr);
-                                arrayerr.push(telerr)
-
+                                numdirerr = "Debe ingresar un número";
+                                // console.log(direrr);
+                                arrayerr.push(numdirerr)
                                 countererr++
                             }
-                            else if(i==3 && row[i].length <= 9){
-                                telerr = "El teléfono debe tener al menos 9 caracteres";
-                                arrayerr.push(telerr)
-                            }
-                            else if(i==3 && telerr == ""){
+                            else if(i==3 && numdirerr == ""){
                                 
                                 arrayerr.push("")
 
@@ -244,45 +243,47 @@ excelInput.addEventListener('change',async function(){
 
                             if(i==4 && row[i] == null)
                             {
+                                detalleerr = "Debe ingresar un tipo de domicilio";
+                                // console.log(direrr);
+                                arrayerr.push(detalleerr)
+                                countererr++
+                            }
+                            else if(i==4 && detalleerr == ""){
+                                
+                                arrayerr.push("")
+
+                            }
+
+
+                            if(i==5 && row[i] == null)
+                            {
+                                telerr = "Debe ingresar un telefono";
+                                // console.log(telerr);
+                                arrayerr.push(telerr)
+
+                                countererr++
+                            }
+                            else if(i==5 && row[i].length <= 9){
+                                telerr = "El teléfono debe tener al menos 9 caracteres";
+                                arrayerr.push(telerr)
+                            }
+                            else if(i==5 && telerr == ""){
+                                
+                                arrayerr.push("")
+
+                            }
+
+                            if(i==6 && row[i] == null)
+                            {
                                 corerr = "Debe ingresar un correo";
                                 // console.log(corerr);
                                 arrayerr.push(corerr)
                                 countererr++
-                            }else if(i==4 && row[i].length < 7){
+                            }else if(i==6 && row[i].length < 7){
                                 corerr = "El correo debe tener al menos 7 caracteres";
                                 arrayerr.push(corerr)
                             }
-                            else if(i==4 && corerr == ""){
-                                
-                                arrayerr.push("")
-
-                            }
-
-                            if(i==5 && row[i] == null)
-                            {
-                                comerr = "Debe ingresar una comuna";
-                                // console.log(comerr);
-                                arrayerr.push(comerr)
-                                countererr++
-                            }
-                            else if(i==5 && comerr == ""){
-                                
-                                arrayerr.push("")
-
-                            }
-
-
-                            if(i==6 && row[i] == null)
-                            {
-                                deserr = "Debe ingresar una descripcion";
-                                // console.log(deserr);
-                                arrayerr.push(deserr)
-                                countererr++
-                            }else if(i==6 && row[i].length < 3){
-                                deserr = "La descripción debe tener al menos 3 caracteres";
-                                arrayerr.push(deserr)
-                            }
-                            else if(i==6 && deserr == ""){
+                            else if(i==6 && corerr == ""){
                                 
                                 arrayerr.push("")
 
@@ -290,31 +291,61 @@ excelInput.addEventListener('change',async function(){
 
                             if(i==7 && row[i] == null)
                             {
+                                comerr = "Debe ingresar una comuna";
+                                // console.log(comerr);
+                                arrayerr.push(comerr)
+                                countererr++
+                            }
+                            else if(i==7 && comerr == ""){
+                                
+                                arrayerr.push("")
+
+                            }
+
+
+                            if(i==8 && row[i] == null)
+                            {
+                                deserr = "Debe ingresar una descripcion";
+                                // console.log(deserr);
+                                arrayerr.push(deserr)
+                                countererr++
+                            }else if(i==8 && row[i].length < 3){
+                                deserr = "La descripción debe tener al menos 3 caracteres";
+                                arrayerr.push(deserr)
+                            }
+                            else if(i==8 && deserr == ""){
+                                
+                                arrayerr.push("")
+
+                            }
+
+                            if(i==9 && row[i] == null)
+                            {
                                 coserr = "Debe ingresar el costo";
                                 // console.log(coserr);
                                 arrayerr.push(coserr)
 
                                 countererr++
-                            }else if(i==7 && row[i] > 500000){
+                            }else if(i==9 && row[i] > 500000){
                                 coserr = "El valor declarado no puede superar los $500.000";
                                 countererr ++
                                 arrayerr.push(coserr)
                                 // console.log(coserr);
                             }
-                            else if(i==7 && coserr == ""){
+                            else if(i==9 && coserr == ""){
                                 
                                 arrayerr.push("")
 
                             }
                             //console.log("PUSHEAR EL ERROR DE TIPO ENVIO");
-                            if(i==8 && row[i] == null)
+                            if(i==10 && row[i] == null)
                             {
                                 typeerr = "Debe ingresar el tipo de envio";
                                 // console.log(typeerr);
                                 arrayerr.push(typeerr)
                                 countererr++
                             }
-                            else if(i==8 && typeerr == ""){
+                            else if(i==10 && typeerr == ""){
                                 
                                 arrayerr.push("")
                                 // console.log(typeerr);
@@ -323,11 +354,11 @@ excelInput.addEventListener('change',async function(){
                             counter ++
                             //console.log("EL CONTADOR DE ERRORES VA EN "+countererr);
 
-                            if(countererr == 9)
+                            if(countererr == 11)
                             {
                                 break
                             }
-                            else if(counter == 9){
+                            else if(counter == 11){
                                 
                                 let index =0
                                 // console.log(tdrow);
@@ -336,7 +367,6 @@ excelInput.addEventListener('change',async function(){
                                     if(td == null){
                                         td = ""
                                     }
-                                    
                                     if(index == 1){
                                         let arrerr = arrayerr[0]
                                         if(arrerr != ""){
@@ -367,6 +397,25 @@ excelInput.addEventListener('change',async function(){
                                     if(index == 4){
                                         let arrerr = arrayerr[3]
                                         if(arrerr != ""){
+                                            filatabla += `<td class="tdnumdir err" style="border:1px solid red" title="${arrerr}" contenteditable>`+ td +"</td>"
+                                        }
+                                        else{
+                                            filatabla += `<td class="tdnumdir" contenteditable>`+ td +"</td>"
+                                        }
+                                    }
+                                    if(index == 5){
+                                        let arrerr = arrayerr[4]
+                                        if(arrerr != ""){
+                                            filatabla += `<td class="tdcablo err" style="border:1px solid red" title="${arrerr}" contenteditable>`+ td +"</td>"
+                                        }
+                                        else{
+                                            filatabla += `<td class="tdcablo" contenteditable>`+ td +"</td>"
+                                        }
+                                    }
+
+                                    if(index == 6){
+                                        let arrerr = arrayerr[5]
+                                        if(arrerr != ""){
                                             filatabla += `<td class="tdtel err" style="border:1px solid red" title="${arrerr}" contenteditable>`+ td +"</td>"
                                             // console.log("SE CREO LA FILA DE TELEFONO ERRONEO");
                                         }
@@ -374,8 +423,8 @@ excelInput.addEventListener('change',async function(){
                                             filatabla += `<td class="tdtel" contenteditable>`+ td +"</td>"
                                         }
                                     }
-                                    if(index == 5){
-                                        let arrerr = arrayerr[4]
+                                    if(index == 7){
+                                        let arrerr = arrayerr[6]
                                         if(arrerr != ""){
                                             filatabla += `<td class="tdcorr err" style="border:1px solid red" title="${arrerr}" contenteditable>`+ td +"</td>"
                                             // console.log(arrerr);
@@ -385,10 +434,10 @@ excelInput.addEventListener('change',async function(){
                                             filatabla += `<td class="tdcorr" contenteditable>`+ td +"</td>"
                                         }
                                     }
-                                    if(index == 6){
+                                    if(index == 8){
                                         let comunas = ["","Algarrobo","Buin","Cabildo","Calera de Tango","Calle Larga","Cartagena","Casablanca","Catemu","Cerrillos","Cerro Navia","Colina","Conchalí","Concón","Curacavi","El Bosque","El Monte","El Quisco","El Tabo","Estación Central","Hijuelas","Huechuraba","Independencia","Isla de Maipo","La Calera","La Cisterna","La Cruz","La Florida","La Granja","La Ligua","La Pintana","La Reina","Lampa","Las Condes","Limache","Llay Llay","Lo Barnechea","Lo Espejo","Lo Prado","Los Andes","Macul","Maipú","María Pinto","Melipilla","Nogales","Ñuñoa","Olmué","Padre Hurtado","Paine","Panquehue","Papudo","Pedro Aguirre Cerda","Peñaflor","Peñalolén","Petorca","Pirque","Providencia","Puchuncaví","Pudahuel","Puente Alto","Putaendo","Quilicura","Quillota","Quilpué","Quinta Normal","Quintero","Recoleta","Renca","Rinconada","San Antonio","San Bernardo","San Esteban","San Felipe","San Joaquín","San José de Maipo","San Miguel","San Ramón","Santa María","Santiago","Santo Domingo","Talagante","Valparaíso","Villa Alemana","Viña del Mar","Vitacura","Zapallar"]
                                         let options =""
-                                        let arrerr = arrayerr[5]
+                                        let arrerr = arrayerr[7]
                                         //console.log(arrerr);
                                         if(arrerr != ""){
                                             comunas.forEach(comuna => {
@@ -409,8 +458,8 @@ excelInput.addEventListener('change',async function(){
                                             filatabla += `<td class="tdcom"><select id="select_comuna">`+options+"</select></td>"
                                         }
                                     }
-                                    if(index == 7){
-                                        let arrerr = arrayerr[6]
+                                    if(index == 9){
+                                        let arrerr = arrayerr[8]
                                         if(arrerr != ""){
                                             filatabla += `<td class="tditem err" style="border:1px solid red" title="${arrerr}" contenteditable>`+ td +"</td>"
                                         }
@@ -418,8 +467,8 @@ excelInput.addEventListener('change',async function(){
                                             filatabla += `<td class="tditem" contenteditable>`+ td +"</td>"
                                         }
                                     }
-                                    if(index == 8){
-                                        let arrerr = arrayerr[7]
+                                    if(index == 10){
+                                        let arrerr = arrayerr[9]
                                         if(arrerr != ""){
                                             filatabla += `<td class="tdval err" style="border:1px solid red" title="${arrerr}" contenteditable>`+ td +"</td>"
                                         }
@@ -427,8 +476,8 @@ excelInput.addEventListener('change',async function(){
                                             filatabla += `<td class="tdval" contenteditable>`+ td +"</td>"
                                         }
                                     }
-                                    if(index == 9){
-                                        let arrerr = arrayerr[8]
+                                    if(index == 11){
+                                        let arrerr = arrayerr[10]
                                         let tipos = ["","Mini","Medium"]
                                         let options =""
                                         if(arrerr != ""){
@@ -469,15 +518,15 @@ excelInput.addEventListener('change',async function(){
 
                 
         }
-    }catch{
-        $('#excel-input').val("")
-        swal.fire({
-            title : "Ups",
-            text : "El archivo cargado no es el correcto, Prueba descargando nuestro Excel tipo ",
-            icon: "error",
-            showConfirmButton: true,
-            timer : 3000})
-    }
+    // }catch{
+    //     $('#excel-input').val("")
+    //     swal.fire({
+    //         title : "Ups",
+    //         text : "El archivo cargado no es el correcto, Prueba descargando nuestro Excel tipo ",
+    //         icon: "error",
+    //         showConfirmButton: true,
+    //         timer : 3000})
+    // }
 
     //console.log(excelPrinter.printexc('excel-table',excel));
     //console.log(excel.header());

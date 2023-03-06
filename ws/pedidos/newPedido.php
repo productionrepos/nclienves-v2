@@ -19,6 +19,8 @@
     $region = $data->region;
     $id_bodega = $data->idbodega;
     $rut = $data->rut;
+    $numerodir = $data->numerodir;
+    $casablock = $data->casablock;
     $timestamp = time();
 
     $conn = new bd();
@@ -59,20 +61,38 @@
             $idregion = $region[0];
             $tipo_servicio = "";
             $valor = 0;
+            $tp = "";
+
         if($idregion == $region){
             $tipo_servicio = "Intercomunal urbano";
+            $tp = "icu";
         }
         else{
             $tipo_servicio = "interregional urbano";
+            $tp = "iru";
         }
-        
         if($idpaquete == 1){
-            $valor = 3570;
             
         }
         elseif($idpaquete == 2){
-            $valor = 4760;
+           
         }
+
+        if($tipo == 1 && $servicio == "icu" ){
+            $queryprecio = 'SELECT precio_comunal_paquete as precio  from paquete where id_paquete = 1';
+        }
+        if($tipo == 1 && $servicio == "iru" ){
+            $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 1';
+        }
+
+        if($tipo == 2 && $servicio == "icu" ){
+            $queryprecio = 'SELECT precio_comunal_paquete as precio from paquete where id_paquete = 2';
+        }
+        if($tipo == 2 && $servicio == "iru" ){
+            $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 2';
+        }
+        
+       
 
         if($conn->mysqli->query($querybultotemporal)){
             $idbultotemporal = $conn ->mysqli->insert_id;
@@ -82,7 +102,7 @@
         $querybulto = "INSERT INTO bulto (id_bulto, nombre_bulto, direccion_bulto, telefono_bulto,email_bulto,descripcion_bulto,
                     valor_declarado_bulto, precio_bulto, tipo_servicio_bulto, codigo_bulto, codigo_barras_bulto, 
                     id_paquete, id_comuna, id_pedido,rut_cliente, estado_logistico,track_spread)
-                    VALUES (null,'".$nombre."','".$direccion."',".$telefono.",'".$correo."','".$item."',".$costo.",".$valor.",'".$tipo_servicio."','abc',".$barcode.",".$idpaquete.",".$comuna.",".$id_pedido.',"'.$rut.'",0,NULL)';
+                    VALUES (null,'".$nombre."','".$direccion.' '.$numerodir.', '.$casablock."',".$telefono.",'".$correo."','".$item."',".$costo.",".$valor.",'".$tipo_servicio."','abc',".$barcode.",".$idpaquete.",".$comuna.",".$id_pedido.',"'.$rut.'",0,NULL)';
         // echo $querybulto;
         if($conn->mysqli->query($querybulto)){
            echo $id_pedido;

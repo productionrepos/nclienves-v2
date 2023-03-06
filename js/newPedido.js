@@ -28,6 +28,12 @@ var tipo = 0;
                 rut_datos_contacto:{
                     required: true,
                     minlength:11
+                },detalle:{
+                    required : true,
+                    minlength: 2
+                },numerodir:{
+                    required:true,
+                    minlength:2
                 }
                 // ,
                 // item:{
@@ -66,6 +72,12 @@ var tipo = 0;
                 rut_datos_contacto:{
                     required: "Debe ingresar un RUT",
                     minlength:"RUT invalido, por favor verificar info."
+                },detalle:{
+                    required : "Debe ingresar un valor",
+                    minlength: "Largo de 2 caracteres como mínimo"
+                },numerodir:{
+                    required: "Debe ingresar el número de la dirección",
+                    minlength: "Largo mínimo dos caracteres"
                 }
                 // ,
                 // item:{
@@ -141,6 +153,8 @@ var tipo = 0;
                     let vcomuna = document.getElementById('select_comuna').value;
                     let vergion = document.getElementById('select_region').value;
                     let vrut = document.getElementById('rut_datos_contacto').value;
+                    let vnumerodir = document.getElementById('numerodir').value;
+                    let vcasablock = document.getElementById('detalle').value;
                   
         
                     let dataajax = {
@@ -154,7 +168,9 @@ var tipo = 0;
                         comuna : vcomuna,
                         region : vergion,
                         idbodega : id_bodega,
-                        rut : vrut
+                        rut : vrut,
+                        numerodir : vnumerodir,
+                        casablock : vcasablock
                     };
 
                     console.log("EL CREAR CLIENTE ES :"+crearcliente.checked);

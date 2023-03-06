@@ -50,33 +50,6 @@
     else{
         echo $conn->mysqli->error;
     }
-	$querybodega =  'SELECT bo.nombre_bodega as nombre,
-                            bo.calle_bodega as calle, 
-                            bo.numero_bodega as numero,
-                            bo.principal_bodega as principal, 
-                            co.nombre_comuna as comuna,
-                            re.nombre_region as region,
-                            bo.id_bodega as id
-                        FROM bodega bo
-                        inner join comuna co on co.id_comuna = bo.id_comuna
-                        inner join provincia pro on pro.id_provincia = co.id_provincia
-                        inner join region re on re.id_region = pro.id_region
-                        where bo.id_cliente ='.$id_cliente.' and IsDelete = 0 ';
-
-	if( $res = $conn->mysqli->query($querybodega))
-	{
-		while($datares = $res ->fetch_object())
-			{
-				$bodegas [] = $datares;
-			}
-		$counterbodegas = mysqli_num_rows($res);
-		if($counterbodegas > 0){
-			$existbodegas = 1;
-		}else{
-			$existbodegas = 0;
-		}
-	}
-
 
 ?>
 
@@ -182,7 +155,7 @@
 												if($main):
 											?>
 												<label id="resumemyData" style="text-align: center;">
-												<?php echo $bodega->nombre.' | '. $bodega->calle.' '.$bodega->numero?>                                                   
+													<?php echo $bodega->nombre.' | '. $bodega->calle.' '.$bodega->numero?>                                                   
 												</label>
 											<?php
 													endif;
@@ -326,218 +299,213 @@
 						</div>
 					</div>
 				</div>
-				<div >
-						<div class="">
-							<div class="col-lg-12">
-								<div class="everyclass" id="row">
-									<div class="input-group m-3">
-										<section>
-											<div class="row match-height">
-												<div >
-													<div class="card">
-													<div class="card-header">
-														<h4 class="card-title">Formulario de envío(Datos destinatario)</h4>
-														<input type="text" class="form-control m-input" value="1"/>
+		<div >
+			<div class="">
+				<div class="col-lg-12">
+					<div class="everyclass" id="row">
+						<div class="input-group m-3">
+							<section>
+								<div class="row match-height">
+									<div >
+										<div class="card">
+										<div class="card-header">
+											<h4 class="card-title">Formulario de envío(Datos destinatario)</h4>
+											<input type="text" class="form-control m-input" value="1"/>
+										</div>
+										
+										<div class="card-content">
+											<div class="form-bodyenvio">
+												<form class="formvalidar form form" id="toValdiateBulto1">
+													<div class="form-body">
+													<div class="row justify-content-center">
+														<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+															<div class="form-group">
+																<label for="gg">Nombre</label>
+																<input type="text" id="nombredestinatario" class="nombredestinatario form-control" name="nombredestinatario[]" placeholder="Nombre Destinatario"/>
+															</div>
+														</div>
+														<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+															<div class="form-group mb-3">
+																<label class="floating-label" for="rut_datos_contacto">RUT</label>
+																<input type="text" class="form-control rut_datos_contacto" name="rut_datos_contacto[]" id="rut_datos_contacto" placeholder="">
+															</div>
+														</div>
+														<div class="col-lg-6 col-md-6 col-sm-9 col-12" >
+															<div class="form-group" id="selecttelefono">
+																<label for="contact">Teléfono</label >
+																<input type="number" id="numtel" class="form-control" name="numtel[]" placeholder="Teléfono"/>
+															</div>
+														</div>
+														<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+															<div class="form-group">
+																<label for="email-id">Calle</label>
+																<input type="text" id="dir" class="form-control" name="dir[]" placeholder="Calle"/>
+															</div>
+														</div>
+														<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+															<div class="form-group">
+																<label for="email-id">Número</label>
+																<input type="text" id="numerodir" class="form-control" name="numerodir[]" placeholder="Dirección"/>
+															</div>
+														</div>
+														<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+															<div class="form-group">
+																<label for="email-id">Casa/Depto/Bloque etc.</label>
+																<input type="text" id="detalle" class="form-control" name="detalle[]" placeholder="Casa/Depto/Bloque etc."/>
+															</div>
+														</div>
+														
+														<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+															<div class="form-group">
+																<label for="Correo">Correo </label>
+																<input type="email" id="correo" class="form-control" name="correo[]" placeholder="Correo"/>
+															</div>
+														</div>
+														
+														<div class="col-lg-6 col-md-6 col-sm-9 col-12" id="selectregion">
+															<label for="select_region">Región </label>
+															<select name="select_region[]" class="form-select" id="select_region">
+																<option value=""></option>
+																<?php 
+																foreach($regiones as $reg)
+																{
+																	echo '<option value="'.$reg->id.'">'.$reg->nombre.'</option>';
+																}
+																?>  
+															</select>
+														</div>
+														<div class="col-lg-6 col-md-6 col-sm-9 col-12" id="selectcomuna">
+															<label for="Comuna">Comuna</label>
+															<select name="select_comuna[]" class="select_comuna form-select" id="select_comuna">
+																<option value=""></option>
+															</select>
+														</div>
+														
+														<!-- <div class="col-4 justify-content-start">
+															<button type="submit" class="submit btn btn-primary me-1 mb-1 col-12" value="Submit"> Enviar </button>
+														</div> -->
+														<div class="row mt-3" style="justify-content: space-between;">
+															<div class="col-md-2 col-2">
+																<a onclick="resetClienteData()" style="cursor: pointer" title="Limpiar formulario"> <i class="fa-solid fa-hand-sparkles" style="font-size: 30px;"></i> </a>
+															</div>
+															<div class="col-md-6 col-12">
+																<button type="button" class="deploy btn btn-spread me-1 mb-1 col-12" id="deploy"> Continuar</button>
+															</div>
+														
+														</div>        
+														
 													</div>
-													
+												</form>
+																				<div class="card" id="packagedata" style="margin-top:20px; padding:30px">
 													<div class="card-content">
-														<div class="form-bodyenvio">
-															<form class="formvalidar form form" id="toValdiateBulto1">
-																<div class="form-body">
-																<div class="row justify-content-center">
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
-																		<div class="form-group">
-																			<label for="gg">Nombre</label>
-																			<input type="text" id="nombredestinatario" class="nombredestinatario form-control" name="nombredestinatario[]" placeholder="Nombre Destinatario"/>
+														<form id="deployform">
+															<div class="row formdisplay justify-content-center align-items-end " >
+																<div class="col-lg-5 col-md-4 col-sm-8 col-12  align-items-end  mb-2" >
+																	<div class="form-group novalue">
+																		<label for="Item">Describe brevemente lo que estas enviando </label>
+																		<input type="text" id="item" class="form-control" name="item[]" placeholder="producto"/>
+																	</div>
+																</div>
+																<div class="col-lg-3 col-md-4 col-sm-8 col-12  align-items-end  mb-2">
+																	<div class="form-group novalue">
+																		<label for="Costo">Costo producto </label>
+																		<input type="text" id="cost" class="form-control" name="cost[]" placeholder="Precio"/>
+																	</div>
+																</div>
+																<!-- Toma valor de radiobutton -->
+																<input type="text" style="display: none;" class="getcheckvalue novalue" name="tipo[]" id="getcheckvalue">
+
+																<div class="col-lg-4 col-md-4 col-sm-8 col-12  align-items-end  mb-3" style="text-align: center;">
+																<label for="Usar"></label>
+																
+																	<a class="btn btn-spread" id="showtipo" name="botontipo[]" data-bs-toggle="collapse" href="#sizeselect" role="button" 
+																		aria-expanded="false" aria-controls="collapseExample">
+																			Seleccione el rango de peso
+																	</a>
+																</div>
+																<div class="col-12">
+																	<div class="collapse row" style="justify-content: center;" id="sizeselect">
+																		<div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
+																			<div class="card bodega cardbod" >
+																				<label class="lblcheckmini" style="cursor: pointer;" name="mini[]">
+																					<div class="card-content" style="justify-content: center;">
+																					
+																						<div class="card-body" id="cardbodywarehouse" >
+																							<div class="row">
+																								<h4 class="card-title col-10">Mini</h4>
+																								<input class="col-2 chcksize" style="align-items: flex-start;" value="1" type="radio" name="Usar" id="useMini" required>
+																							</div>
+																							<p style="flex-direction: column-reverse;">Bulto con un peso máximo de 5kg</p>
+																							
+																						</div>
+																					</div>
+																				</label>
+																				
+																			</div>
+																		</div>
+																		<div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
+																			<div class="card bodega cardbod">
+																				<label class="lblcheckmedium" style="cursor: pointer;" name="medium[]">
+																					<div class="card-content" style="justify-content: center;">
+																						<div class="card-body" id="cardbodywarehouse" >
+																							<div class="row">
+																								<h4 class="card-title col-10">Medium</h4>
+																								<input class="col-2 chcksize" style="align-items: flex-start;" value="2" type="radio" name="Usar" id="useMedium"  required>
+																							</div>
+																							<p style="flex-direction: column-reverse;">Bulto con un peso entre de 5.01 kg y 10 kg</p>
+																						</div>
+																					</div>
+																				</label>
+																			</div>
 																		</div>
 																	</div>
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
-																		<div class="form-group mb-3">
-																			<label class="floating-label" for="rut_datos_contacto">RUT</label>
-																			<input type="text" class="form-control rut_datos_contacto" name="rut_datos_contacto[]" id="rut_datos_contacto" placeholder="">
-																		</div>
-																	</div>
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12" >
-																		<div class="form-group" id="selecttelefono">
-																			<label for="contact">Teléfono</label >
-																			<input type="number" id="numtel" class="form-control" name="numtel[]" placeholder="Teléfono"/>
-																		</div>
-																	</div>
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
-																		<div class="form-group">
-																			<label for="email-id">Calle</label>
-																			<input type="text" id="dir" class="form-control" name="dir[]" placeholder="Calle"/>
-																		</div>
-																	</div>
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
-																		<div class="form-group">
-																			<label for="email-id">Número</label>
-																			<input type="text" id="numerodir" class="form-control" name="numerodir[]" placeholder="Dirección"/>
-																		</div>
-																	</div>
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
-																		<div class="form-group">
-																			<label for="email-id">Casa/Depto/Bloque etc.</label>
-																			<input type="text" id="detalle" class="form-control" name="detalle[]" placeholder="Casa/Depto/Bloque etc."/>
-																		</div>
-																	</div>
-																	
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
-																		<div class="form-group">
-																			<label for="Correo">Correo </label>
-																			<input type="email" id="correo" class="form-control" name="correo[]" placeholder="Correo"/>
-																		</div>
-																	</div>
-																	
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12" id="selectregion">
-																		<label for="select_region">Región </label>
-																		<select name="select_region[]" class="form-select" id="select_region">
-																			<option value=""></option>
-																			<?php 
-																			foreach($regiones as $reg)
-																			{
-																				echo '<option value="'.$reg->id.'">'.$reg->nombre.'</option>';
-																			}
-																			?>  
-																		</select>
-																	</div>
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12" id="selectcomuna">
-																		<label for="Comuna">Comuna</label>
-																		<select name="select_comuna[]" class="select_comuna form-select" id="select_comuna">
-																			<option value=""></option>
-																		</select>
-																	</div>
-																	
-																	<!-- <div class="col-4 justify-content-start">
-																		<button type="submit" class="submit btn btn-primary me-1 mb-1 col-12" value="Submit"> Enviar </button>
-																	</div> -->
-																	<div class="row mt-3" style="justify-content: space-between;">
-																		<div class="col-md-2 col-2">
-																			<a onclick="resetClienteData()" style="cursor: pointer" title="Limpiar formulario"> <i class="fa-solid fa-hand-sparkles" style="font-size: 30px;"></i> </a>
-																		</div>
-																		<div class="col-md-6 col-12">
-																			<button type="button" class="deploy btn btn-primary me-1 mb-1 col-12" id="deploy"> Continuar</button>
-																		</div>
-																	
-																	</div>        
 																	
 																</div>
-															</form>
-															<div class="card" id="packagedata" style="margin-top:20px; padding:30px">
-                                <div class="card-content">
-                                    <form id="deployform">
-                                        <div class="row formdisplay justify-content-center align-items-end " >
-                                            <div class="col-lg-5 col-md-4 col-sm-8 col-12  align-items-end  mb-2" >
-                                                <div class="form-group novalue">
-                                                    <label for="Item">Describe brevemente lo que estas enviando </label>
-                                                    <input type="text" id="item" class="form-control" name="item[]" placeholder="producto"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-4 col-sm-8 col-12  align-items-end  mb-2">
-                                                <div class="form-group novalue">
-                                                    <label for="Costo">Costo producto </label>
-                                                    <input type="text" id="cost" class="form-control" name="cost[]" placeholder="Precio"/>
-                                                </div>
-                                            </div>
-											<!-- Toma valor de radiobutton -->
-											<input type="text" style="display: none;" class="getcheckvalue novalue" name="tipo[]" id="getcheckvalue">
-
-                                            <div class="col-lg-4 col-md-4 col-sm-8 col-12  align-items-end  mb-3" style="text-align: center;">
-                                            <label for="Usar"></label>
-                                            
-                                                <a class="btn btn-primary" id="showtipo" data-bs-toggle="collapse" href="#sizeselect" role="button" 
-                                                    aria-expanded="false" aria-controls="collapseExample">
-                                                        Seleccione el rango de peso
-                                                </a>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="collapse row" style="justify-content: center;" id="sizeselect">
-                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
-                                                        <div class="card bodega cardbod" >
-                                                            <label class="lblcheckmini" style="cursor: pointer;" name="mini[]">
-                                                                <div class="card-content" style="justify-content: center;">
-                                                                
-                                                                    <div class="card-body" id="cardbodywarehouse" >
-                                                                        <div class="row">
-                                                                            <h4 class="card-title col-10">Mini</h4>
-                                                                            <input class="col-2 chcksize" style="align-items: flex-start;" value="1" type="radio" name="Usar" id="useMini" required>
-                                                                        </div>
-                                                                        <p style="flex-direction: column-reverse;">Bulto con un peso máximo de 5kg</p>
-                                                                        
-                                                                    </div>
-                                                                </div>
-                                                            </label>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3 col-md-col-4 col-sm-8 col-12" >
-                                                        <div class="card bodega cardbod">
-                                                            <label class="lblcheckmedium" style="cursor: pointer;" name="medium[]">
-                                                                <div class="card-content" style="justify-content: center;">
-                                                                    <div class="card-body" id="cardbodywarehouse" >
-                                                                        <div class="row">
-                                                                            <h4 class="card-title col-10">Medium</h4>
-                                                                            <input class="col-2 chcksize" style="align-items: flex-start;" value="2" type="radio" name="Usar" id="useMedium"  required>
-                                                                        </div>
-                                                                        <p style="flex-direction: column-reverse;">Bulto con un peso entre de 5.01 kg y 10 kg</p>
-                                                                    </div>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="row justify-content-end">
-											<button class="btn btn-danger col-md-2 col-12"
-													id="DeleteRow" type="button">
-													<i class="bi bi-trash"></i>
-												Borrar
-											</button>
-                                        </div>
-                                    </form>
-                                </div> 
-                            </div>
+															</div>
+															<div class="row justify-content-end">
+																<button class="btn btn-danger col-md-2 col-12"
+																		id="DeleteRow" type="button">
+																		<i class="bi bi-trash"></i>
+																	Borrar
+																</button>
+															</div>
+														</form>
+													</div> 
+												</div>
+											</div>
+										</div>
+										</div>
+									</div>
+								
+								</div>
+							</section>
 						</div>
 					</div>
-					</div>
-				</div>
-			
-			</div>
-		</section>
-	</div>
-</div>
 
 
 
 								
 			
-								<div id="newinput"></div>
-									<button id="rowAdder" type="button"
-										class="btn btn-spread">
-										<span class="bi bi-plus-square-dotted">
-										</span> ADD
-									</button>
-									<button id="formValidate" type="submit"
-										class="btn btn-spread">
-										<span class="bi bi-plus-square-dotted">
-										</span> VALIDAR
-									</button>
-									<button 
-										type="button" 
-										class="btn btn-spread" 
-										id="submitpedido"> 
-										<span class="bi bi-plus-square-dotted">
-											Enviar 
-									</button>
-								</div>
-						</div>
-					
-				</div>
-
+					<div id="newinput"></div>
+						<button id="rowAdder" type="button"
+							class="btn btn-spread">
+							<span class="bi bi-plus-square-dotted">
+							</span> ADD
+						</button>
+						<button 
+							type="button" 
+							class="btn btn-spread" 
+							id="submitpedido"> 
+							<span class="bi bi-plus-square-dotted">
+								Enviar 
+						</button>
+					</div>
 			</div>
-			<button>get array data</button>
+		
+	</div>
+
+</div>
+			
 
 	<?php
 		include_once('./include/footer.php')
@@ -607,9 +575,12 @@
 		let index = $(this).closest('section').find('.m-input').val()
 		let subindex = index-1
 		let tipo = document.getElementsByName('tipo[]');
+		let btn = document.getElementsByName('botontipo[]');
 		for (var i = subindex; i < tipo.length; i++){
 			if(tipo[subindex].value == "" ){
 				tipo[subindex].classList.add('vlderr')
+				btn[subindex].classList.remove('btn-danger')
+				btn[subindex].classList.add('btn-spread')
 			}
 		}
 	})
@@ -631,6 +602,7 @@
 		console.log(valuetipo);
 		let tipo = 0
 		let inputs =  document.getElementsByName('tipo[]')
+		let btn = document.getElementsByName('botontipo[]');
 		if(valuetipo == "Mini"){
 			tipo = 1
 		}
@@ -642,6 +614,8 @@
 		{
 			inputs[subindex].value = tipo
 			inputs[subindex].classList.remove('vlderr')
+			btn[subindex].classList.remove('btn-danger')
+			btn[subindex].classList.add('btn-spread')
 		}
 	})
 
@@ -861,6 +835,7 @@
 		let tipo = document.getElementsByName('tipo[]');
 		let detalle = document.getElementsByName('detalle[]');
 		let numerodir = document.getElementsByName('numerodir[]');
+		let botontipo = document.getElementsByName('botontipo[]')
 		
 		// let mini = document.getElementsByName('mini[]');
 		// let medium = document.getElementsByName('medium[]');
@@ -1010,6 +985,8 @@
 					}
 					if(tipo[index].value == ""){
 						tipo[index].classList.add('vlderr')
+						botontipo[index].classList.remove('btn-spread')
+						botontipo[index].classList.add('btn-danger')
 						countererr++
 					}
 					else{
@@ -1581,7 +1558,7 @@
 		if(counter < 10)
 		{
 			let response = getpassStatus(subindex,"add")
-			response = true
+			//response = true
 			if(response == false){
 
 			}else{
@@ -1630,6 +1607,9 @@
 				clone.find("#useMini").prop('checked',false)
 				clone.find(".formdisplay ").removeClass('show')
 				clone.find("#getcheckvalue").removeClass('vlderr')
+				clone.find("#showtipo").removeClass('btn-danger')
+				clone.find("#showtipo").addClass('btn-spread')
+
 				
 				clone.find(".m-input").val(counter)
 				clone.appendTo("#newinput")

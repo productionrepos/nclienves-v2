@@ -35,7 +35,7 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
             {
                $counter ++;
                array_push($jsonbultotemporal,$data[$i]);
-               if($counter == 9) {
+               if($counter == 11) {
                     $tipoenviostr = $jsonbultotemporal[8];
                     $counter = 0;
                     
@@ -126,7 +126,7 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
                     valor_declarado_bulto, precio_bulto, tipo_servicio_bulto, codigo_bulto, codigo_barras_bulto,id_paquete, id_comuna, id_pedido,rut_cliente, estado_logistico,track_spread)
                     VALUES (null,'".
                      $jsonbultotemporal[0]."','".
-                     $jsonbultotemporal[2]."',".
+                     $jsonbultotemporal[2].' '.$jsonbultotemporal[9].', '.$jsonbultotemporal[10]."',".
                      $jsonbultotemporal[3].",'".
                      $jsonbultotemporal[4]."','".
                      $jsonbultotemporal[6]."',".

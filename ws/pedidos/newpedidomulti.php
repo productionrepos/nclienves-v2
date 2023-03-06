@@ -36,9 +36,21 @@
                 $costo = $r->costo;
                 $rut = $r->rut;
                 $tipo = $r->tipo;
-
+                $detalle = $r->detalle;
+                $numerodir = $r->numerodir;
             }
 
+            $resultado = str_replace ( ".", '', $rut);
+            $resultado2 = str_replace ( "-", '', $resultado);
+
+            $querybuscarclifre = 'SELECT rut from cliente_frecuente where LOWER(nombre) ="'.strtolower($nombres).'" and LOWER(calle)= "'.strtolower($direccion) .'"';
+            
+            if(mysqli_num_rows($conn->mysqli->query($querybuscarclifre))==0){
+                $queryinsertclifre = 'INSERT INTO cliente_frecuente (rut, nombre, calle, numero,casablock,correo, telefono, comuna, region, id_cliente)
+                    VALUES("'.$rut.'","'.$nombres.'","'.$direccion.'","'.$numerodir.'","'.$detalle.'","'.$correo.'",'.$telefono.','.$comuna.','.$region.','.$id_cliente.')';
+                $conn->mysqli->query($queryinsertclifre);
+
+            }
             $querybultotemporal = "INSERT INTO bulto_temporal (id_bulto_temporal,json_bulto_temporal,json_error,id_archivo,id_pedido)
                                         VALUES(null,'a','a',1,$id_pedido)";
 
@@ -86,7 +98,7 @@
 
             $resprecio = $conn ->mysqli->query($queryprecio);
             $precio = $resprecio->fetch_object()->precio;
-
+            $precio =+ $precio*1.19;
             //creacionbultotemporal
             if($conn->mysqli->query($querybultotemporal)){
                 $idbultotemporal = $conn ->mysqli->insert_id;
@@ -104,10 +116,10 @@
             if($conn->mysqli->query($querybulto)){
                 $querydeletebultotemporal = "delete from bulto_temporal where id_bulto_temporal =".$idbultotemporal;
                 $conn->mysqli->query($querydeletebultotemporal);
-                echo json_encode(array("status"=>1, "id_pedido"=>$id_pedido));
             }
             
         }
+        echo json_encode(array("status"=>1, "id_pedido"=>$id_pedido));
     }
     // echo json_encode($tipo)
     // echo json_encode($data);

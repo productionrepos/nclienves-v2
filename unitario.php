@@ -387,12 +387,24 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-9 col-12">
-                                            <div class="form-group">
-                                                <label for="email-id">Dirección</label>
-                                                <input type="text" id="dir" class="form-control" name="dir" placeholder="Dirección"/>
+                                                <div class="form-group">
+                                                    <label for="email-id">Dirección</label>
+                                                    <input type="text" id="dir" class="form-control" name="dir" placeholder="Dirección"/>
+                                                </div>
                                             </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-9 col-12">
+                                                <div class="form-group">
+                                                    <label for="email-id">Número</label>
+                                                    <input type="text" id="numerodir" class="form-control" name="numerodir[]" placeholder="Dirección"/>
+                                                </div>
                                             </div>
-                                            
+                                            <div class="col-lg-6 col-md-6 col-sm-9 col-12">
+                                                <div class="form-group">
+                                                    <label for="email-id">Casa/Depto/Bloque etc.</label>
+                                                    <input type="text" id="detalle" class="form-control" name="detalle[]" placeholder="Casa/Depto/Bloque etc."/>
+                                                </div>
+                                            </div>
+                    
                                             <div class="col-lg-6 col-md-6 col-sm-9 col-12">
                                                 <div class="form-group">
                                                     <label for="Correo">Correo </label>
@@ -484,11 +496,9 @@
                                                                             <input class="col-2 chcksize" style="align-items: flex-start;" value="1" type="radio" name="Usar" id="useMini" required>
                                                                         </div>
                                                                         <p style="flex-direction: column-reverse;">Bulto con un peso máximo de 5kg</p>
-                                                                        
                                                                     </div>
                                                                 </div>
                                                             </label>
-                                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 col-md-col-4 col-sm-8 col-12 mt-2"  >
@@ -773,23 +783,23 @@ $("#select_regioncli2").on('change',function(){
     comuna.options = new Option("");
     comuna.options.length = 0;
     $.ajax({
-                    type: "POST",
-                    url: "ws/pedidos/getComunaByRegion.php",
-                    dataType: 'json',
-                    data: {
-                        "idregion" : idregion
-                    },
-                    success: function(data) {
-                        console.log(data);
+        type: "POST",
+        url: "ws/pedidos/getComunaByRegion.php",
+        dataType: 'json',
+        data: {
+            "idregion" : idregion
+        },
+        success: function(data) {
+            console.log(data);
 
-                        $.each(data, function (key, value){
-                            let select = document.getElementById("select_comunacli2");
-                            select.options[select.options.length] = new Option(value.nombre,value.id);
-                        })
-                        
-                    },
-                        error: function(data){
-                    }
+            $.each(data, function (key, value){
+                let select = document.getElementById("select_comunacli2");
+                select.options[select.options.length] = new Option(value.nombre,value.id);
+            })
+            
+        },
+            error: function(data){
+        }
     })
 })
     

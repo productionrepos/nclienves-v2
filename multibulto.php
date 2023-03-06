@@ -339,6 +339,7 @@
 														<h4 class="card-title">Formulario de envío(Datos destinatario)</h4>
 														<input type="text" class="form-control m-input" value="1"/>
 													</div>
+													
 													<div class="card-content">
 														<div class="form-bodyenvio">
 															<form class="formvalidar form form" id="toValdiateBulto1">
@@ -353,20 +354,32 @@
 																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
 																		<div class="form-group mb-3">
 																			<label class="floating-label" for="rut_datos_contacto">RUT</label>
-																			<input type="text" class="form-control" name="rut_datos_contacto[]" id="rut_datos_contacto" placeholder="">
+																			<input type="text" class="form-control rut_datos_contacto" name="rut_datos_contacto[]" id="rut_datos_contacto" placeholder="">
 																		</div>
 																	</div>
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
-																		<div class="form-group">
+																	<div class="col-lg-6 col-md-6 col-sm-9 col-12" >
+																		<div class="form-group" id="selecttelefono">
 																			<label for="contact">Teléfono</label >
 																			<input type="number" id="numtel" class="form-control" name="numtel[]" placeholder="Teléfono"/>
 																		</div>
 																	</div>
 																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
-																	<div class="form-group">
-																		<label for="email-id">Dirección</label>
-																		<input type="text" id="dir" class="form-control" name="dir[]" placeholder="Dirección"/>
+																		<div class="form-group">
+																			<label for="email-id">Calle</label>
+																			<input type="text" id="dir" class="form-control" name="dir[]" placeholder="Calle"/>
+																		</div>
 																	</div>
+																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+																		<div class="form-group">
+																			<label for="email-id">Número</label>
+																			<input type="text" id="numerodir" class="form-control" name="numerodir[]" placeholder="Dirección"/>
+																		</div>
+																	</div>
+																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+																		<div class="form-group">
+																			<label for="email-id">Casa/Depto/Bloque etc.</label>
+																			<input type="text" id="detalle" class="form-control" name="detalle[]" placeholder="Casa/Depto/Bloque etc."/>
+																		</div>
 																	</div>
 																	
 																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
@@ -376,7 +389,7 @@
 																		</div>
 																	</div>
 																	
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+																	<div class="col-lg-6 col-md-6 col-sm-9 col-12" id="selectregion">
 																		<label for="select_region">Región </label>
 																		<select name="select_region[]" class="form-select" id="select_region">
 																			<option value=""></option>
@@ -388,7 +401,7 @@
 																			?>  
 																		</select>
 																	</div>
-																	<div class="col-lg-6 col-md-6 col-sm-9 col-12">
+																	<div class="col-lg-6 col-md-6 col-sm-9 col-12" id="selectcomuna">
 																		<label for="Comuna">Comuna</label>
 																		<select name="select_comuna[]" class="select_comuna form-select" id="select_comuna">
 																			<option value=""></option>
@@ -427,7 +440,7 @@
                                                 </div>
                                             </div>
 											<!-- Toma valor de radiobutton -->
-											<input type="text"  class="getcheckvalue novalue" name="tipo[]" id="">
+											<input type="text" style="display: none;" class="getcheckvalue novalue" name="tipo[]" id="getcheckvalue">
 
                                             <div class="col-lg-4 col-md-4 col-sm-8 col-12  align-items-end  mb-3" style="text-align: center;">
                                             <label for="Usar"></label>
@@ -518,8 +531,7 @@
 										<span class="bi bi-plus-square-dotted">
 											Enviar 
 									</button>
-                                    
-							</div>
+								</div>
 						</div>
 					
 				</div>
@@ -556,13 +568,8 @@
         endforeach;
     ?>
 
-	$("input#rut_datos_contacto").rut({
-		formatOn: 'keyup',
-	    minimumLength: 6,
-		validateOn: 'change'
-	});
 
-	$("#select_region").on('change',function(){
+	$("#select_region").on('change', function(){
 
 		var idregion = this.value;
 		var comuna = $(this).closest('#row').find(".select_comuna")
@@ -704,6 +711,8 @@
 				inputs[subindex].parentNode.classList.add('vlderr')
 			}else if (inputs[subindex].value.length < 9){
 				inputs[subindex].parentNode.classList.add('vlderr')
+			}else if (inputs[subindex].value.length > 9){
+				inputs[subindex].parentNode.classList.add('vlderr')
 			}else{
 				inputs[subindex].parentNode.classList.remove('vlderr')
 			}
@@ -720,6 +729,37 @@
 			if(inputs[subindex].value == ""){
 				inputs[subindex].classList.add('vlderr')
 			}else if (inputs[subindex].value.length < 5){
+				inputs[subindex].classList.add('vlderr')
+			}else{
+				inputs[subindex].classList.remove('vlderr')
+			}
+		}
+	})
+	$('#numerodir').focusout(function(){
+
+		let index = $(this).closest('#row').find('.m-input').val()
+		let subindex = index-1
+		let inputs = document.getElementsByName('numerodir[]');
+		for (var i = subindex; i < inputs.length; i++){
+
+			if(inputs[subindex].value == ""){
+				inputs[subindex].classList.add('vlderr')
+			}else if (inputs[subindex].value.length < 2){
+				inputs[subindex].classList.add('vlderr')
+			}else{
+				inputs[subindex].classList.remove('vlderr')
+			}
+		}
+	})
+	$('#detalle').focusout(function(){
+
+		let index = $(this).closest('#row').find('.m-input').val()
+		let subindex = index-1
+		let inputs = document.getElementsByName('detalle[]');
+		for (var i = subindex; i < inputs.length; i++){
+			if(inputs[subindex].value == ""){
+				inputs[subindex].classList.add('vlderr')
+			}else if (inputs[subindex].value.length < 2){
 				inputs[subindex].classList.add('vlderr')
 			}else{
 				inputs[subindex].classList.remove('vlderr')
@@ -806,6 +846,7 @@
 			}
 		}
 	})
+	
 		
 	function getpassStatus(index,action){
 		let nombres = document.getElementsByName('nombredestinatario[]');
@@ -818,6 +859,9 @@
 		let costo = document.getElementsByName('cost[]');
 		let rut = document.getElementsByName('rut_datos_contacto[]');
 		let tipo = document.getElementsByName('tipo[]');
+		let detalle = document.getElementsByName('detalle[]');
+		let numerodir = document.getElementsByName('numerodir[]');
+		
 		// let mini = document.getElementsByName('mini[]');
 		// let medium = document.getElementsByName('medium[]');
 		
@@ -844,7 +888,7 @@
 					rut[index].classList.add("vlderr")
 					countererr++
 				}
-				else if(rut[index].value.length <= 11){
+				else if(rut[index].value.length <= 8){
 					rut[index].classList.add("vlderr")
 					countererr++
 				}
@@ -859,6 +903,9 @@
 					countererr++
 				}
 				else if(telefono[index].value.length <= 5){
+					telefono[index].parentNode.classList.add("vlderr")
+					countererr++
+				}else if(telefono[index].value.length > 9){
 					telefono[index].parentNode.classList.add("vlderr")
 					countererr++
 				}
@@ -879,6 +926,35 @@
 				else{
 					direccion[index].classList.remove("vlderr");
 				}
+
+				//VALIDAR NUMERO CALLE
+				if(numerodir[index].value == ""){
+					numerodir[index].classList.add("vlderr")
+					countererr++
+					console.log("dirvacio");
+				}
+				else if(numerodir[index].value.length <= 2){
+					numerodir[index].classList.add("vlderr")
+					countererr++
+				}
+				else{
+					numerodir[index].classList.remove("vlderr");
+				}
+
+				//VALIDAR DETALLE
+				if(detalle[index].value == ""){
+					detalle[index].classList.add("vlderr")
+					countererr++
+					console.log("dirvacio");
+				}
+				else if(detalle[index].value.length <= 3){
+					detalle[index].classList.add("vlderr")
+					countererr++
+				}
+				else{
+					detalle[index].classList.remove("vlderr");
+				}
+
 				// VALIDAR CORREO 
 				if(correo[index].value == ""){
 					correo[index].classList.add("vlderr")
@@ -964,7 +1040,7 @@
 					rut[i].classList.add("vlderr")
 					countererr++
 				}
-				else if(rut[i].value.length <= 11){
+				else if(rut[i].value.length <= 8){
 					rut[i].classList.add("vlderr")
 					countererr++
 				}
@@ -1079,6 +1155,12 @@
 				if(comuna[index].classList.contains('vlderr')){
 					countererr++
 				}
+				if(detalle[index].classList.contains('vlderr')){
+					countererr++
+				}
+				if(numerodir[index].classList.contains('vlderr')){
+					countererr++
+				}
 			}
 				
 		}
@@ -1123,6 +1205,12 @@
 				if(tipo[index].classList.contains('vlderr')){
 					countererr++
 				}
+				if(detalle[index].classList.contains('vlderr')){
+					countererr++
+				}
+				if(numerodir[index].classList.contains('vlderr')){
+					countererr++
+				}
 			}
 		}
 
@@ -1162,6 +1250,13 @@
 					countererr++
 				}
 				if(tipo[index].classList.contains('vlderr')){
+					countererr++
+				}
+
+				if(detalle[i].classList.contains('vlderr')){
+					countererr++
+				}
+				if(numerodir[index].classList.contains('vlderr')){
 					countererr++
 				}
 			}
@@ -1493,6 +1588,8 @@
 				counter ++
 				let index = counter - 1
 				let clone = $('#row').clone(true)
+				console.log(clone.find('#clifreselect').addClass('clonedclifre'))
+
 				clone.find("#nombredestinatario").val("")
 				clone.find("#nombredestinatario").removeClass('vlderr')
 				let form = clone.find(".formvalidar")
@@ -1509,14 +1606,31 @@
 				clone.find("#select_comuna").addClass("clonedcom")
 				clone.find("#cost").val("") 
 				clone.find("#select_type").val("") 
+				clone.find("#rut_datos_contacto").val("")
+				clone.find("#numerodir").val("")  
+				clone.find("#detalle").val("")
+				clone.find("#item").val("") 
+				clone.find("#getcheckvalue").val("")  
+				clone.find("#getcheckvalue").val("")
+
 				//LIMPIAR CLASE ERROR VLDERR PARA EL CLON
 				clone.find("#dir").removeClass("vlderr") 
-				clone.find("#numtel").removeClass("vlderr") 
+				clone.find("#selecttelefono").removeClass('vlderr')
 				clone.find("#correo").removeClass("vlderr")  
-				clone.find("#select_region").removeClass("vlderr") 
-				clone.find("#select_comuna").removeClass("vlderr")  
+				clone.find("#selectregion").removeClass('vlderr')
+				clone.find("#selectcomuna").removeClass('vlderr')
 				clone.find("#cost").removeClass("vlderr")  
 				clone.find("#select_type").removeClass("vlderr")  
+				clone.find("#rut_datos_contacto").removeClass("vlderr")  
+				clone.find("#numerodir").removeClass("vlderr")  
+				clone.find("#detalle").removeClass("vlderr")  
+				clone.find("#item").removeClass("vlderr")  
+				clone.find("#getcheckvalue").removeClass("vlderr")  
+				clone.find("#useMedium").prop('checked',false)
+				clone.find("#useMini").prop('checked',false)
+				clone.find(".formdisplay ").removeClass('show')
+				clone.find("#getcheckvalue").removeClass('vlderr')
+				
 				clone.find(".m-input").val(counter)
 				clone.appendTo("#newinput")
 			}
@@ -1537,6 +1651,11 @@
 		let costo = document.getElementsByName('cost[]');
 		let rut = document.getElementsByName('rut_datos_contacto[]');
 		let tipo = document.getElementsByName('tipo[]');
+		let detalle = document.getElementsByName('detalle[]');
+		let numerodir = document.getElementsByName('numerodir[]');
+		
+
+		
 		let arraydatos =[]
 		if(response){
 			Swal.fire({
@@ -1558,7 +1677,9 @@
 											item: item[i].value,
 											costo: costo[i].value,
 											rut: rut[i].value,
-											tipo: tipo[i].value}]
+											tipo: tipo[i].value,
+											detalle:detalle[i].value,
+											numerodir:numerodir[i].value}]
 					}
 					console.log(arraydatos);
 					
@@ -1569,11 +1690,21 @@
 						data: JSON.stringify({"idbodega":id_bodega, 
 												arraydatos
 						}),success: function(data) {
-							console.log(data)
+							data.id_pedido
+							window.location = "confirmarpedido.php?id_pedido="+data.id_pedido
 						},error: function(data){
-								console.log(data);
+							data.id_pedido
+							wwindow.location = "confirmarpedido.php?id_pedido="+data.id_pedido;
 						}
 					})
+					
+					
+				// 	swal.fire({
+				// 		icon: "success",
+				// 		title: "Creado",
+				// 		text:"Tú pedido ha sido creado exitosamente",
+				// 		timer : 2000
+				// 	})
 				}
 			})
 		}else{

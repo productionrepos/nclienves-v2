@@ -104,7 +104,7 @@ if($resdatabulto = $conn->mysqli->query($querybulto)){
     </div>
   <button class="btn btn-spread" onclick="ExportToExcel('xlsx')">Export table to excel</button>
   <br>
-  <?php print_r($dataAppolo) ?>
+  <?php //print_r($dataAppolo) ?>
   <br>
   <a id="apretameclick" class="col-2 btn btn-success">Apretame</a>
   <a id="apretameclick2" class="col-2 btn btn-success">Apretame2</a>
@@ -132,13 +132,17 @@ echo $date;
   }
   
   //var busquedaGet = <?php //echo $id_pedido; ?>;
-  var busquedaGet = 124960;
+  var busquedaGet = '149093811717';
   $('#apretameclick').on('click',function(){
     console.log(busquedaGet);
     // console.log(appoloData);
     $.ajax({
         type: "GET",
-        url: "https://spreadfillment-back-dev.azurewebsites.net/api/pymes/revisarPedido/"+busquedaGet,
+        headers: {
+            'X-AUTH-TOKEN':'4471afc1f7ee5051458a39d3bd5df4a5107ee7df1753a1bf8affef9b29aace75',
+            'Content-Type':'application/json'
+        },
+        url: "https://app.beetrack.com/api/external/v1/dispatches/"+busquedaGet,
         dataType: 'json',
         success: function(data) {
             console.log(data)
@@ -147,76 +151,76 @@ echo $date;
     })
   });
 
-        var appoloData =<?php echo json_encode($dataAppolo);?>;
-        var id_pedido = <?php echo $id_pedido;?>;
-        const fecha = '<?php echo $date;?>';
-        var request = "";
-		var newTrackId;
-		var url = 'http://localhost:8000/api/pymes/ingresarPyme'
-		// var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
+        // var appoloData =<?php echo json_encode($dataAppolo);?>;
+        // var id_pedido = <?php echo $id_pedido;?>;
+        // const fecha = '<?php echo $date;?>';
+        // var request = "";
+        // var newTrackId;
+        // var url = 'http://localhost:8000/api/pymes/ingresarPyme'
+        // var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
 
         // $('#apretameclick2').on('click',function(){
-        $(document).ready(function(){
-			newTrackId = "";
-            appoloData.forEach((ap,i) => {
-				setTimeout(function () {
-					request = {"guide" : ap.guide,
-								"name_client" : ap.name_client,
-								"email": ap.email,
-								"phone": ap.phone ,
-								"street": ap.street,
-								"number": "" ,
-								"commune": ap.commune,
-								"region": ap.region,
-								"dpto_bloque": "",
-								"id_pedido": ap.id_pedido,
-								"fecha": fecha,
-								"valor": "",
-								"descripcion": ""};
-					// console.log(request);
+    //     $(document).ready(function(){
+		// 	newTrackId = "";
+    //         appoloData.forEach((ap,i) => {
+		// 		setTimeout(function () {
+		// 			request = {"guide" : ap.guide,
+		// 						"name_client" : ap.name_client,
+		// 						"email": ap.email,
+		// 						"phone": ap.phone ,
+		// 						"street": ap.street,
+		// 						"number": "" ,
+		// 						"commune": ap.commune,
+		// 						"region": ap.region,
+		// 						"dpto_bloque": "",
+		// 						"id_pedido": ap.id_pedido,
+		// 						"fecha": fecha,
+		// 						"valor": "",
+		// 						"descripcion": ""};
+		// 			// console.log(request);
 					
-					(async () => {
-					const rawResponse = await fetch( url , {
-						method: 'POST',
-						headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json'
-						},
-						body: JSON.stringify({body:request})
-					})
-					.then(async (response) => {
-						let estadoResponse = await response.json();
-						console.log(estadoResponse);
+		// 			(async () => {
+		// 			const rawResponse = await fetch( url , {
+		// 				method: 'POST',
+		// 				headers: {
+		// 				'Accept': 'application/json',
+		// 				'Content-Type': 'application/json'
+		// 				},
+		// 				body: JSON.stringify({body:request})
+		// 			})
+		// 			.then(async (response) => {
+		// 				let estadoResponse = await response.json();
+		// 				console.log(estadoResponse);
 
-						if(estadoResponse.trackId){
-							newTrackId = (estadoResponse.trackId);
-						}else{
-							if(estadoResponse.error.sql){
-								const Response = await await fetch( url , {
-									method: 'POST',
-									headers: {
-										'Accept': 'application/json',
-										'Content-Type': 'application/json'
-									},
-									body: JSON.stringify({body:request})
-								})
-								.then(async (response2) => {
-									let estadoResponse2 = await response2.json();
-									if(estadoResponse2.trackId){
-										newTrackId = (estadoResponse2.trackId);
-									}
-								})
-							}
-						}
-					})
+		// 				if(estadoResponse.trackId){
+		// 					newTrackId = (estadoResponse.trackId);
+		// 				}else{
+		// 					if(estadoResponse.error.sql){
+		// 						const Response = await await fetch( url , {
+		// 							method: 'POST',
+		// 							headers: {
+		// 								'Accept': 'application/json',
+		// 								'Content-Type': 'application/json'
+		// 							},
+		// 							body: JSON.stringify({body:request})
+		// 						})
+		// 						.then(async (response2) => {
+		// 							let estadoResponse2 = await response2.json();
+		// 							if(estadoResponse2.trackId){
+		// 								newTrackId = (estadoResponse2.trackId);
+		// 							}
+		// 						})
+		// 					}
+		// 				}
+		// 			})
 
-					console.log(newTrackId);
-					// aca insertar a bd send cargo el trackid
+		// 			console.log(newTrackId);
+		// 			// aca insertar a bd send cargo el trackid
 
-					})();
-				}, i * 2000);
-			})
-		})
+		// 			})();
+		// 		}, i * 2000);
+		// 	})
+		// })
 
       
 </script>

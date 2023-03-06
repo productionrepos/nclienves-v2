@@ -3,14 +3,14 @@
   if(!isset($_SESSION['cliente'])){
     header('Location: index.php');
   }
-  echo $_SESSION['cliente']->id_cliente;
+  
   if($_SESSION['cliente']->id_cliente != 1394 && $_SESSION['cliente']->id_cliente != 1373){
     header('Location: index.php');
   }
 require_once('./ws/bd/dbconn.php');
 $conn = new bd();
 $conn->conectar();
- $id_pedido = 35812;
+  $id_pedido = 35812;
   $querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
   bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
   bu.codigo_barras_bulto as barcode
@@ -20,29 +20,47 @@ $conn->conectar();
   INNER JOIN region re on re.id_region = pro.id_region
   where bu.id_pedido ='. $id_pedido;
 
-  if($resdatabulto = $conn->mysqli->query($querybulto)){
-  while($datares = $resdatabulto->fetch_object())
-  {
-  $datosbultos [] = $datares;
+if($resdatabulto = $conn->mysqli->query($querybulto)){
+  while($datares = $resdatabulto->fetch_object()){
+    $datosbultos [] = $datares;
   }
+
   $dataAppolo =[];
+  $html = "";
   foreach($datosbultos as $databul){
-  $dataAppolo[]= Array(
-  "guide" => $databul->barcode,
-  "name_client" => $databul->nombre,
-  "email" => $databul->correo,
-  "phone"=> $databul->telefono ,
-  "street"=> $databul->direccion,
-  "number"=> "" ,
-  "commune" => $databul->comuna,
-  "region"=> $databul->region,
-  "dpto_bloque"=> "",
-  "id_pedido"=> $id_pedido,
-  "valor"=> "",
-  "descripcion"=> ""
-  );
+    $dataAppolo[]= Array(
+      "guide" => $databul->barcode,
+      "name_client" => $databul->nombre,
+      "email" => $databul->correo,
+      "phone"=> $databul->telefono ,
+      "street"=> $databul->direccion,
+      "number"=> "" ,
+      "commune" => $databul->comuna,
+      "region"=> $databul->region,
+      "dpto_bloque"=> "",
+      "id_pedido"=> $id_pedido,
+      "valor"=> "",
+      "descripcion"=> ""
+      );
+    
+    $html = $html.'<tr>
+        <td>'.$databul->barcode.'</td>
+        <td>'.$databul->nombre.'</td>
+        <td>'.$databul->correo.'</td>
+        <td>'.$databul->telefono.'</td>
+        <td>'.$databul->direccion.'</td>
+        <td></td>
+        <td>'.$databul->comuna.'</td>
+        <td>'.$databul->region.'</td>
+        <td></td>
+        <td>'.$id_pedido.'</td>
+        <td></td>
+        <td></td>
+        ';
+
+    $html = $html.'</tr>';
   }
-  }
+}
 
 
 ?>
@@ -56,44 +74,44 @@ $conn->conectar();
 ?>
 <body>
     <div class="container">
-        <div class="row">
-            <div class="card">
-                <div class="col-12 col">
-                    <input type="file" class="form-control" id="excel-input">
-                </div>
-            </div>
-        </div>
+      <div class="container-fluid">
+          <row class="col-12">
+              <table id="excel-table" class="table">
+                  <thead> 
+                      <tr>
+                        <td>guia</td>
+                        <td>Clientes</td>
+                        <td>email</td>
+                        <td>telefono</td>
+                        <td>calle</td>
+                        <td>numero</td>
+                        <td>comuna</td>
+                        <td>region</td>
+                        <td>dpto/bloque</td>
+                        <td>id_pedido</td>
+                        <td>valor</td>
+                        <td>descripcion</td>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <?php echo $html; ?>
+                  </tbody>
+              </table>
+          </row>
+      </div>
     </div>
-    <div class="container-fluid">
-        <row class="col-12">
-            <table id="excel-table">
-                <thead> 
-                    <tr>
-                  <?php print_r($dataAppolo);?>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-        </row>
-    </div>
-    <button onclick="ExportToExcel('xlsx')">Export table to excel</button>
-
-    <a href="http://<?php echo $_SERVER['HTTP_HOST']?>/ws/pdf/index.php?id_pedido=<?=$id_pedido?>&token=<?=md5($id_pedido."pdf_etiquetas")?>" 
-       type="button" class="btn btn-lg btn-block btn-success">
-       <i class="fa fa-download" aria-hidden="true"></i> 
-       Descargue aquí el archivo para imprimir las etiquetas que debe adherir en los bultos
-    </a>
-
-
-    
-<div>
-  <button id="pressme">PRESSME</button>
-</div>
+  <button class="btn btn-spread" onclick="ExportToExcel('xlsx')">Export table to excel</button>
+  <br>
+  <?php print_r($dataAppolo) ?>
+  <br>
+  <a id="apretameclick" class="col-2 btn btn-success">Apretame</a>
+  <a id="apretameclick2" class="col-2 btn btn-success">Apretame2</a>
+<br>
 
 <?php
-require_once('./include/footer.php')
+require_once('./include/footer.php');
+$date = (new DateTime('now',new DateTimeZone('Chile/Continental')))->format('Y-m-d H:i:s');
+echo $date;
 ?>
 
 <script src="./js/testjs.js"></script>
@@ -103,13 +121,73 @@ require_once('./include/footer.php')
 <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 
 <script>
-    function ExportToExcel(type, fn, dl) {
-        var elt = document.getElementById('excel-table');
-        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-        return dl ?
-            XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64'}):
-            XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+  function ExportToExcel(type, fn, dl) {
+    var elt = document.getElementById('excel-table');
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+    return dl ?
+        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64'}):
+        XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+  }
+  
+  //var busquedaGet = <?php //echo $id_pedido; ?>;
+  var busquedaGet = 124960;
+  $('#apretameclick').on('click',function(){
+    console.log(busquedaGet);
+    // console.log(appoloData);
+    $.ajax({
+        type: "GET",
+        url: "https://spreadfillment-back-dev.azurewebsites.net/api/pymes/revisarPedido/"+busquedaGet,
+        dataType: 'json',
+        success: function(data) {
+            console.log(data)
+            console.log(data.Cliente)
         }
+    })
+  });
+
+        var appoloData =<?php echo json_encode($dataAppolo);?>;
+        var id_pedido = <?php echo $id_pedido;?>;
+        const fecha = '<?php echo $date;?>';
+        var request = "";
+
+        $('#apretameclick2').on('click',function(){
+
+            appoloData.forEach((ap,i) => {
+				setTimeout(function () {
+					request = {"guide" : ap.guide,
+								"name_client" : ap.name_client,
+								"email": ap.email,
+								"phone": ap.phone ,
+								"street": ap.street,
+								"number": "" ,
+								"commune": ap.commune,
+								"region": ap.region,
+								"dpto_bloque": "",
+								"id_pedido": ap.id_pedido,
+								"fecha": fecha,
+								"valor": "",
+								"descripcion": ""};
+					console.log(request);
+					
+					(async () => {
+					const rawResponse = await fetch('http://localhost:8000/api/pymes/ingresarPyme', {
+					// const rawResponse = await fetch('https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme', {
+						method: 'POST',
+						headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({body:request})
+					});
+					const content = rawResponse.json();
+						console.log(content);
+						
+					})();
+				}, i * 2000);
+			})
+		})
+
+      
 </script>
 
 </body>
@@ -133,110 +211,6 @@ $timestamp2 = strtotime($fin);
 
 
 
-// $timestamp2 = strtotime($date2);
-// echo $timestamp2;
-
-
 ?>
-
-
-    <!-- <div id="auth">
-      <div class="row h-100">
-        <div class="col-lg-5 col-12">
-          <div id="auth-left">
-            <h1 class="auth-title">Inicie Sesión</h1>
-            <p class="auth-subtitle mb-5">
-              Lorem ipsum dolor sit amet.
-            </p>
-
-            <form id="ingreso">
-              <div class="form-group position-relative has-icon-left mb-4">
-              <label class="floating-label" for="email_cliente">Ingresa tu correo</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  placeholder="example@correo.cl"
-                  name="email_cliente"
-                  id="email_cliente"
-                />
-                <div class="form-control-icon">
-                  <i class="bi bi-person"></i>
-                </div>
-              </div>
-              <div class="form-group position-relative has-icon-left mb-4">
-              <label class="floating-label" for="password_cliente">Ingresa tu contraseña</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  placeholder="Contraseña"
-                  name="password_cliente"
-                  id="password_cliente"
-                />
-                <div class="form-control-icon">
-                  <i class="bi bi-shield-lock"></i>
-                </div>
-              </div>
-              <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" id="btn-ingresar">
-                Ingresar
-              </button>
-            </form>
-            <div class="text-center mt-5 text-lg fs-4">
-              <p class="text-gray-600">
-                Don't have an account?
-                <a href="auth-register.html" class="font-bold">Sign up</a>.
-              </p>
-              <p>
-                <a class="font-bold" href="auth-forgot-password.html"
-                  >Forgot password?</a
-                >.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-7 d-none d-lg-block">
-          <div id="auth-right"></div>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- <div class="auth-wrapper col-3">
-  <div class="auth-content">
-    <div class="card text-center">
-      <div class="card-body">
-        <div class="row"> -->
-
-          <!-- <div class="col-md-12">
-          <div class="alert alert-info">
-          <h5>Importante:</h5>
-          No realizaremos envíos este 31 de octubre y 01 de noviembre. Planifica tus envíos desde el 02 de noviembre
-          </div> -->
-
-          <!-- <h3 class="mb-3">Bienvenido a <br><span class="text-c-blue">SPREAD</span></h3>
-          <p>Soluciones de Última Milla.</p> -->
-          <!-- ingreso -->
-          <!-- <div class="toggle-block">
-            <ol class="position-relative carousel-indicators justify-content-center">
-            <li class="toggle-btn"></li>
-            <li class="active"></li>
-            </ol>
-            <form id="ingreso">
-            <div class="form-group mb-3">
-            <label class="floating-label" for="email_cliente">Ingresa tu E-mail</label>
-            <input type="email" class="form-control" name="email_cliente" id="email_cliente">
-            </div>
-            <div class="form-group mb-3">
-            <label class="floating-label" for="password_cliente">Ingresa tu contraseña</label>
-            <input type="password" class="form-control" name="password_cliente" id="password_cliente">
-            </div>
-            </form>
-            <button class="btn btn-primary mb-4" id="btn-ingresar">Ingresar</button>
-            <button class="btn btn-outline-primary mb-4 toggle-btn">¡Quiero registrarme!</button>
-            <p class="mb-2 text-muted">¿Olvidaste tu contraseña? <a href="olvido_password.php" class="f-w-400">¡Reiníciala!</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 

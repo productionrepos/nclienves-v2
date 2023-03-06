@@ -1,11 +1,12 @@
 <?php
 session_start();
 
-// if(!isset($_SESSION['cliente'])){
-//     header('Location: index.php');
-// }
-
-$id_cliente = $_SESSION['cliente']->id_cliente;
+$existeSesion = 0;
+if(!isset($_SESSION['cliente'])){
+    $existeSesion = 0;
+}else{
+    $existeSesion = 1;
+}
 
 require_once('./ws/flow/FlowApi.class.php');
 require_once('./ws/bd/dbconn.php');
@@ -15,7 +16,6 @@ if(!isset($_POST["token"])) {
 }
 $token = filter_input(INPUT_POST, 'token');
 
-    
 $params = array(
     "token" => $token
 );
@@ -32,7 +32,7 @@ $conexion->conectar();
 
 
 if($respuesta->status==2) {
-    $query = "UPDATE pedido SET estado_pedido=2 WHERE id_pedido=$id_pedido";
+    $query = "UPDATE pedido SET estado_pedido=2 and estado_logistico=1 WHERE id_pedido=$id_pedido";
     if(!$conexion->mysqli->query($query)) {
         echo $conexion->mysqli->error;
         $conexion->desconectar();
@@ -72,9 +72,9 @@ if($respuesta->status!=2){
         exit();
     }
     else {
-        header("Location: error_pago.php?token=$token&id_pedido=$id_pedido");
+        // header("Location: error_pago.php?token=$token&id_pedido=$id_pedido");
+        // exit();
     }
-    exit();
 }
 
 
@@ -109,6 +109,11 @@ else {
         include_once('./include/head.php');
     ?>
 <body>
+    <?php
+    if($existeSesion == 0){
+        include_once('./include/scriptsFooter.php');
+    }else{
+    ?>
     <div id="app">
         <!-- SideBar -->
         <?php
@@ -130,12 +135,12 @@ else {
           
                 <div class="card">
                         <div class="card-body">
-                            <img src="assets/images/logo_horizontal.png" class="img img-fluid" style="margin-top: -15%; margin-bottom: -4%;"/>
+                            <img src="include/Logotipo_Spread.png" class="img img-fluid" />
                             <h2 class="mb-4 text-center">Comprobante de pago</h2>
                             <p>Estimado <?=$datos_cliente->nombres_datos_contacto?> <?=$datos_cliente->apellidos_datos_contacto?>, hemos confirmado el pago para el pedido #<?=$id_pedido?>.</p>
                             <p>Nos pondremos en contacto contigo prontamente para coordinar el retiro de los paquetes incluidos.</p>
                             <p>Nuestro compromiso es recepcionarlo dentro de las 24 horas próximas.</p>
-                            <a href="inicio.php" class="btn btn-primary mb-4 btn-block text-white">Ir al pedido y continuar con el proceso</a>
+                            <a href="detallepedido.php?id_pedido=<?php echo $id_pedido ?>" class="btn btn-primary mb-4 btn-block text-white">Ir al pedido y continuar con el proceso</a>
                             <div class="table-responsive mt-4">
                                 <table class="table invoice-detail-table table-bordered">
                                     <thead>
@@ -218,7 +223,7 @@ else {
             <?php else:?>
                 <div class="card">
                     <div class="card-body">
-                        <img src="include/Logotipo_Spread.png" class="img img-fluid" style="margin-top: -15%; margin-bottom: -4%;"/>
+                        <img src="include/Logotipo_Spread.png" class="img img-fluid" />
                         <h2 class="mb-4 text-center">No se ha podido cursar tu pedido</h2>
                         <p>Estimado <?=$datos_cliente->nombres_datos_contacto?> <?=$datos_cliente->apellidos_datos_contacto?>, hemos tenido problemas para confirmar su pedido #<?=$id_pedido?>.</p>
                         <p>No se he realizado ningún cargo a su cuenta.</p>
@@ -229,6 +234,40 @@ else {
             <?php endif;?>
 
     <?php
-        include_once('./include/footer.php')
+        include_once('./include/footer.php');
+    }
     ?>
 </body>
+
+<script>
+    var IdPedido = <?php echo $id_pedido; ?>;
+    var existeSesion = <?php echo $existeSesion; ?>;
+    $(document).ready(function(){
+        if(existeSesion == 0){
+            $.ajax({
+                type: "POST",
+                url: "./ws/cliente/ingresarById.php",
+                data: JSON.stringify({"IdPedido":IdPedido}),
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    if(data.success==1) {
+                        // console.log('estoy aqui');
+                        window.location.reload();
+                        // window.location.href = "./";
+                    }
+                    else {
+                        // swal.fire(data.titulo, data.message, "error");
+                        // $("#password_cliente").val("");
+                    }
+                },
+                error: function(data){
+                    console.log(data.responseText);
+                    console.log('fallé');
+                }
+            });
+        }
+    })
+</script>
+
+</html>

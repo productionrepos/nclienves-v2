@@ -62,14 +62,13 @@ $html = "
 ";
 
 include('../include/email_nuevo_credito.php');
-mail_nuevo_credito("Nuevo pedido a crédito #$id_pedido", 'contacto@sendcargo.cl', $html);
-
+mail_nuevo_credito("Nuevo pedido a crédito #$id_pedido", 'contacto@spread.cl', $html);
 
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-if($conexion->mysqli->query("UPDATE pedido SET estado_pedido=3 WHERE id_pedido=$id_pedido")) {
+if($conexion->mysqli->query("UPDATE pedido SET estado_pedido=3, estado_logistico=1 WHERE id_pedido=$id_pedido")) {
     print_r(json_encode(array("success" => 1, "message" => "Su pago a crédito ha sido procesado exitosamente")));
 }
 else {print_r(json_encode(array("success" => 0, "message" => $conexion->mysqli->error)));

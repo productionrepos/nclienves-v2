@@ -1,14 +1,14 @@
 <?php
-
 session_start();
-
 
 if(!isset($_SESSION['cliente'])):
     header("Location: index.php");
+    exit();
 endif;
 
 if(!isset($_GET['id_pedido'])):
     header("Location: index.php");
+    exit();
 endif;
 
 require_once('./ws/bd/dbconn.php');
@@ -42,10 +42,6 @@ if($datos_pedido->estado >= 2){
     header("Location: detallepedido.php?id_pedido=$id_pedido");
     exit();
 }
-// if($datos_pedido->estado >= 2){
-//     header("Location: detalleFpedido.php?id_pedido=$id_pedido");
-//     exit();
-// }
 
 
 
@@ -124,7 +120,14 @@ else if($datospersonales = $conn->mysqli->query($querydatpersonales)){
     }
 }
 
+
 if($credito == 0) {
+    if($_SERVER['HTTP_HOST'] == 'localhost:8080'){
+        $http = 'http://';
+    }else{
+        $http = 'https://';
+    }
+
     $params = array(
         "commerceOrder" => $id_pedido,
         "subject" => "Pedido #$id_pedido",
@@ -132,8 +135,8 @@ if($credito == 0) {
         "amount" => $totalneto-$descuento,
         "email" => $correo,
         "paymentMethod" => 9,
-        "urlConfirmation" => "http://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
-        "urlReturn" => "http://".$_SERVER['HTTP_HOST']."/confirmacionPago.php",
+        "urlConfirmation" => $http.$_SERVER['HTTP_HOST']."/confirmacionPago.php",
+        "urlReturn" => $http.$_SERVER['HTTP_HOST']."/confirmacionPago.php",
         "optional" => ""
     );
     
@@ -145,7 +148,6 @@ if($credito == 0) {
         echo $e->getCode() . " - " . $e->getMessage();
         exit();
     }
-
 }
   
 
@@ -369,13 +371,12 @@ if($credito == 0) {
                         data: {"id_pedido": <?=$id_pedido?>, "token": "<?=(md5($id_pedido.$id_cliente."pedido_credito#"))?>"},
                         success: function(data) {
                             if(data.success == 1) {
-                                    
                                 Swal.fire(
                                 'Pago procesado!',
                                 'Tú pedido fue procesado por credito!',
                                 'success'
                                 )
-                                location.reload();
+                                window.location="detallepedido.php?id_pedido="+id_pedido;
                             }
                             else {
                                 swal("Error", data.message, "error");

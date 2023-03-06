@@ -63,7 +63,7 @@
             $tipo_servicio = "Intercomunal urbano";
         }
         else{
-            $tipo_servicio = "interrecional urbano";
+            $tipo_servicio = "interregional urbano";
         }
         
         if($idpaquete == 1){
@@ -73,6 +73,7 @@
         elseif($idpaquete == 2){
             $valor = 4760;
         }
+
         if($conn->mysqli->query($querybultotemporal)){
             $idbultotemporal = $conn ->mysqli->insert_id;
         }

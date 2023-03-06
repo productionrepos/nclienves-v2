@@ -836,7 +836,7 @@ function getTableData(){
                         timer : 2500
                         
                     }).then(function() {
-                       // window.location = "confirmarpedido.php?id_pedido="+data;
+                       window.location = "confirmarpedido.php?id_pedido="+data;
                 })
             },error:function(data){
                 console.log("Volvi, pero no sirvo para nada");

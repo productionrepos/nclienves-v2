@@ -15,7 +15,8 @@
                        bu.descripcion_bulto as item,
                        bu.id_paquete as servicio,
                        re.id_region as region,
-                       bu.id_comuna as comuna
+                       bu.id_comuna as comuna,
+                       bu.track_spread as track
               from bulto bu 
               INNER JOIN comuna co on co.id_comuna = bu.id_comuna 
               inner join provincia pro on pro.id_provincia = co.id_provincia
@@ -28,8 +29,7 @@
     if($res = $conn -> mysqli->query($query)){
         while($datares = mysqli_fetch_array($res))
             {
-                
-
+                $track    = $datares['track'];
                 $nombre    = $datares['nombre'];
                 $direccion = $datares['direccion'];
                 $telefono  = $datares['telefono'];
@@ -46,6 +46,7 @@
                
                
                 $return_array[]=array(
+                    "track" => $track,
                     "nombre" => $nombre,
                     "direccion"=>$direccion,
                     "correo" => $correo,

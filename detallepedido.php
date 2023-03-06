@@ -10,20 +10,30 @@ $conn->conectar();
 
 $id_pedido = $_GET['id_pedido'];
 
-$querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
-bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
-bu.codigo_barras_bulto as barcode
-FROM bulto bu 
-INNER JOIN comuna co on co.id_comuna = bu.id_comuna
-INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
-INNER JOIN region re on re.id_region = pro.id_region
-where bu.id_pedido ='. $id_pedido;
+$querybulto = 'SELECT b.id_bulto,b.codigo_barras_bulto,b.track_spread,p.estado_pedido,p.estado_logistico FROM bulto b 
+                inner join pedido p on b.id_pedido = p.id_pedido
+                where b.id_pedido ='. $id_pedido;
 
+$sinTrack = array();
+$estadoPedido = 0;
 if($resdatabulto = $conn->mysqli->query($querybulto)){
     while($datares = $resdatabulto->fetch_object())
     {
-    $datosbultos [] = $datares;
+        if($datares->track_spread == ""){
+            $sinTrack[] = $datares->id_bulto;
+        }
+        $estadoPedido = $datares->estado_pedido;
     }
+}
+
+if( $estadoPedido == 0 ){
+    header('Location: index.php');
+    exit();
+}
+
+$existeSinTrack = 0;
+if( count($sinTrack) > 0 ){
+    $existeSinTrack = 1;
 }
 
 if($_SERVER['HTTP_HOST'] == 'localhost:8080'){
@@ -71,4 +81,6 @@ require_once('./include/footer.php')
 ?>
 
 </body>
+
+
 </html>

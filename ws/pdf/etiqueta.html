@@ -12,10 +12,11 @@
       <table style="border-color: white !important;">
         <tbody>
           <tr>
-            <td width="30%" class="text-center" style="border: 0px;">
-              <img src="https://nclientes-dev.azurewebsites.net/include/Logotipo_Spread.png" alt="Send Cargo">
+            <td width="60%" class="text-center" style="border: 0px;">
+              <p style="font-size:80px; color: #00a77f;">SPREAD</p>
+              <!-- <img src="../../include/Logotipo_Spread.png" alt="Spread"> -->
             </td>
-            <td width="70%" style="border: 0px;" class="text-left">
+            <td width="40%" style="border: 0px;" class="text-left">
              www.spread.cl
             <br>
             
@@ -64,21 +65,20 @@
 
 
     <div style="margin-bottom:70px; margin-top:70px"> 
-      <table>
-        <tbody>
-          <tr>
-            <td width="60%" style="border: 0px;">
-              <div class="codigo_barra">
-                <barcode code="{codigo_barras}" type="UPCA" class="barcode" size="2.5" height="0.8"/>
-              </div>
-            </td>
-            <td width="40%" class="text-center td-carril">
-              <b class="titulo-td-carril">Carril</b>
-              <br>
-              <div class="carril">{carril}</div>
-            </td>
-          </tr>
-        </tbody>
+      <table width="100%">
+        <tr>
+          <td width="100%" style="border: 0px;">
+            <div class="codigo_barra" style="text-align: center;">
+              <!-- <barcode code="{track}" type="UPCA" class="barcode" size="4" height="0.5"/> -->
+              <barcode code="{track}" type="EAN128A" class="barcode" size="4" height="0.5"/>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+              <h1>{track}</h1>
+          </td>
+        </tr>
       </table>
     </div>
 

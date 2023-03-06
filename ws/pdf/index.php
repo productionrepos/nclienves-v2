@@ -1,9 +1,4 @@
 <?php
-$debug = false;
-if(isset($_GET['debug'])) {
-$debug = true;
-}
-
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once('../bd/dbconn.php');
@@ -31,20 +26,11 @@ if($token!=md5($id_pedido."pdf_etiquetas")) {
     exit();
 }
 
-
-
-
-
-
-
-
-
-
-
 $bultos = array();
 
 $query = "
-SELECT bulto.codigo_barras_bulto AS codigo_barras, datos_comerciales.id_cliente, rut_datos_comerciales AS rut_comercio, telefono_datos_comerciales as telefono_comercio, nombre_fantasia_datos_comerciales AS nombre_comercio, nombre_bulto AS nombre_destinatario, direccion_bulto AS direccion_destinatario, telefono_bulto AS telefono_destinatario, email_bulto AS email_destinatario, comuna_destino.nombre_comuna AS comuna_destinatario, region_destino.nombre_region AS region_destinatario, comuna_destino.carril_comuna AS carril,concat(calle_bodega,' ',numero_bodega) AS direccion_origen, nombre_bodega AS nombre_bodega_origen, comuna_origen.nombre_comuna AS comuna_origen FROM bulto
+SELECT bulto.codigo_barras_bulto AS codigo_barras, datos_comerciales.id_cliente, rut_datos_comerciales AS rut_comercio, telefono_datos_comerciales as telefono_comercio, nombre_fantasia_datos_comerciales AS nombre_comercio, nombre_bulto AS nombre_destinatario, direccion_bulto AS direccion_destinatario, telefono_bulto AS telefono_destinatario, email_bulto AS email_destinatario, comuna_destino.nombre_comuna AS comuna_destinatario, region_destino.nombre_region AS region_destinatario, comuna_destino.carril_comuna AS carril,concat(calle_bodega,' ',numero_bodega) AS direccion_origen, nombre_bodega AS nombre_bodega_origen, comuna_origen.nombre_comuna AS comuna_origen, bulto.track_spread as track
+FROM bulto
 INNER JOIN comuna AS comuna_destino ON (bulto.id_comuna = comuna_destino.id_comuna)
 INNER JOIN provincia AS provincia_destino ON (comuna_destino.id_provincia=provincia_destino.id_provincia)
 INNER JOIN region AS region_destino ON (provincia_destino.id_region=region_destino.id_region)
@@ -72,11 +58,6 @@ if($datos = $conexion->mysqli->query($query)) {
 			}
 			$dato['codigo_barras_completo'] = upca($dato['codigo_barras']);
 			array_push($bultos, $dato);
-			if($debug) {
-				echo "<pre>";
-				print_r($dato);
-				exit();
-			}
 		}
 
 	}
@@ -136,12 +117,9 @@ foreach($bultos as $datos_bulto) {
 	);
 	$mpdf->WriteHTML($html);
 }
-if($debug) {
-	$mpdf->Output();
-}
-else {
-	$mpdf->Output("Etiquetas solicitud #$id_pedido.pdf", 'D');
-}
+
+$mpdf->Output("Etiquetas solicitud #$id_pedido.pdf", 'D');
+
 function upca($upc_code) {
     $upc = substr($upc_code,0,11);
     if (strlen($upc) == 11 && strlen($upc_code) <= 12) { $oddPositions = $upc[0] + $upc[2] + $upc[4] + $upc[6] + $upc[8] + $upc[10]; $oddPositions *= 3; $evenPositions= $upc[1] + $upc[3] + $upc[5] + $upc[7] + $upc[9]; $sumEvenOdd = $oddPositions + $evenPositions; $checkDigit = (10 - ($sumEvenOdd % 10)) % 10; } return $upc_code.$checkDigit;

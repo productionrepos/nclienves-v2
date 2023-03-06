@@ -8,6 +8,8 @@ if(!isset($_SESSION['cliente'])){
     $existeSesion = 1;
 }
 
+$date = (new DateTime('now',new DateTimeZone('Chile/Continental')))->format('Y-m-d H:i:s');
+
 require_once('./ws/flow/FlowApi.class.php');
 require_once('./ws/bd/dbconn.php');
 
@@ -29,6 +31,40 @@ $id_pedido = $respuesta->commerceOrder;
 
 $conexion = new bd();
 $conexion->conectar();
+
+// busqueda de integración con Appolo
+$querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
+bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
+bu.codigo_barras_bulto as barcode
+FROM bulto bu 
+INNER JOIN comuna co on co.id_comuna = bu.id_comuna
+INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
+INNER JOIN region re on re.id_region = pro.id_region
+where bu.id_pedido ='. $id_pedido;
+
+if($resdatabulto = $conn->mysqli->query($querybulto)){
+  while($datares = $resdatabulto->fetch_object()){
+    $datosbultos [] = $datares;
+  }
+  $dataAppolo =[];
+  foreach($datosbultos as $databul){
+    $dataAppolo[]= Array(
+      "guide" => $databul->barcode,
+      "name_client" => $databul->nombre,
+      "email" => $databul->correo,
+      "phone"=> $databul->telefono ,
+      "street"=> $databul->direccion,
+      "number"=> "" ,
+      "commune" => $databul->comuna,
+      "region"=> $databul->region,
+      "dpto_bloque"=> "",
+      "id_pedido"=> $id_pedido,
+      "valor"=> "",
+      "descripcion"=> ""
+      );
+  }
+}
+
 
 
 if($respuesta->status==2) {
@@ -70,10 +106,6 @@ if($respuesta->status!=2){
         echo $conexion->mysqli->error;
         $conexion->desconectar();
         exit();
-    }
-    else {
-        // header("Location: error_pago.php?token=$token&id_pedido=$id_pedido");
-        // exit();
     }
 }
 
@@ -242,7 +274,17 @@ else {
 <script>
     var IdPedido = <?php echo $id_pedido; ?>;
     var existeSesion = <?php echo $existeSesion; ?>;
+    var status = <?php echo $respuesta->status ?>
+
+    var appoloData =<?php echo json_encode($dataAppolo);?>;
+    const fecha = '<?php echo $date;?>';
+    var request = "";
+    var newTrackId;
+    var url = 'http://localhost:8000/api/pymes/ingresarPyme'
+    // var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
+
     $(document).ready(function(){
+
         if(existeSesion == 0){
             $.ajax({
                 type: "POST",
@@ -267,7 +309,94 @@ else {
                 }
             });
         }
+
+        if(status == 2){
+            newTrackId = "";
+            appoloData.forEach((ap,i) => {
+				setTimeout(function () {
+					request = {"guide" : ap.guide,
+								"name_client" : ap.name_client,
+								"email": ap.email,
+								"phone": ap.phone ,
+								"street": ap.street,
+								"number": "" ,
+								"commune": ap.commune,
+								"region": ap.region,
+								"dpto_bloque": "",
+								"id_pedido": ap.id_pedido,
+								"fecha": fecha,
+								"valor": "",
+								"descripcion": ""};
+					// console.log(request);
+					
+					(async () => {
+					const rawResponse = await fetch( url , {
+						method: 'POST',
+						headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({body:request})
+					})
+					.then(async (response) => {
+						let estadoResponse = await response.json();
+						console.log(estadoResponse);
+
+						if(estadoResponse.trackId){
+							newTrackId = (estadoResponse.trackId);
+						}else{
+							if(estadoResponse.error.sql){
+								const Response = await await fetch( url , {
+									method: 'POST',
+									headers: {
+										'Accept': 'application/json',
+										'Content-Type': 'application/json'
+									},
+									body: JSON.stringify({body:request})
+								})
+								.then(async (response2) => {
+									let estadoResponse2 = await response2.json();
+									if(estadoResponse2.trackId){
+										newTrackId = (estadoResponse2.trackId);
+									}
+								})
+							}
+						}
+					})
+
+					console.log(newTrackId);
+
+                    var params = {
+                        "trackid": newTrackId,
+                        "codigo_barra": ap.guide
+                    }
+
+					$.ajax({
+                        data: JSON.stringify(params),
+                        type: "post",
+                        url: "./ws/bulto/insertTrackId2.php",
+                        dataType: 'json',
+                        success: function(data) {
+                            console.log(data.status)
+                            // procesado = 1;
+                            // console.log(procesado);
+                            Swal.fire(
+                            'Pago procesado!',
+                            'Tú pedido fue procesado por credito!',
+                            'success'
+                            );
+                            window.location="detallepedido.php?id_pedido="+id_pedido;
+                        },error:function(data){
+                            console.log(data);
+                        }
+                    })
+
+					})();
+				}, i * 2000);
+			})
+        }
     })
+    
 </script>
 
 </html>

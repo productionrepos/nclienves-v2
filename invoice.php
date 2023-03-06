@@ -57,38 +57,38 @@ if($restotal = $conn->mysqli->query($querytotal)){
 //                       direccion_bulto as direccion, , precio_bulto as precio
 //                     FROM bulto where id_pedido ='.$id_pedido;
 
+$date = (new DateTime('now',new DateTimeZone('Chile/Continental')))->format('Y-m-d H:i:s');
 
 $querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
-                    bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
-                    bu.codigo_barras_bulto as barcode
-                FROM bulto bu 
-                INNER JOIN comuna co on co.id_comuna = bu.id_comuna
-                INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
-                INNER JOIN region re on re.id_region = pro.id_region
-                where bu.id_pedido ='. $id_pedido .' and bu.Deleted = 0';
+bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
+bu.codigo_barras_bulto as barcode
+FROM bulto bu 
+INNER JOIN comuna co on co.id_comuna = bu.id_comuna
+INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
+INNER JOIN region re on re.id_region = pro.id_region
+where bu.id_pedido ='. $id_pedido;
 
 if($resdatabulto = $conn->mysqli->query($querybulto)){
-    while($datares = $resdatabulto->fetch_object())
-    {
-        $datosbultos [] = $datares;
-    }
-    $dataAppolo =[];
-    foreach($datosbultos as $databul){
-        $dataAppolo[]= Array(
-            "guide" => $databul->barcode,
-            "name_client" => $databul->nombre,
-            "email" => $databul->correo,
-            "phone"=> $databul->telefono ,
-            "street"=> $databul->direccion,
-            "number"=> "" ,
-            "commune" => $databul->comuna,
-            "region"=> $databul->region,
-            "dpto_bloque"=> "",
-            "id_pedido"=> $id_pedido,
-            "valor"=> "",
-            "descripcion"=> ""
-        );
-    }
+  while($datares = $resdatabulto->fetch_object()){
+    $datosbultos [] = $datares;
+  }
+  $dataAppolo =[];
+  foreach($datosbultos as $databul){
+    $dataAppolo[]= Array(
+      "guide" => $databul->barcode,
+      "name_client" => $databul->nombre,
+      "email" => $databul->correo,
+      "phone"=> $databul->telefono ,
+      "street"=> $databul->direccion,
+      "number"=> "" ,
+      "commune" => $databul->comuna,
+      "region"=> $databul->region,
+      "dpto_bloque"=> "",
+      "id_pedido"=> $id_pedido,
+      "valor"=> "",
+      "descripcion"=> ""
+      );
+  }
 }
 
 
@@ -252,7 +252,10 @@ if($credito == 0) {
                                 <div class="address p-2">
                                     <div class="container">
                                         <div class="finish" style="justify-content: end;">
-                                            <div class="row justify-content-end align-items-center g-2">
+                                            <div class="row justify-content-between align-items-center g-2">
+                                                
+                                                    <a href="confirmarpedido.php?id_pedido=<?=$id_pedido?>" class="col-md-4 col-6 btn btn-warning">Corregir Datos</a>
+                                                
                                                 <?php
                                                         if($credito == 1):
                                                     ?>
@@ -267,6 +270,9 @@ if($credito == 0) {
                                                         </div>
                                                     
                                                 <?php endif;?>
+                                            </div>
+                                            <div>
+                                                <p style="font-size: 12px;">*Si su pedido es de mayor tamaño al declarado, se hará un cargo extra de $5.000, el pedido no se precesara hasta entonces</p>
                                             </div>
                                         </div>
                                     </div>
@@ -283,73 +289,12 @@ if($credito == 0) {
 
     <script>
         var appoloData =<?php echo json_encode($dataAppolo);?>;
-        var id_pedido = <?= $id_pedido;?>;
-        var busquedaget = <?= $busquedaget;?>;
-        var request = ""
-
-        $('#apretameclick').on('click',function(){
-            console.log("COTELOYOLA");
-            console.log(appoloData);
-            $.ajax({
-                    type: "get",
-                    url: "https://spreadfillment-back-dev.azurewebsites.net/api/pymes/revisarPedido/"+busquedaget,
-                    success: function(data) {
-                        console.log(data)
-                    }
-                })
-            
-            appoloData.forEach(ap => {
-
-                var dataAppolo = []
-                dataAppolo = {
-                                "guide" : ap.guide,
-                                "name_client" : ap.name_client,
-                                "email": ap.email,
-                                "phone": ap.phone ,
-                                "street": ap.street,
-                                "number": "" ,
-                                "commune": ap.commune,
-                                "region": ap.region,
-                                "dpto_bloque": "",
-                                "id_pedido": ap.id_pedido,
-                                "valor": "",
-                                "descripcion": ""
-                            }
-                            request = JSON.stringify({"body":{"guide" : ap.guide,
-                                                "name_client" : ap.name_client,
-                                                "email": ap.email,
-                                                "phone": ap.phone ,
-                                                "street": ap.street,
-                                                "number": "" ,
-                                                "commune": ap.commune,
-                                                "region": ap.region,
-                                                "dpto_bloque": "",
-                                                "id_pedido": ap.id_pedido,
-                                                "valor": "",
-                                                "descripcion": ""}});
-                            console.log(request);    
-
-                    $.ajax({
-                        type: "POST",
-                        url: "https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme",
-                        data: request,
-                        dataType: 'json',
-                        success: function(data) {
-                            console.log(data);
-                        },error:function(data){
-                            console.log(data.responseText);
-                        }
-                    })
-                })
-                //console.log({"body" : request});
-
-             })
-
-            // console.log(appoloData);
-            
-
-            
-        
+        const fecha = '<?php echo $date;?>';
+        var request = "";
+        var newTrackId;
+        // var url = 'http://localhost:8000/api/pymes/ingresarPyme'
+        var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
+        var procesado = 2;
 
         $('#procesarcredito').on('click',function(){
            
@@ -364,19 +309,104 @@ if($credito == 0) {
             }).then((result) => {
             if (result.isConfirmed) {
                 
-
                 $.ajax({
                         type: "POST",
                         url: "ws/pedidos/pedido_credito.php",
                         data: {"id_pedido": <?=$id_pedido?>, "token": "<?=(md5($id_pedido.$id_cliente."pedido_credito#"))?>"},
                         success: function(data) {
                             if(data.success == 1) {
-                                Swal.fire(
-                                'Pago procesado!',
-                                'Tú pedido fue procesado por credito!',
-                                'success'
-                                )
-                                window.location="detallepedido.php?id_pedido="+id_pedido;
+
+                                newTrackId = "";
+                                appoloData.forEach((ap,i) => {
+                                    setTimeout(function () {
+                                        request = {"guide" : ap.guide,
+                                                    "name_client" : ap.name_client,
+                                                    "email": ap.email,
+                                                    "phone": ap.phone ,
+                                                    "street": ap.street,
+                                                    "number": "" ,
+                                                    "commune": ap.commune,
+                                                    "region": ap.region,
+                                                    "dpto_bloque": "",
+                                                    "id_pedido": ap.id_pedido,
+                                                    "fecha": fecha,
+                                                    "valor": "",
+                                                    "descripcion": ""};
+                                        // console.log(request);
+                                        
+                                        (async () => {
+                                        const rawResponse = await fetch( url , {
+                                            method: 'POST',
+                                            headers: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify({body:request})
+                                        })
+                                        .then(async (response) => {
+                                            let estadoResponse = await response.json();
+                                            console.log(estadoResponse);
+
+                                            if(estadoResponse.trackId){
+                                                newTrackId = (estadoResponse.trackId);
+                                            }else{
+                                                if(estadoResponse.error.sql){
+                                                    const Response = await fetch( url , {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Accept': 'application/json',
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify({body:request})
+                                                    })
+                                                    .then(async (response2) => {
+                                                        let estadoResponse2 = await response2.json();
+                                                        if(estadoResponse2.trackId){
+                                                            newTrackId = (estadoResponse2.trackId);
+                                                        }
+                                                    })
+                                                }
+                                            }
+                                        })
+
+                                        console.log(newTrackId);
+
+                                        var params = {
+                                            "trackid": newTrackId,
+                                            "codigo_barra": ap.guide
+                                        }
+
+                                        $.ajax({
+                                            data: JSON.stringify(params),
+                                            type: "post",
+                                            url: "./ws/bulto/insertTrackId2.php",
+                                            dataType: 'json',
+                                            success: function(data) {
+                                                console.log(data.status)
+                                                procesado = 1;
+                                                console.log(procesado);
+                                                Swal.fire(
+                                                'Pago procesado!',
+                                                'Tú pedido fue procesado por credito!',
+                                                'success'
+                                                );
+                                                window.location="detallepedido.php?id_pedido="+id_pedido;
+                                            },error:function(data){
+                                                console.log(data.responseText);
+                                                // procesado = 1;
+                                                // console.log(procesado);
+                                                // Swal.fire(
+                                                // 'Pago procesado!',
+                                                // 'Tú pedido fue procesado por credito!',
+                                                // 'success'
+                                                // );
+                                                // window.location="detallepedido.php?id_pedido="+id_pedido;
+                                            }
+                                        })
+
+                                        })();
+                                    }, i * 2000);
+                                })
                             }
                             else {
                                 swal("Error", data.message, "error");

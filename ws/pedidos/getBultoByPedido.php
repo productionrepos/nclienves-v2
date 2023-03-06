@@ -9,7 +9,7 @@ include_once('../bd/dbconn.php');
         $conn ->conectar();
 
         $query ='SELECT b.nombre_bulto as name, b.direccion_bulto as dir, b.email_bulto as correo,
-                b.telefono_bulto as telefono,b.estado_logistico,p.timestamp_pedido
+                b.telefono_bulto as telefono,b.estado_logistico,p.timestamp_pedido,b.track_spread
                 from bulto b
                 inner join pedido  p on b.id_pedido = p.id_pedido
                 where b.id_pedido = '.$idpedido ;
@@ -21,6 +21,7 @@ include_once('../bd/dbconn.php');
 
             while($datares = mysqli_fetch_array($res))
                 {
+                    $track = $datares['track_spread'];
                     $nombre = $datares['name'];
                     $dir = $datares['dir'];
                     $correo = $datares['correo'];
@@ -29,6 +30,7 @@ include_once('../bd/dbconn.php');
                     $fecha_creacion = date("d-m-Y H:i:s",$datares['timestamp_pedido']);
 
                     $return_array[]=array(
+                        "track" => $track,
                         "nombre" => $nombre,
                         "direccion"=>$dir,
                         "correo" => $correo,

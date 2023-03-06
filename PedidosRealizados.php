@@ -27,7 +27,6 @@
         {
             $datapedido [] = $datares;
         }
-        $size = sizeof($datapedido);
         $res -> close();
         $datapedido = (object)$datapedido;
         $existe = true;
@@ -39,9 +38,6 @@
         exit();
     }
     $suma=0;
-    for ($i = 0; $i<=$size; $i ++){
-        
-    }
 ?>
 
 <!DOCTYPE html>
@@ -76,9 +72,9 @@
 
                 <section class="section">
                     <div class="card">
-                        <div class="card-header">
+                        <!-- <div class="card-header">
                             <input type="search" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
-                        </div>
+                        </div> -->
                         <div class="card-body" id="tablepr">
                             <table class="table table-striped" id="table">
                                 <thead>
@@ -90,6 +86,7 @@
                                         <th>Cantidad de envios</th>
                                         <th>Resumen Pedido</th>
                                         <th>Estado</th>
+                                        <th>Información</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -100,16 +97,16 @@
                                         $conn->conectar();
                                             if($existe):
                                                 foreach($datapedido as $pedido):
-                                                    $req = "SELECT sum(precio_bulto)as precio from bulto where id_pedido =".$pedido->id_pedido.";";
-                                                    $restotal = mysqli_query($conn->mysqli ,$req);
-                                                    $row = mysqli_fetch_assoc ($restotal);
-                                                    $total = $row['precio'];
+                                                    $queryCantidad = 'select count(id_bulto) as suma from bulto where id_pedido ='.$pedido->id_pedido;
+                                                    if($response = $conn->mysqli->query($queryCantidad)){
+                                                        $suma = $response ->fetch_object();
+                                                    }
                                     ?>
                                                     <tr>
                                                         <td><span class="idpedido"><?=$pedido->id_pedido?></span></td>
                                                         <td><?=date('d/m/Y',$pedido->timestamp_pedido)?></td>
                                                         <td><?=$pedido->nombre_bodega?></td>
-                                                        <td ><?=$size?></td>
+                                                        <td ><?=$suma->suma?></td>
                                                         <td>
                                                             <a
                                                                 class="btnGetData"
@@ -125,6 +122,7 @@
                                                             </a>
                                                         </td>
                                                         <td>Check verde - Información rojo - reloj (pendientes)</td>
+                                                        <td><a href="detallepedido.php?id_pedido=<?=$pedido->id_pedido?>" class='btn btn-spread'>Revisar Pedido</a></td>
                                                         
                                                     </tr>
                                                     <thead class="collapse exp<?php echo$index?>" id="collapseExample<?php echo$index?>">
@@ -174,6 +172,7 @@
                         dataType: 'json',
                          success:  function (response) {
                             var head =  " <tr>"+
+                                        '<td style="font-weight:800">Número Guia</th>'+
                                         '<td style="font-weight:800">Destinatario</th>'+
                                         '<td style="font-weight:800">Direccion</th>'+
                                         '<td style="font-weight:800">Correo</th>'+
@@ -188,6 +187,7 @@
                                     var len = response.length;
                                         $("#"+exp).append(head);
                                         for(var i=0; i<len; i++){
+                                            var track = response[i].track;
                                             var nombre = response[i].nombre;
                                             var direccion = response[i].direccion;
                                             var correo = response[i].correo;
@@ -222,17 +222,18 @@
                                             }
                                             var tr_str = 
                                                 "<tr>" +
+                                                "<td align='center'>" + track + "</td>" +
                                                 "<td align='center'>" + nombre + "</td>" +
                                                 "<td align='center'>" + direccion + "</td>" +
                                                 "<td align='center'>" + correo + "</td>" +
                                                 "<td align='center'>" + telefono + "</td>" +
                                                 "<td align='center' colspan='2'>" +
-                                                            "<a " +
-                                                            "href='#'" +
-                                                            "data-bs-toggle='tooltip'" +
-                                                            "title='" + title + "'>" +
-                                                            "<img src='" + img + "'>" +
-                                                            "</a></td>"+
+                                                        "<a " +
+                                                        "href='#'" +
+                                                        "data-bs-toggle='tooltip'" +
+                                                        "title='" + title + "'>" +
+                                                        "<img src='" + img + "'>" +
+                                                        "</a></td>"+
                                                 "</tr>";
                                                 $("#"+exp).append(tr_str);
                                                 // $("#"+exp).html(response);

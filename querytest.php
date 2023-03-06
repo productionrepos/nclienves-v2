@@ -10,15 +10,17 @@
 require_once('./ws/bd/dbconn.php');
 $conn = new bd();
 $conn->conectar();
-  $id_pedido = 35812;
-  $querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
-  bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
-  bu.codigo_barras_bulto as barcode
-  FROM bulto bu 
-  INNER JOIN comuna co on co.id_comuna = bu.id_comuna
-  INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
-  INNER JOIN region re on re.id_region = pro.id_region
-  where bu.id_pedido ='. $id_pedido;
+
+$id_pedido = 35812;
+
+$querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
+bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
+bu.codigo_barras_bulto as barcode
+FROM bulto bu 
+INNER JOIN comuna co on co.id_comuna = bu.id_comuna
+INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
+INNER JOIN region re on re.id_region = pro.id_region
+where bu.id_pedido ='. $id_pedido;
 
 if($resdatabulto = $conn->mysqli->query($querybulto)){
   while($datares = $resdatabulto->fetch_object()){
@@ -149,9 +151,13 @@ echo $date;
         var id_pedido = <?php echo $id_pedido;?>;
         const fecha = '<?php echo $date;?>';
         var request = "";
+		var newTrackId;
+		var url = 'http://localhost:8000/api/pymes/ingresarPyme'
+		// var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
 
-        $('#apretameclick2').on('click',function(){
-
+        // $('#apretameclick2').on('click',function(){
+        $(document).ready(function(){
+			newTrackId = "";
             appoloData.forEach((ap,i) => {
 				setTimeout(function () {
 					request = {"guide" : ap.guide,
@@ -167,21 +173,46 @@ echo $date;
 								"fecha": fecha,
 								"valor": "",
 								"descripcion": ""};
-					console.log(request);
+					// console.log(request);
 					
 					(async () => {
-					const rawResponse = await fetch('http://localhost:8000/api/pymes/ingresarPyme', {
-					// const rawResponse = await fetch('https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme', {
+					const rawResponse = await fetch( url , {
 						method: 'POST',
 						headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
 						},
 						body: JSON.stringify({body:request})
-					});
-					const content = rawResponse.json();
-						console.log(content);
-						
+					})
+					.then(async (response) => {
+						let estadoResponse = await response.json();
+						console.log(estadoResponse);
+
+						if(estadoResponse.trackId){
+							newTrackId = (estadoResponse.trackId);
+						}else{
+							if(estadoResponse.error.sql){
+								const Response = await await fetch( url , {
+									method: 'POST',
+									headers: {
+										'Accept': 'application/json',
+										'Content-Type': 'application/json'
+									},
+									body: JSON.stringify({body:request})
+								})
+								.then(async (response2) => {
+									let estadoResponse2 = await response2.json();
+									if(estadoResponse2.trackId){
+										newTrackId = (estadoResponse2.trackId);
+									}
+								})
+							}
+						}
+					})
+
+					console.log(newTrackId);
+					// aca insertar a bd send cargo el trackid
+
 					})();
 				}, i * 2000);
 			})

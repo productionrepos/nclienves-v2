@@ -140,6 +140,26 @@
 
             
         </div>
+
+
+         <!-- MODAL LARGE-->
+        <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel16" aria-hidden="true" style="padding: 60px; border-radius: 50px;">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                role="document">
+                <div class="modal-content" style="padding: 0px 50px;">
+                    <form class="form form" id="toValdiateBulto" >
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="trackIdlbl"></h2>
+                            <input  style="display: none;" type="text" name="vid_bulto"/>
+                        </div>
+
+                        <div id="datosSeguimiento"></div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
    <!-- Footer contiene div de main app div -->
    <?php
         include_once('./include/footer.php')
@@ -200,6 +220,7 @@
                             var telefono = response[i].telefono;
                             var estado = response[i].estado;
                             var fecha_creacion = response[i].fecha_creacion;
+                            var btn;
                             var img = "";
                             var title = "";
                             if(estado == 0){
@@ -221,11 +242,14 @@
                             else if(estado == 5){
                                 img = 'include/img/status/5_entregado.PNG'
                                 title = 'entregado';
+                                btn =`<td><button onClick='buscarTrack("${track}")' style='cursor:pointer' class='btn btn-success trazabilidad'>Evidencia</button></td>`
                             }
                             else if(estado == 6){
                                 img = 'include/img/status/5_no_entregado.PNG'
                                 title = 'no_entregado';
+                                btn = `<td><button onClick='buscarTrack("${track}")' style='cursor:pointer' class='btn btn-success trazabilidad'>Evidencia</button></td>`
                             }
+
                             var tr_str = 
                                 "<tr>" +
                                     "<td align='center' id='trackid'>" + track + "</td>" +
@@ -239,10 +263,11 @@
                                             "data-bs-toggle='tooltip'" +
                                             "title='" + title + "'>" +
                                             "<img src='" + img + "'>" +
-                                            "</a></td>"+
-                                    `<td><button onClick='buscarTrack("${track}")' style='cursor:pointer' class='btn btn-success trazabilidad'>Evidencia</button></td>`+
+                                            "</a></td>" + btn+
                                 "</tr>";
+                                
                                 $("#"+exp).append(tr_str);
+                                btn = ""
                                 // $("#"+exp).html(response);
                         }
                             
@@ -256,8 +281,9 @@
     });
     
     function buscarTrack(dato){
-        console.log('¿estoy dentro?');
         console.log(dato);
+        $('#xlarge').modal('show');
+        document.getElementById('trackIdlbl').innerHTML= "Guia :"+ dato
     }
     
     document.addEventListener(

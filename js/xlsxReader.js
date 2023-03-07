@@ -86,7 +86,7 @@ const excelInput = document.getElementById('excel-input');
 
 
 excelInput.addEventListener('change',async function(){
-    // try{
+    try{
         const content = await readXlsxFile(excelInput.files[0])
     
         //$('tbody tr').remove();
@@ -518,15 +518,15 @@ excelInput.addEventListener('change',async function(){
 
                 
         }
-    // }catch{
-    //     $('#excel-input').val("")
-    //     swal.fire({
-    //         title : "Ups",
-    //         text : "El archivo cargado no es el correcto, Prueba descargando nuestro Excel tipo ",
-    //         icon: "error",
-    //         showConfirmButton: true,
-    //         timer : 3000})
-    // }
+    }catch{
+        $('#excel-input').val("")
+        swal.fire({
+            title : "Ups",
+            text : "El archivo cargado no es el correcto, Prueba descargando nuestro Excel tipo ",
+            icon: "error",
+            showConfirmButton: true,
+            timer : 3000})
+    }
 
     //console.log(excelPrinter.printexc('excel-table',excel));
     //console.log(excel.header());

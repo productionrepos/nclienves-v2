@@ -345,33 +345,89 @@
                     </div>
                 </div>
             </div>
-            
-
 
             <!-- MODAL LARGE-->
-            <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog"
-                        aria-labelledby="myModalLabel16" aria-hidden="true" style="padding: 60px; border-radius: 50px;">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
-                            role="document">
-                            <div class="modal-content" style="padding: 0px 50px;">
-                                <form class="form form" id="toValdiateBulto" >
-                                    <div class="modal-header">
-                                        <h2 class="modal-title" id="trackIdlbl"></h2>
-                                        <input  style="display: none;" type="text" name="vid_bulto"/>
+            <div class="modal fade text-left" id="xlarge" tabindex="-1" role="dialog"
+                aria-labelledby="myModalLabel16" aria-hidden="true" style="border-radius: 50px;">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                    role="document" style="height: 25%;" >
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #00a77f;" >
+                            <h2 class="modal-title" id="trackIdlbl"></h2>
+                        </div>
+
+                        <div class="container">  
+                            <div class="row">
+                                <div class="row justify-content-center">
+                                    <div class="col-2" style="text-align: end;">
+                                        <h4>Guía :</h4>
                                     </div>
-
-                                    <div id="datosSeguimiento"></div>
-
-                                </form>
+                                    <div class="col-2">
+                                        <h4 id="numguia" style="font-weight: 800;"></h4>      
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row justify-content-center">
+                                <div class="panel-body col-5" style="background-color: #60cbb196; margin: 20px; border-radius: 50px;padding: 30px;" >
+                                    <span class="timeline-date" >19:00</span>
+                                    <h4 class="blue" >03/03/2023</h1>
+                                    <p>
+                                        <a style="text-decoration: none;color: red;" href="#">Entregado</a>
+                                    </p>
+                                    <p>
+                                        <span>
+                                            <a style="text-decoration: none;color: #3e3e3f;" href="#" class="blue">Entrega exitosa</a>
+                                        </span>
+                                    </p>
+                                    <p>Nombre completo de quien recibe : Tamara Palomari</p>
+                                    <p>Rut Receptor : 105613640</p>
+                                    <p>Parentesco (Conserje, Mamá, Cliente, etc..) : amiga</p>
+                                    <div style="font-weight: 800;font-size: 18px;">Firma digital</div>
+                                    <div class="album row">
+                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/signature_answer_b8aff20f-e6e7-4717-a074-70368df3cc82.png" target="_blank" style="width: 100%;">
+                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/signature_answer_b8aff20f-e6e7-4717-a074-70368df3cc82.png" style="width:100%;height:100px">
+                                                </a>
+                                            </div>
+                                    </div>
+                                    <div style="font-weight: 800; font-size: 18px;">Foto </div>
+                                    <div class="album row">
+                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160013_5914975997838589505.jpg" target="_blank" style="width: 100%;">
+                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160013_5914975997838589505.jpg" style="width:100%;height:100px">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160018_8675189283889503001.jpg" target="_blank" style="width: 100%;">
+                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160018_8675189283889503001.jpg" style="width:100%;height:100px">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160023_5014969434535705222.jpg" target="_blank" style="width: 100%;">
+                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160023_5014969434535705222.jpg" style="width:100%;height:100px">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160031_5811682112350141718.jpg" target="_blank" style="width: 100%;">
+                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160031_5811682112350141718.jpg" style="width:100%;height:100px">
+                                                </a>
+                                            </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div style="display: none;" id="datosSeguimiento"></div>
+
                     </div>
-
-
-                        <?php
-                            include_once('./include/footer.php')
-                        ?>
                 </div>
+            </div>
+
+
+    <?php
+        include_once('./include/footer.php')
+    ?>
+</div>
             
 
            
@@ -394,6 +450,8 @@
         // document.getElementById('trackIdlbl').innerHTML = ""
         document.getElementById('trackIdlbl').innerHTML='';
         document.getElementById('datosSeguimiento').innerHTML='';
+        document.getElementById('numguia').innerHTML='';
+        numguia
         
         $.ajax({
             type: "POST",
@@ -404,7 +462,8 @@
                 $.each(data,function(key,value){
                     $('#xlarge').modal('show');
                     console.log(value.estado);
-                    document.getElementById('trackIdlbl').innerHTML='Número de Guía: '+trackid
+                    document.getElementById('trackIdlbl').innerHTML='Detalle de guía'
+                    document.getElementById('numguia').innerHTML= trackid
                     if(value.estado <= 3){
                         // estados internos
                         if(value.estado == 0){

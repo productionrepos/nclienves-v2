@@ -482,23 +482,34 @@
 						</div>
 					</div>
 
-
-
-								
-			
 					<div id="newinput"></div>
-						<button id="rowAdder" type="button"
-							class="btn btn-spread">
-							<span class="bi bi-plus-square-dotted">
-							</span> ADD
-						</button>
-						<button 
-							type="button" 
-							class="btn btn-spread" 
-							id="submitpedido"> 
-							<span class="bi bi-plus-square-dotted">
-								Enviar 
-						</button>
+						<div id="boton-multi" class="row">
+							<div class="col-md-6 col-12 mt-2">
+								<button id="rowAdder" type="button"
+									class="btn btn-spread">
+									<span class="bi bi-plus-square-dotted" style="font-size: 24px;">
+									</span> Agregar Destinatario
+								</button>
+							</div>
+							<div class="col-md-6 col-12 mt-2" style="text-align: end;">
+								<button 
+									type="button" 
+									class="btn btn-spread" 
+									id="submitpedido"> 
+									<span style="font-size: 24px;">
+									<div class="row justify-content-center align-items-center"  >
+										<div class="col-4">
+											<i style="font-size: 35px;" class="fa-regular fa-paper-plane"></i>
+										</div>
+										<div class="col-8">
+											Enviar Formulario
+										</div>
+									</div>
+										
+										
+								</button>
+							</div>
+						</div>
 					</div>
 			</div>
 		
@@ -1613,6 +1624,7 @@
 			swal.fire("","Máximo de formularios alcanzado","error")
 		}
 	})
+		
 
 	$(submitpedido).on('click',function(){
 		let response  = getpassStatus(0,"send")

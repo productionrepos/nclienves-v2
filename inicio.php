@@ -40,35 +40,50 @@
         }
 
         $cantidadpendientes = count($pend);
-
+            // var_dump($pend);
+            // echo "<br>";
         foreach($pend  as $pp){
+            // echo  '<br>';
+            // echo $pp->id_pedido. '<br>';
             $querybultos = "SELECT bu.track_spread as trackid,
                             CONCAT(bo.calle_bodega,' ',bo.numero_bodega) as direccion,
-                            pe.timestamp_pedido as fecha 
+                            pe.timestamp_pedido as fecha,
+                            pe.id_pedido as idpedido
                             from bulto bu inner join pedido pe on pe.id_pedido = bu.id_pedido 
                             inner join bodega bo on bo.id_bodega = pe.id_bodega where pe.id_pedido =".$pp->id_pedido;
+
             if($resbultosretiro = $conexion->mysqli->query($querybultos)){
                 while($bultospend = $resbultosretiro->fetch_object()){
                     $bultospendientes [] = $bultospend;
                 }
-
                 foreach($bultospendientes as $bultopendiente){
+                    // print_r($bultopendiente);
                     $trackid = $bultopendiente->trackid;
+
                     $direccion = $bultopendiente->direccion;
+
                     $fecha = $bultopendiente->fecha;
+
+                    $idpedido = $bultopendiente->idpedido;
+
                     $hora = date('h:j:s',$fecha);
                     $fechaestimada = "";
                     if($hora > '12:00:00'){
-                        $fechaestimada = date('d/m/Y',strtotime($fecha."+ 1 day"));
+                        $formatfecha = date('d-m-Y',$fecha);
+                        $fechaplus = strtotime($formatfecha."+ 1 days");
+                        $fechaestimada = date('d/m/Y',$fechaplus);
                     }else{
                         $fechaestimada = date('d/m/Y',$fecha);
                     }
                     
                     array_push($arraybultospendientes,["trackid" => $trackid,
                                                         "direccion" => $direccion,
-                                                        "fechaestimada" => $fechaestimada]);
+                                                        "fechaestimada" => $fechaestimada,
+                                                        "IDPEDIDO" => $idpedido
+                                                    ]);
                 }
             }
+            $bultospendientes = [];
         }
        
     }
@@ -193,12 +208,22 @@
                                                     <th>NRO GUIA</th>
                                                     <th>DIRECCIÓN RETIRO</th>
                                                     <th>FECHA ESTIMADA RETIRO</th>
+                                                    <th>NRO PEDIDO</th>
                                                 </thead>
                                                 <!-- "trackid" => $trackid,
                                                 "direccion" => $direccion,
                                                 "fechaestimada" => $fechaestimada -->
                                                 <?php
-                                                    print_r($arraybultospendientes );
+                                                    // var_dump($arraybultospendientes);
+                                                    foreach($arraybultospendientes as $index=>$bulpen):
+                                                        echo '<tr>';
+                                                        foreach($bulpen as $key=>$bp):
+                                                ?>
+                                                        <td><?php echo $bp?></td>
+                                                <?php
+                                                        endforeach;
+                                                        echo '</tr>';
+                                                    endforeach;
                                                 ?>
                                                 <tbody>
 

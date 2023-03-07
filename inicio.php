@@ -1,4 +1,5 @@
 <?php 
+    date_default_timezone_set("America/Santiago");
     if(!isset($_SESSION['cliente'])):
         header("Location: index.php");
     endif;
@@ -12,6 +13,9 @@
     include('./include/busquedas/busquedaEnvios.php');
     $inicio = date("Y-m-01");
     $timestamp1 = strtotime($inicio);
+    $hasretiros = false;
+
+    $arraybultospendientes = [];
 
     $fin = date("Y-m-t");
     $timestamp2 = strtotime($fin);
@@ -20,6 +24,54 @@
     $cantEnviosEntregados = totalEnviosEntregados($id_cliente,$timestamp1,$timestamp2);
     $cantEnviosEnTransito = totalEnviosEnTransito($id_cliente,$timestamp1,$timestamp2);
     $cantEnviosConProblemas = totalEnviosConProblemas($id_cliente,$timestamp1,$timestamp2);
+
+    if($_SERVER['HTTP_HOST'] == 'localhost:8080'){
+        $http = 'local';
+    }else{
+        $http = 'servidor';
+    }
+    
+    $querypendientes = "Select * from pedido where id_cliente =".$id_cliente.' and estado_pedido > 1 and estado_logistico=1';
+    
+    if(mysqli_num_rows($resppendientes = $conexion->mysqli->query($querypendientes))>0){
+        $hasretiros = true;
+        while($pendientes = $resppendientes->fetch_object()){
+            $pend [] = $pendientes;
+        }
+
+        $cantidadpendientes = count($pend);
+
+        foreach($pend  as $pp){
+            $querybultos = "SELECT bu.track_spread as trackid,
+                            CONCAT(bo.calle_bodega,' ',bo.numero_bodega) as direccion,
+                            pe.timestamp_pedido as fecha 
+                            from bulto bu inner join pedido pe on pe.id_pedido = bu.id_pedido 
+                            inner join bodega bo on bo.id_bodega = pe.id_bodega where pe.id_pedido =".$pp->id_pedido;
+            if($resbultosretiro = $conexion->mysqli->query($querybultos)){
+                while($bultospend = $resbultosretiro->fetch_object()){
+                    $bultospendientes [] = $bultospend;
+                }
+
+                foreach($bultospendientes as $bultopendiente){
+                    $trackid = $bultopendiente->trackid;
+                    $direccion = $bultopendiente->direccion;
+                    $fecha = $bultopendiente->fecha;
+                    $hora = date('h:j:s',$fecha);
+                    $fechaestimada = "";
+                    if($hora > '12:00:00'){
+                        $fechaestimada = date('d/m/Y',strtotime($fecha."+ 1 day"));
+                    }else{
+                        $fechaestimada = date('d/m/Y',$fecha);
+                    }
+                    
+                    array_push($arraybultospendientes,["trackid" => $trackid,
+                                                        "direccion" => $direccion,
+                                                        "fechaestimada" => $fechaestimada]);
+                }
+            }
+        }
+       
+    }
 
 
 ?>
@@ -111,6 +163,54 @@
 
                         </div>
                     </div>
+                   
+                   <?php
+                        if($hasretiros):
+                   ?>
+                        <div class="resumen-envios  mt-1">
+                            <div class="row">
+                                <h4 style="color:#3e3e3f">Retiros Pendientes</h4>
+                            </div>
+                            <div class="masteresume row">
+                                <div class="col-lg-2 col-12 col-md-6 card colresume">
+                                    <div class="row">
+                                        <a href=""><span class="envtitle"><h5>Pendientes</h5></span></a>
+                                    </div>
+                                    <div class="row dataresenv">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 envresitems">
+                                            <i class="fa-solid fa-truck"></i>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 envresitems"> <h4><?php echo $cantidadpendientes?></h4></div>
+                                    </div>
+
+                                    
+                                </div>
+                                <div class="col-lg-2 col-12 col-md-6 card colresume">
+                                    <div class="row dataresenv">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 envresitems">
+                                            <table>
+                                                <thead>
+                                                    <th>NRO GUIA</th>
+                                                    <th>DIRECCIÓN RETIRO</th>
+                                                    <th>FECHA ESTIMADA RETIRO</th>
+                                                </thead>
+                                                <!-- "trackid" => $trackid,
+                                                "direccion" => $direccion,
+                                                "fechaestimada" => $fechaestimada -->
+                                                <?php
+                                                    print_r($arraybultospendientes );
+                                                ?>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+                    <?php endif;?>
+                      
 
 
                     <section class="resumen-envios  mt-1" >
@@ -214,6 +314,7 @@
                     </div>
                 </div>
             </div>
+            
 
 
             <!-- MODAL LARGE-->

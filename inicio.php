@@ -223,17 +223,8 @@
                 role="document">
                 <div class="modal-content" style="padding: 0px 50px;">
                     <form class="form form" id="toValdiateBulto" >
-                        <div class="form-body">
-                                <div class="progress-bar" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0"
-                                    aria-valuemax="100"></div>
-                        </div>
                         <div class="modal-header">
                             <h4 class="modal-title" id="trackIdlbl"></h4>
-                            <button class="close" data-bs-dismiss="modal"
-                                aria-label="Close">
-                                <i data-feather="x"></i>
-                            </button>
-
                             <input  style="display: none;" type="text" name="vid_bulto"/>
                         </div>
                         <div class="row">
@@ -250,7 +241,7 @@
                                 </div>
                             </div>
                             <div class="col-4 justify-content-start">
-                                <button type="btn btn-spread button" id="closemodal">Inserte texto acorde</button>
+                                <button type="button"  class="btn btn-spread" id="closemodal">Inserte texto acorde</button>
                             </div>
                         </div>
                     </form>
@@ -288,20 +279,18 @@
             data: {"track_id":trackid},
             success: function(data) {
 
-                console.log(data);
-                data.forEach(d => {
-                    console.log(data);
-                });
-                // console.log(data.track)
-                // console.log(data.nombre)
-                // console.log(data.direccion)
-                // console.log(data.correo)
-                // console.log(data.telefono)
-                // console.log(data.valor)
-                // console.log(data.item)
-                // console.log(data.servicio)
-                // console.log(data.region)
-                // console.log(data.comuna)
+                $.each(data,function(key,value){
+                    console.log(value.track)
+                    console.log(value.nombre)
+                    console.log(value.direccion)
+                    console.log(value.correo)
+                    console.log(value.telefono)
+                    console.log(value.valor)
+                    console.log(value.item)
+                    console.log(value.servicio)
+                    console.log(value.region)
+                    console.log(value.comuna)
+                })
             },
                 error: function(data){
                     console.log(data.query);

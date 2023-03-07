@@ -106,6 +106,7 @@ if($resdatabulto = $conn->mysqli->query($querybulto)){
   <br>
   <?php //print_r($dataAppolo) ?>
   <br>
+  <input type="text" name="trackid" id="trackid" aria-describedby="helpId" placeholder="Número de pedido" value="125958">
   <a id="apretameclick" class="col-2 btn btn-success">Apretame</a>
   <a id="apretameclick2" class="col-2 btn btn-success">Apretame2</a>
 <br>
@@ -132,28 +133,68 @@ echo $date;
   }
   
   //var busquedaGet = <?php //echo $id_pedido; ?>;
-  var busquedaGet = '149093811717';
+  var busquedaGet = '125958';
+  var url_local = 'http://localhost:8000/api/infoBeetrack/infoPackage/';
+  var url_spread = 'https://spreadfillment-back-dev.azurewebsites.net/api/infoBeetrack/infoPackage/';
+  var url_beetrack = 'https://app.beetrack.com/api/external/v1/dispatches/';
+  var token_beetrack = '4471afc1f7ee5051458a39d3bd5df4a5107ee7df1753a1bf8affef9b29aace75'
+
   $('#apretameclick').on('click',function(){
-    console.log(busquedaGet);
-    // console.log(appoloData);
-    $.ajax({
-        type: "GET",
-        headers: {
-            'X-AUTH-TOKEN':'4471afc1f7ee5051458a39d3bd5df4a5107ee7df1753a1bf8affef9b29aace75',
-            'Content-Type':'application/json'
-        },
-        url: "https://app.beetrack.com/api/external/v1/dispatches/"+busquedaGet,
-        dataType: 'json',
-        success: function(data) {
-            console.log(data)
-            console.log(data.Cliente)
-        }
-    })
+    let valor = document.getElementById('trackid').value
+    console.log(valor);
+    // console.log(busquedaGet);
+    let url = url_local + valor;
+    console.log(url);
+
+    getBeetrack();
+
+    async function getBeetrack(){
+        const response = await fetch(url, {
+            method: 'GET',
+            dataType: 'json',
+        })
+        .then(async (response) => {
+            // console.log(response);
+            let estadoResponse = await response.json();
+            if(estadoResponse.response){
+                console.log(estadoResponse.response);
+            }else{
+                console.log('Sin datos');
+            }
+        })
+        // console.log(response);
+        // const data = await response.json();
+        // console.log(data);
+    
+    }
+
+
+
+
+
+    // $.ajax({
+    //     type: "GET",
+    //     // headers: {
+    //     //     'X-AUTH-TOKEN':'4471afc1f7ee5051458a39d3bd5df4a5107ee7df1753a1bf8affef9b29aace75',
+    //     //     'Content-Type':'application/json'
+    //     // },
+    //     beforeSend: function(xhr){xhr.setRequestHeader('X-AUTH-TOKEN', token_beetrack);},
+    //     // headers: {"X-AUTH-TOKEN" : token_beetrack},
+    //     url: url_beetrack+valor,
+    //     // url: url_spread+valor,
+    //     crossDomain: true,
+    //     dataType: 'jsonp',
+    //     success: function(data) {
+    //         console.log(data)
+    //     },error: function(data){
+    //         console.log(data)
+    //     }
+    // })
   });
 
-        // var appoloData =<?php echo json_encode($dataAppolo);?>;
-        // var id_pedido = <?php echo $id_pedido;?>;
-        // const fecha = '<?php echo $date;?>';
+        // var appoloData =<?php //echo json_encode($dataAppolo);?>;
+        // var id_pedido = <?php //echo $id_pedido;?>;
+        // const fecha = '<?php //echo $date;?>';
         // var request = "";
         // var newTrackId;
         // var url = 'http://localhost:8000/api/pymes/ingresarPyme'

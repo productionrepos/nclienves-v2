@@ -155,106 +155,113 @@
 
         $("#table").on('click', '.btnGetData', function() {
             // get the current row
-                    var currentRow = $(this).closest("tr");
-                    var id = $(this).attr("id");
-                    var exp = $(".exp"+id).attr('id');
-                    var colId = currentRow.find(".idpedido").html();
-                    
-                    var filas = $("#"+exp+" tr").length;
-                    //alert (filas);
-                    var params = {
-                        "columnid": colId
+            var currentRow = $(this).closest("tr");
+            var id = $(this).attr("id");
+            var exp = $(".exp"+id).attr('id');
+            var colId = currentRow.find(".idpedido").html();
+            
+            var filas = $("#"+exp+" tr").length;
+            //alert (filas);
+            var params = {
+                "columnid": colId
+            }
+                $.ajax({
+                data:  params,
+                url:   'ws/pedidos/getBultoByPedido.php',
+                type:  'post',
+                dataType: 'json',
+                    success:  function (response) {
+                    var head =  "<tr>"+
+                                    '<td style="font-weight:800">Número Guia</td>'+
+                                    '<td style="font-weight:800">Destinatario</td>'+
+                                    '<td style="font-weight:800">Direccion</td>'+
+                                    '<td style="font-weight:800">Correo</td>'+
+                                    '<td style="font-weight:800">Telefono</td>'+
+                                    '<td style="font-weight:800; text-align:center;">Retirado | Recepcionado | En Ruta | Final' +
+                                        // '<thead><tr>' +
+                                        //     '<th>Retirado</th>' +
+                                        //     '<th>Recepcionado</th>' +
+                                        //     '<th>En Ruta</th>' +
+                                        //     '<th>Final</th>' +
+                                        // '</tr></thead>' +
+                                    '</td>'+
+                                    '<td style="font-weight:800; text-align:center;">Información</td>'+
+                                "</tr>";
+                    if(filas > 0)
+                    {
+
                     }
-                     $.ajax({
-                        data:  params,
-                        url:   'ws/pedidos/getBultoByPedido.php',
-                        type:  'post',
-                        dataType: 'json',
-                         success:  function (response) {
-                            var head =  " <tr>"+
-                                        '<td style="font-weight:800">Número Guia</th>'+
-                                        '<td style="font-weight:800">Destinatario</th>'+
-                                        '<td style="font-weight:800">Direccion</th>'+
-                                        '<td style="font-weight:800">Correo</th>'+
-                                        '<td style="font-weight:800">Telefono</th>'+
-                                        '<td style="font-weight:800; text-align:center;" colspan="2">Estado</th>'+
-                                    "</tr>";
-                            if(filas > 0)
-                            {
-
+                    else{
+                        var len = response.length;
+                        $("#"+exp).append(head);
+                        for(var i=0; i<len; i++){
+                            var track = response[i].track;
+                            var nombre = response[i].nombre;
+                            var direccion = response[i].direccion;
+                            var correo = response[i].correo;
+                            var telefono = response[i].telefono;
+                            var estado = response[i].estado;
+                            var fecha_creacion = response[i].fecha_creacion;
+                            var img = "";
+                            var title = "";
+                            if(estado == 0){
+                                img = 'include/img/status/1_creado.PNG'
+                                title = 'Creado\n ' + fecha_creacion;
                             }
-                            else{
-                                    var len = response.length;
-                                        $("#"+exp).append(head);
-                                        for(var i=0; i<len; i++){
-                                            var track = response[i].track;
-                                            var nombre = response[i].nombre;
-                                            var direccion = response[i].direccion;
-                                            var correo = response[i].correo;
-                                            var telefono = response[i].telefono;
-                                            var estado = response[i].estado;
-                                            var fecha_creacion = response[i].fecha_creacion;
-                                            var img = "";
-                                            var title = "";
-                                            if(estado == 0){
-                                                img = 'include/img/status/1_creado.PNG'
-                                                title = 'Creado\n ' + fecha_creacion;
-                                            }
-                                            else if(estado == 2){
-                                                img = 'include/img/status/2_retirado.PNG'
-                                                title = 'retirado';
-                                            }
-                                            else if(estado == 3){
-                                                img = 'include/img/status/3_recepcion_bodega.PNG'
-                                                title = 'recepcion_bodega';
-                                            }
-                                            else if(estado == 4){
-                                                img = 'include/img/status/4_en_ruta.PNG'
-                                                title = 'en_ruta';
-                                            }
-                                            else if(estado == 5){
-                                                img = 'include/img/status/5_entregado.PNG'
-                                                title = 'entregado';
-                                            }
-                                            else if(estado == 6){
-                                                img = 'include/img/status/5_no_entregado.PNG'
-                                                title = 'no_entregado';
-                                            }
-                                            var tr_str = 
-                                                "<tr>" +
-                                                "<td align='center'>" + track + "</td>" +
-                                                "<td align='center'>" + nombre + "</td>" +
-                                                "<td align='center'>" + direccion + "</td>" +
-                                                "<td align='center'>" + correo + "</td>" +
-                                                "<td align='center'>" + telefono + "</td>" +
-                                                "<td align='center' colspan='2'>" +
-                                                        "<a " +
-                                                        "href='#'" +
-                                                        "data-bs-toggle='tooltip'" +
-                                                        "title='" + title + "'>" +
-                                                        "<img src='" + img + "'>" +
-                                                        "</a></td>"+
-                                                "</tr>";
-                                                $("#"+exp).append(tr_str);
-                                                // $("#"+exp).html(response);
-                                        }
-                                        
+                            else if(estado == 2){
+                                img = 'include/img/status/2_retirado.PNG'
+                                title = 'retirado';
                             }
-                            
-                        
+                            else if(estado == 3){
+                                img = 'include/img/status/3_recepcion_bodega.PNG'
+                                title = 'recepcion_bodega';
+                            }
+                            else if(estado == 4){
+                                img = 'include/img/status/4_en_ruta.PNG'
+                                title = 'en_ruta';
+                            }
+                            else if(estado == 5){
+                                img = 'include/img/status/5_entregado.PNG'
+                                title = 'entregado';
+                            }
+                            else if(estado == 6){
+                                img = 'include/img/status/5_no_entregado.PNG'
+                                title = 'no_entregado';
+                            }
+                            var tr_str = 
+                                "<tr>" +
+                                    "<td align='center' id='trackid'>" + track + "</td>" +
+                                    "<td align='center'>" + nombre + "</td>" +
+                                    "<td align='center'>" + direccion + "</td>" +
+                                    "<td align='center'>" + correo + "</td>" +
+                                    "<td align='center'>" + telefono + "</td>" +
+                                    "<td align='center'" +
+                                            "<a " +
+                                            "href='#'" +
+                                            "data-bs-toggle='tooltip'" +
+                                            "title='" + title + "'>" +
+                                            "<img src='" + img + "'>" +
+                                            "</a></td>"+
+                                    `<td><button onClick='buscarTrack("${track}")' style='cursor:pointer' class='btn btn-success trazabilidad'>Evidencia</button></td>`+
+                                "</tr>";
+                                $("#"+exp).append(tr_str);
+                                // $("#"+exp).html(response);
                         }
-                    });
-                });
+                            
+                    }
+            
+                }
+            });
+        });
 
-        // $('#table').DataTable({
-        //     "order": [
-        //         [0, "desc"]
-        //     ],
-        //     "pagingType": "full_numbers"
-        // });
-
+        
     });
-
+    
+    function buscarTrack(dato){
+        console.log('¿estoy dentro?');
+        console.log(dato);
+    }
+    
     document.addEventListener(
         "DOMContentLoaded",
         function () {

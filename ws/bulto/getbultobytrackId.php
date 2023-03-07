@@ -16,6 +16,7 @@
                        bu.id_paquete as servicio,
                        re.id_region as region,
                        bu.id_comuna as comuna,
+                       bu.estado_logistico as estado,
                        bu.track_spread as track
               from bulto bu 
               INNER JOIN comuna co on co.id_comuna = bu.id_comuna 
@@ -38,6 +39,7 @@
                 $correo    = $datares['correo'];
                 $servicio  = $datares['servicio'];
                 $region    = $datares['region'];
+                $estado    = $datares['estado'];
                 
                 $idcomuna    = $datares['comuna'];
                 $querycomuna = 'SELECT nombre_comuna from comuna where id_comuna ='.$idcomuna;
@@ -55,6 +57,7 @@
                     "item" => $item,
                     "servicio" => $servicio,
                     "region" => $region,
+                    "estado" => $estado,
                     "comuna" => $rescomunaname->nombre_comuna
                 );
         }
@@ -62,3 +65,4 @@
         //echo json_encode($query);
     } 
 ?>
+

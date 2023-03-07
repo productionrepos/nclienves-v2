@@ -318,60 +318,50 @@
 
 
             <!-- MODAL LARGE-->
-        <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog"
-            aria-labelledby="myModalLabel16" aria-hidden="true" style="padding: 60px; border-radius: 50px;">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
-                role="document">
-                <div class="modal-content" style="padding: 0px 50px;">
-                    <form class="form form" id="toValdiateBulto" >
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="trackIdlbl"></h4>
-                            <input  style="display: none;" type="text" name="vid_bulto"/>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="gg">Nombre</label>
-                                    <input type="text" id="nombredestinatario" class="form-control" name="nombredestinatario" placeholder="Nombre Destinatario"/>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="contact">Teléfono</label >
-                                    <input type="number" id="numtel" class="form-control" name="numtel" placeholder="Teléfono" />
-                                </div>
-                            </div>
-                            <div class="col-4 justify-content-start">
-                                <button type="button"  class="btn btn-spread" id="closemodal">Inserte texto acorde</button>
+            <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel16" aria-hidden="true" style="padding: 60px; border-radius: 50px;">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                            role="document">
+                            <div class="modal-content" style="padding: 0px 50px;">
+                                <form class="form form" id="toValdiateBulto" >
+                                    <div class="modal-header">
+                                        <h2 class="modal-title" id="trackIdlbl"></h2>
+                                        <input  style="display: none;" type="text" name="vid_bulto"/>
+                                    </div>
+
+                                    <div id="datosSeguimiento"></div>
+
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    </div>
+
+
+                        <?php
+                            include_once('./include/footer.php')
+                        ?>
                 </div>
-            </div>
-        </div>
-    </div>
             
 
-            <?php
-                include_once('./include/footer.php')
-            ?>
            
 </body>
 <script>
-    $(document).ready(function(e){
-        // $(".singleimgmenu").click(function(e){
-        //     e.preventDefault();
-        //     var url = $(this).attr('data-url');
-        //     console.log(url);
-        //     window.location.href = url;
-        // })
-    })
-
+    var http = '<?php echo $http; ?>';
+    var url_busqueda;
+    if(http == 'local'){
+        var url_busqueda = 'http://localhost:8000/api/infoBeetrack/infoPackage/';
+    }
+    else if(http == 'servidor'){
+        var url_busqueda = 'https://spreadfillment-back-dev.azurewebsites.net/api/infoBeetrack/infoPackage/';
+    }
+    
     $('#datapackage').on('click',function(e){
         e.preventDefault();
         let trackid = $(this).closest('#questionTwo').find('#trackid').val()
         // document.getElementById('trackIdlbl').innerHTML = ""
-        document.getElementById('trackIdlbl').innerHTML='Número de Guía: '+trackid
+        document.getElementById('trackIdlbl').innerHTML='';
+        document.getElementById('datosSeguimiento').innerHTML='';
+        
 
         $.ajax({
             type: "POST",
@@ -379,22 +369,89 @@
             dataType:'json',
             data: {"track_id":trackid},
             success: function(data) {
-
                 $.each(data,function(key,value){
-                    console.log(value.track)
-                    console.log(value.nombre)
-                    console.log(value.direccion)
-                    console.log(value.correo)
-                    console.log(value.telefono)
-                    console.log(value.valor)
-                    console.log(value.item)
-                    console.log(value.servicio)
-                    console.log(value.region)
-                    console.log(value.comuna)
+                    document.getElementById('trackIdlbl').innerHTML='Número de Guía: '+trackid
+                    if(value.estado <= 3){
+                        // estados internos
+                        if(value.estado == 0){
+                            document.getElementById('datosSeguimiento').innerHTML='<h4>Creado en sistema</h4>'
+                        }
+                        else if (value.estado == 2){
+                            document.getElementById('datosSeguimiento').innerHTML='<h4>Retirado</h4>'
+                        }
+                        else if (value.estado == 3){
+                            document.getElementById('datosSeguimiento').innerHTML='<h4>Recepcionado en bodega Spread</h4>'
+                        }
+                    }else if(value.estado > 3){
+                        // estados beetrack
+                        let url = url_busqueda + trackid
+                        console.log(url);
+                        getBeetrack();
+                        async function getBeetrack(){
+                            const response = await fetch(url, {
+                                method: 'GET',
+                                dataType: 'json',
+                            })
+                            .then(async (response) => {
+                                console.log(response);
+                                let estadoResponse = await response.json();
+                                if(estadoResponse.response){
+                                    console.log(estadoResponse.response);
+                                    let jsonResponse = estadoResponse.response
+                                    let fecha;
+                                    let fecha2;
+                                    if(jsonResponse.status_id == 2 || jsonResponse.status_id == 3){
+                                        fecha = jsonResponse.arrived_at
+                                        fecha2 = new Date(fecha);
+                                    }else{
+                                        fecha = 'buscar'
+                                    }
+                                    document.getElementById('datosSeguimiento').innerHTML=`<div class="row">
+                                        <div class='col-6'>
+                                            <table class="table">
+                                                <tr>
+                                                    <td>
+                                                        Estado actual del Pedido
+                                                    </td>
+                                                    <td>
+                                                        Fecha cambio de estado
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        ${jsonResponse.substatus}
+                                                    </td>
+                                                    <td>
+                                                        ${fecha2.toLocaleString()}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class='col-6'>
+                                            foto
+                                        </div>
+                                    </div>`
+                                }else{
+                                    console.log('Sin datos');
+                                }
+                            })
+                        
+                        }
+                    }
                 })
             },
                 error: function(data){
-                    console.log(data.query);
+                    document.getElementById('trackIdlbl').innerHTML='';
+                    document.getElementById('datosSeguimiento').innerHTML='';
+                    document.getElementById('trackIdlbl').innerHTML='Número de Guía: '+trackid+', No existe';
+                    Swal.fire({
+                        title: 'ERROR',
+                        text: "El numero de guia ingresado no existe en el sistema.",
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Entendido!'
+                    })
             }
         })
     })

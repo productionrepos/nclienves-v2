@@ -91,6 +91,10 @@
         if($tipo == 2 && $servicio == "iru" ){
             $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 2';
         }
+
+        $resprecio = $conn ->mysqli->query($queryprecio);
+            $precio = $resprecio->fetch_object()->precio;
+            $precio =+ $precio*1.19;
         
        
 
@@ -102,8 +106,10 @@
         $querybulto = "INSERT INTO bulto (id_bulto, nombre_bulto, direccion_bulto, telefono_bulto,email_bulto,descripcion_bulto,
                     valor_declarado_bulto, precio_bulto, tipo_servicio_bulto, codigo_bulto, codigo_barras_bulto, 
                     id_paquete, id_comuna, id_pedido,rut_cliente, estado_logistico,track_spread)
-                    VALUES (null,'".$nombre."','".$direccion.' '.$numerodir.', '.$casablock."',".$telefono.",'".$correo."','".$item."',".$costo.",".$valor.",'".$tipo_servicio."','abc',".$barcode.",".$idpaquete.",".$comuna.",".$id_pedido.',"'.$rut.'",0,NULL)';
+                    VALUES (null,'".$nombre."','".$direccion.' '.$numerodir.', '.$casablock."',".$telefono.",'".$correo."','".$item."',".$costo.",".$precio.",'".$tipo_servicio."','abc',".$barcode.",".$idpaquete.",".$comuna.",".$id_pedido.',"'.$rut.'",0,NULL)';
         // echo $querybulto;
+        $querydeletebultotemporal = "delete from bulto_temporal where id_bulto_temporal =".$idbultotemporal;
+        $conn->mysqli->query($querydeletebultotemporal);
         if($conn->mysqli->query($querybulto)){
            echo $id_pedido;
         }else{

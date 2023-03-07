@@ -41,7 +41,7 @@
             include_once('./include/sidebar.php');
         ?>
        
-        <div id="main"  class="layout-navbar">
+    <div id="main"  class="layout-navbar">
 
             <?php
                 include_once('./include/topbar.php');
@@ -193,22 +193,19 @@
                                                     <div class="row">
                                                         <div class="mb-3 col-10 justify-content-end" >
                                                         <input type="text"class="form-control" 
-                                                                name="" id="" aria-describedby="helpId" 
-                                                                placeholder="Número de pedido">
+                                                                name="" id="trackid" aria-describedby="helpId" 
+                                                                placeholder="Número de guía">
 
                                                         <small id="helpId" class="form-text text-muted"></small>
 
                                                         </div>
                                                         <div class="col-2">
-                                                            <button type="btn btn-success" id="datapackage" class="btn collapsed btn-success" data-bs-toggle="collapse" href="#answerTwo"><i style="font-size:20px" class="fa-solid fa-magnifying-glass"></i></button>
+                                                            <button type="button" id="datapackage" class="btn collapsed btn-success" data-bs-toggle="modal" data-bs-target="#xlarge">
+                                                                <i style="font-size:20px" class="fa-solid fa-magnifying-glass"></i>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </form>
-                                        </div>
-                                        <div id="answerTwo" class="collapse" role="tabcard" aria-labelledby="questionTwo">
-                                            <div class="card-body">
-                                                
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -217,6 +214,50 @@
                     </div>
                 </div>
             </div>
+
+
+            <!-- MODAL LARGE-->
+        <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel16" aria-hidden="true" style="padding: 60px; border-radius: 50px;">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                role="document">
+                <div class="modal-content" style="padding: 0px 50px;">
+                    <form class="form form" id="toValdiateBulto" >
+                        <div class="form-body">
+                                <div class="progress-bar" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0"
+                                    aria-valuemax="100"></div>
+                        </div>
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="trackIdlbl"></h4>
+                            <button class="close" data-bs-dismiss="modal"
+                                aria-label="Close">
+                                <i data-feather="x"></i>
+                            </button>
+
+                            <input  style="display: none;" type="text" name="vid_bulto"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="gg">Nombre</label>
+                                    <input type="text" id="nombredestinatario" class="form-control" name="nombredestinatario" placeholder="Nombre Destinatario"/>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="contact">Teléfono</label >
+                                    <input type="number" id="numtel" class="form-control" name="numtel" placeholder="Teléfono" />
+                                </div>
+                            </div>
+                            <div class="col-4 justify-content-start">
+                                <button type="btn btn-spread button" id="closemodal">Inserte texto acorde</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
             
 
             <?php
@@ -232,9 +273,39 @@
         //     console.log(url);
         //     window.location.href = url;
         // })
+    })
 
-        $('#datapackage').on('click',function(event){
-            event.preventDefault()
+    $('#datapackage').on('click',function(e){
+        e.preventDefault();
+        let trackid = $(this).closest('#questionTwo').find('#trackid').val()
+        // document.getElementById('trackIdlbl').innerHTML = ""
+        document.getElementById('trackIdlbl').innerHTML='Número de Guía: '+trackid
+
+        $.ajax({
+            type: "POST",
+            url: "ws/bulto/getbultobytrackId.php",
+            dataType:'json',
+            data: {"track_id":trackid},
+            success: function(data) {
+
+                console.log(data);
+                data.forEach(d => {
+                    console.log(data);
+                });
+                // console.log(data.track)
+                // console.log(data.nombre)
+                // console.log(data.direccion)
+                // console.log(data.correo)
+                // console.log(data.telefono)
+                // console.log(data.valor)
+                // console.log(data.item)
+                // console.log(data.servicio)
+                // console.log(data.region)
+                // console.log(data.comuna)
+            },
+                error: function(data){
+                    console.log(data.query);
+            }
         })
     })
    

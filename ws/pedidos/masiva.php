@@ -94,29 +94,47 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
                     }
                     //COMPROBAR SI ID DE BODEGA E ID DE ENTREGA SON LAS MISMAS REGIONES PARA DETERMINAR EL TIPO DE ENVIO
                     $tipo_servicio = "";
+                    $tipo = "";
                     if($idregion == $idregionbodega){
                         $tipo_servicio = "Intercomunal urbano";
+                        $tipo = "icu";
                     }
                     else{
                         $tipo_servicio = "Interregional urbano";
+                        $tipo = "iru";
                     }
                     $valor = 0;
                     if($tipoenviostr == "Mini")
                     {
                         $idpaquete = 1;
                     }
+
                     if($tipoenviostr == "Medium")
                     {
                         $idpaquete = 2;
                     }
                     //BUSCAR PRECIOS EN BD
-                    if($idpaquete == 1){
-                        $valor = 3570;
-                    }
-                    elseif($idpaquete == 2){
-                        $valor = 4760;
-                    }
 
+
+                    if($tipo == 1 && $servicio == "icu" ){
+                        $queryprecio = 'SELECT precio_comunal_paquete as precio  from paquete where id_paquete = 1';
+                    }
+                    if($tipo == 1 && $servicio == "iru" ){
+                        $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 1';
+                    }
+            
+                    if($tipo == 2 && $servicio == "icu" ){
+                        $queryprecio = 'SELECT precio_comunal_paquete as precio from paquete where id_paquete = 2';
+                    }
+                    if($tipo == 2 && $servicio == "iru" ){
+                        $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 2';
+                    }
+            
+                    $resprecio = $conn ->mysqli->query($queryprecio);
+                        $precio = $resprecio->fetch_object()->precio;
+                        $precio =+ $precio*1.19;
+
+                   
                     if($conn->mysqli->query($querybultotemporal)){
                         $idbultotemporal = $conn ->mysqli->insert_id;
                     }
@@ -131,7 +149,7 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
                      $jsonbultotemporal[4]."','".
                      $jsonbultotemporal[6]."',".
                      $jsonbultotemporal[7].",".
-                     $valor.",'".
+                     $precio.",'".
                      $tipo_servicio."','abc',".
                      $barcode.",".
                      $idpaquete.",".
@@ -140,11 +158,8 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
                    
                     $jsonbultotemporal = [];
                     if($conn->mysqli->query($querybulto)){
-                        //echo $querybulto;
-                        
-                        // echo "El id_region de BODEGA ES =>> ".$idregionbodega." El id_region de ENVIO ES =>> ".$idregion;
-                        // echo $querybulto;
-                        // //print_r($data);
+                        $querydeletebultotemporal = "delete from bulto_temporal where id_bulto_temporal =".$idbultotemporal;
+                        $conn->mysqli->query($querydeletebultotemporal);
                        
                     }else{
                         echo $querybulto;

@@ -68,8 +68,10 @@ $conn -> desconectar();
             
             <div class="page-heading">
                 <div class="row">
-                    <div class="col-sm-9">
-                        <h3>Pedidos Pendientes || Spread</h3>
+                    <div class="card resumen-envios col-lg-6 col-md-6 col-sm-8 col-12" style="padding: 20px; text-align: center;">
+                        <div class="">
+                                <h3 style="color: black; font-weight: 700;">Pedidos Pendientes</h3>
+                        </div>
                     </div>
                 </div>
             </div>

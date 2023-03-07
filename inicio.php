@@ -34,17 +34,16 @@
     $querypendientes = "Select * from pedido where id_cliente =".$id_cliente.' and estado_pedido > 1 and estado_logistico=1';
     
     if(mysqli_num_rows($resppendientes = $conexion->mysqli->query($querypendientes))>0){
+
         $hasretiros = true;
         while($pendientes = $resppendientes->fetch_object()){
             $pend [] = $pendientes;
         }
 
         $cantidadpendientes = count($pend);
-            // var_dump($pend);
-            // echo "<br>";
+           
         foreach($pend  as $pp){
-            // echo  '<br>';
-            // echo $pp->id_pedido. '<br>';
+            
             $querybultos = "SELECT bu.track_spread as trackid,
                             CONCAT(bo.calle_bodega,' ',bo.numero_bodega) as direccion,
                             pe.timestamp_pedido as fecha,
@@ -53,9 +52,11 @@
                             inner join bodega bo on bo.id_bodega = pe.id_bodega where pe.id_pedido =".$pp->id_pedido;
 
             if($resbultosretiro = $conexion->mysqli->query($querybultos)){
+
                 while($bultospend = $resbultosretiro->fetch_object()){
                     $bultospendientes [] = $bultospend;
                 }
+
                 foreach($bultospendientes as $bultopendiente){
                     // print_r($bultopendiente);
                     $trackid = $bultopendiente->trackid;
@@ -79,10 +80,10 @@
                     array_push($arraybultospendientes,["trackid" => $trackid,
                                                         "direccion" => $direccion,
                                                         "fechaestimada" => $fechaestimada,
-                                                        "IDPEDIDO" => $idpedido
-                                                    ]);
+                                                        "IDPEDIDO" => $idpedido]);
                 }
             }
+
             $bultospendientes = [];
         }
        
@@ -187,9 +188,9 @@
                                 <h4 style="color:#3e3e3f">Retiros Pendientes</h4>
                             </div>
                             <div class="masteresume row">
-                                <div class="col-lg-2 col-12 col-md-6 card colresume">
+                                <div class="col-lg-4 col-12 col-md-6 card colresume">
                                     <div class="row">
-                                        <a href=""><span class="envtitle"><h5>Pendientes</h5></span></a>
+                                        <a href=""><span class="envtitle"><h5>Número de pedidos pendientes</h5></span></a>
                                     </div>
                                     <div class="row dataresenv">
                                         <div class="col-lg-6 col-md-6 col-sm-12 envresitems">
@@ -197,41 +198,47 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 envresitems"> <h4><?php echo $cantidadpendientes?></h4></div>
                                     </div>
-
-                                    
                                 </div>
-                                <div class="col-lg-2 col-12 col-md-6 card colresume">
-                                    <div class="row dataresenv">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 envresitems">
-                                            <table>
+                                <section class="section">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Números de guias correspondientes
+                                            <?php 
+                                                if($cantidadpendientes == 1){
+                                                    echo " al retiro pendiente";
+                                                }else{
+                                                    echo " a los retiros pendientes";
+                                                }
+                                            ?>
+                                        </div>
+                                        <div class="card-body" id="tablepp">
+                                            <table class="table table-striped" id="table1">
                                                 <thead>
-                                                    <th>NRO GUIA</th>
-                                                    <th>DIRECCIÓN RETIRO</th>
-                                                    <th>FECHA ESTIMADA RETIRO</th>
-                                                    <th>NRO PEDIDO</th>
+                                                    <tr>
+                                                        <th>NRO GUIA</th>
+                                                        <th>DIRECCIÓN RETIRO</th>
+                                                        <th>FECHA ESTIMADA RETIRO</th>
+                                                        <th>NRO PEDIDO</th>
+                                                    </tr>
                                                 </thead>
-                                                <!-- "trackid" => $trackid,
-                                                "direccion" => $direccion,
-                                                "fechaestimada" => $fechaestimada -->
-                                                <?php
-                                                    // var_dump($arraybultospendientes);
-                                                    foreach($arraybultospendientes as $index=>$bulpen):
-                                                        echo '<tr>';
-                                                        foreach($bulpen as $key=>$bp):
-                                                ?>
-                                                        <td><?php echo $bp?></td>
-                                                <?php
-                                                        endforeach;
-                                                        echo '</tr>';
-                                                    endforeach;
-                                                ?>
                                                 <tbody>
-
+                                                    <?php
+                                                        // var_dump($arraybultospendientes);
+                                                        foreach($arraybultospendientes as $index=>$bulpen):
+                                                            echo '<tr>';
+                                                            foreach($bulpen as $key=>$bp):
+                                                    ?>
+                                                            <td><?php echo $bp?></td>
+                                                    <?php
+                                                            endforeach;
+                                                            echo '</tr>';
+                                                        endforeach;
+                                                    ?>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-                                </div>
+                                </section>
                             </div>
                         </div>  
                     <?php endif;?>
@@ -239,7 +246,6 @@
 
 
                     <section class="resumen-envios  mt-1" >
-
                         <div class="row justify-content-center">
                             <div class="singleimgmenu col-lg-8 col-sm-12">
                                 <a href="./PedidosPendientes.php">    
@@ -325,7 +331,7 @@
 
                                                         </div>
                                                         <div class="col-2">
-                                                            <button type="button" id="datapackage" class="btn collapsed btn-success" data-bs-toggle="modal" data-bs-target="#xlarge">
+                                                            <button type="button" id="datapackage" class="btn collapsed btn-success">
                                                                 <i style="font-size:20px" class="fa-solid fa-magnifying-glass"></i>
                                                             </button>
                                                         </div>
@@ -373,13 +379,15 @@
 <script>
     var http = '<?php echo $http; ?>';
     var url_busqueda;
-    if(http == 'local'){
-        var url_busqueda = 'http://localhost:8000/api/infoBeetrack/infoPackage/';
-    }
-    else if(http == 'servidor'){
-        var url_busqueda = 'https://spreadfillment-back-dev.azurewebsites.net/api/infoBeetrack/infoPackage/';
-    }
-    
+
+    // if(http == 'local'){
+    //     var url_busqueda = 'http://localhost:8000/api/infoBeetrack/infoPackage/';
+    // }
+    // else if(http == 'servidor'){
+    //     var url_busqueda = 'https://spreadfillment-back-dev.azurewebsites.net/api/infoBeetrack/infoPackage/';
+    // }
+    url_busqueda = 'https://spreadfillment-back-dev.azurewebsites.net/api/infoBeetrack/infoPackage/'
+
     $('#datapackage').on('click',function(e){
         e.preventDefault();
         let trackid = $(this).closest('#questionTwo').find('#trackid').val()
@@ -387,7 +395,6 @@
         document.getElementById('trackIdlbl').innerHTML='';
         document.getElementById('datosSeguimiento').innerHTML='';
         
-
         $.ajax({
             type: "POST",
             url: "ws/bulto/getbultobytrackId.php",
@@ -395,6 +402,8 @@
             data: {"track_id":trackid},
             success: function(data) {
                 $.each(data,function(key,value){
+                    $('#xlarge').modal('show');
+                    console.log(value.estado);
                     document.getElementById('trackIdlbl').innerHTML='Número de Guía: '+trackid
                     if(value.estado <= 3){
                         // estados internos
@@ -424,12 +433,16 @@
                                     console.log(estadoResponse.response);
                                     let jsonResponse = estadoResponse.response
                                     let fecha;
-                                    let fecha2;
+                                    let status;
+                                    //let fecha2;
                                     if(jsonResponse.status_id == 2 || jsonResponse.status_id == 3){
+                                        status = jsonResponse.substatus
                                         fecha = jsonResponse.arrived_at
-                                        fecha2 = new Date(fecha);
+                                        fecha = new Date(fecha)
+                                        fecha = fecha.toLocaleString()
                                     }else{
                                         fecha = 'buscar'
+                                        status = "Pendiente de entrega"
                                     }
                                     document.getElementById('datosSeguimiento').innerHTML=`<div class="row">
                                         <div class='col-6'>
@@ -444,10 +457,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        ${jsonResponse.substatus}
+                                                        ${status}
                                                     </td>
                                                     <td>
-                                                        ${fecha2.toLocaleString()}
+                                                        ${fecha}
                                                     </td>
                                                 </tr>
                                             </table>

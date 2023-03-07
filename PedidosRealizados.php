@@ -59,11 +59,9 @@
                 include_once('./include/topbar.php');
             ?>
             <div class="row">
-                <div class="card" style="padding: 20px">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <h3>Pedidos Realizados || Spread</h3>
-                        </div>
+                <div class="card resumen-envios col-lg-6 col-md-6 col-sm-8 col-12" style="padding: 20px; text-align: center;">
+                    <div class="">
+                            <h3 style="color: black; font-weight: 700;">Pedidos Realizados</h3>
                     </div>
                 </div>
             </div>

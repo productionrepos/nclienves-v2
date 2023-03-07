@@ -181,7 +181,5 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
             echo $querybulto;
          echo $e;
     }
-    
-
 
 ?>

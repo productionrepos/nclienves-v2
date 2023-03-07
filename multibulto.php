@@ -1481,77 +1481,72 @@
                     
     })
 
-			
+	$(document).ready(function(){
+		let options = {rules:{
+					'nombredestinatario[]': {
+						required : true,
+						minlength:5
+					},
+					numtel:{
+						required:true}
+					}}
+
+		$( "#toValdiateBulto" ).each( function() {
+			$( this ).validate( options );
+		} );
+	})
+
+	$("#select_regioncli").on('change',function(){
+		var idregion = this.value;
+		var comuna = document.getElementById("select_comunacli");
+		comuna.options = new Option("");
+		comuna.options.length = 0;
+		$.ajax({
+			type: "POST",
+			url: "ws/pedidos/getComunaByRegion.php",
+			dataType: 'json',
+			data: {
+				"idregion" : idregion
+			},
+			success: function(data) {
+				// console.log(data);
+
+				$.each(data, function (key, value){
+					let select = document.getElementById("select_comunacli");
+					select.options[select.options.length] = new Option(value.nombre,value.id);
+				})
 				
-		
-		
-		
-		$(document).ready(function(){
-			let options = {rules:{
-						'nombredestinatario[]': {
-							required : true,
-							minlength:5
-						},
-						numtel:{
-							required:true}
-						}}
-
-			$( "#toValdiateBulto" ).each( function() {
-				$( this ).validate( options );
-			} );
+			},
+				error: function(data){
+			}
 		})
+	})
 
-		$("#select_regioncli").on('change',function(){
-			var idregion = this.value;
-			var comuna = document.getElementById("select_comunacli");
-			comuna.options = new Option("");
-			comuna.options.length = 0;
-			$.ajax({
-				type: "POST",
-				url: "ws/pedidos/getComunaByRegion.php",
-				dataType: 'json',
-				data: {
-					"idregion" : idregion
-				},
-				success: function(data) {
-					// console.log(data);
+	$("#select_regioncli2").on('change',function(){
+		var idregion = this.value;
+		var comuna = document.getElementById("select_comunacli2");
+		comuna.options = new Option("");
+		comuna.options.length = 0;
+		$.ajax({
+			type: "POST",
+			url: "ws/pedidos/getComunaByRegion.php",
+			dataType: 'json',
+			data: {
+				"idregion" : idregion
+			},
+			success: function(data) {
+				// console.log(data);
 
-					$.each(data, function (key, value){
-						let select = document.getElementById("select_comunacli");
-						select.options[select.options.length] = new Option(value.nombre,value.id);
-					})
-					
-				},
-					error: function(data){
-				}
-			})
+				$.each(data, function (key, value){
+					let select = document.getElementById("select_comunacli2");
+					select.options[select.options.length] = new Option(value.nombre,value.id);
+				})
+				
+			},
+				error: function(data){
+			}
 		})
-
-		$("#select_regioncli2").on('change',function(){
-			var idregion = this.value;
-			var comuna = document.getElementById("select_comunacli2");
-			comuna.options = new Option("");
-			comuna.options.length = 0;
-			$.ajax({
-				type: "POST",
-				url: "ws/pedidos/getComunaByRegion.php",
-				dataType: 'json',
-				data: {
-					"idregion" : idregion
-				},
-				success: function(data) {
-					// console.log(data);
-
-					$.each(data, function (key, value){
-						let select = document.getElementById("select_comunacli2");
-						select.options[select.options.length] = new Option(value.nombre,value.id);
-					})
-					
-				},
-					error: function(data){
-				}
-			})
-		})
+	})
  
 	$("#rowAdder").click(function () {
 		let subindex = counter-1

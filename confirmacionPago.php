@@ -304,8 +304,8 @@ else {
                     }
                 },
                 error: function(data){
-                    console.log(data.responseText);
-                    console.log('fallé');
+                    // console.log(data.responseText);
+                    // console.log('fallé');
                 }
             });
         }
@@ -340,7 +340,7 @@ else {
 					})
 					.then(async (response) => {
 						let estadoResponse = await response.json();
-						console.log(estadoResponse);
+						// console.log(estadoResponse);
 
 						if(estadoResponse.trackId){
 							newTrackId = (estadoResponse.trackId);
@@ -364,7 +364,7 @@ else {
 						}
 					})
 
-					console.log(newTrackId);
+					// console.log(newTrackId);
 
                     var params = {
                         "trackid": newTrackId,
@@ -377,7 +377,7 @@ else {
                         url: "./ws/bulto/insertTrackId2.php",
                         dataType: 'json',
                         success: function(data) {
-                            console.log(data.status)
+                            // console.log(data.status)
                             // procesado = 1;
                             // console.log(procesado);
                             Swal.fire(
@@ -387,7 +387,7 @@ else {
                             );
                             window.location="detallepedido.php?id_pedido="+id_pedido;
                         },error:function(data){
-                            console.log(data);
+                            // console.log(data);
                         }
                     })
 

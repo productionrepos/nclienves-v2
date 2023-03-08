@@ -582,7 +582,7 @@
 
     $('#clifreselect').on('change',function(){
         let rut = $(this).val()
-        console.log(rut);
+        // console.log(rut);
 
 
         $.ajax({
@@ -675,7 +675,7 @@
                         "id_bodega" : id
                     },
                     success: function(data) {
-                        console.log(data);
+                        // console.log(data);
 
                         $.each(data, function (key, value){
                             
@@ -693,7 +693,7 @@
         });
     
         $("#select_type").change(function(){
-           console.log(this.value);
+        //    console.log(this.value);
            var value = this.value; 
            var x = document.getElementById("tipoenvio");
         //    alert(x.textContent +"   " +value);
@@ -725,7 +725,7 @@ $("#select_region").on('change',function(){
                     },
                     success: function(data) {
                         firstwarehouse = false
-                        console.log(data);
+                        // console.log(data);
                         let select = document.getElementById("select_comuna");
                         select.options[select.options.length] = new Option("","",false,false)
 
@@ -764,7 +764,7 @@ $("#select_regioncli").on('change',function(){
                         "idregion" : idregion
                     },
                     success: function(data) {
-                        console.log(data);
+                        // console.log(data);
 
                         $.each(data, function (key, value){
                             let select = document.getElementById("select_comunacli");
@@ -790,7 +790,7 @@ $("#select_regioncli2").on('change',function(){
             "idregion" : idregion
         },
         success: function(data) {
-            console.log(data);
+            // console.log(data);
 
             $.each(data, function (key, value){
                 let select = document.getElementById("select_comunacli2");
@@ -873,8 +873,8 @@ $("#select_regioncli2").on('change',function(){
                                     dataType: 'json',
                                     data: JSON.stringify(dataajax),
                                     success:function(resp){
-                                        console.log(resp);
-                                        console.log(existbodegas);
+                                        // console.log(resp);
+                                        // console.log(existbodegas);
                                         if(existbodegas){
                                             location.reload()
                                         }
@@ -882,8 +882,8 @@ $("#select_regioncli2").on('change',function(){
                                             location.reload()
                                         }
                                     },error:function(resp){
-                                        console.log(resp);
-                                            console.log(existbodegas);
+                                        // console.log(resp);
+                                            // console.log(existbodegas);
                                             if(existbodegas){
                                                 location.reload()
                                             }
@@ -895,7 +895,7 @@ $("#select_regioncli2").on('change',function(){
                                 })
                         }
                         catch(error){
-                            console.log(error);
+                            // console.log(error);
                             return false;
                         }     
                             
@@ -978,7 +978,7 @@ $("#select_regioncli2").on('change',function(){
                                     dataType: 'json',
                                     data: JSON.stringify(dataajax),
                                     success:function(resp){
-                                        console.log(resp.query);
+                                        // console.log(resp.query);
                                         if(existbodegas){
                                             location.reload()
                                         }
@@ -986,7 +986,7 @@ $("#select_regioncli2").on('change',function(){
                                             location.reload()
                                         }
                                     },error:function(resp){
-                                        console.log(resp.query);
+                                        // console.log(resp.query);
                                         if(existbodegas){
                                             location.reload()
                                         }
@@ -997,7 +997,7 @@ $("#select_regioncli2").on('change',function(){
                                 })
                         }
                         catch(error){
-                            console.log(error);
+                            // console.log(error);
                             return false;
                         }    
                         

@@ -421,7 +421,7 @@
             success: function(data) {
                 $.each(data,function(key,value){
                     $('#xlarge').modal('show');
-                    console.log(value.estado);
+                    // console.log(value.estado);
                     document.getElementById('trackIdlbl').innerHTML='Evidencia'
                     document.getElementById('numguia').innerHTML= trackid
                     if(value.estado <= 3){
@@ -438,7 +438,7 @@
                     }else if(value.estado > 3){
                         // estados beetrack
                         let url = url_busqueda + trackid
-                        console.log(url);
+                        // console.log(url);
                         getBeetrack();
                         async function getBeetrack(){
                             const response = await fetch(url, {
@@ -446,7 +446,7 @@
                                 dataType: 'json',
                             })
                             .then(async (response) => {
-                                console.log(response);
+                                // console.log(response);
                                 let { identifier,status,status_id,substatus,substatus_code,
                                     arrived_at,number_of_retries,histories,evaluation_answers
                                 } = await response.json();

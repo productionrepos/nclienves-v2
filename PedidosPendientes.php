@@ -154,8 +154,8 @@ $conn -> desconectar();
                             "id_pedido" : id_pedido
                         }),
                         success: function(data) {
-                            console.log(data.deletepedido);
-                            console.log(data.querytemporal);
+                            // console.log(data.deletepedido);
+                            // console.log(data.querytemporal);
                             if(data.status ==1){
                                 Swal.fire(
                                     'Eliminado!',
@@ -169,7 +169,7 @@ $conn -> desconectar();
                             }
 
                         },error:function(data){
-                            console.log(data);
+                            // console.log(data);
                         }
                     })
                     

@@ -358,7 +358,7 @@
                             $("#reloadiv").load(window.location.href +" #reloadiv");
                         },
                             error: function(data){
-                                console.log(data.query);
+                                // console.log(data.query);
                         }
                     })
                     return false;  
@@ -394,9 +394,9 @@
                 $("#overlay").fadeIn(300);
             },
             success:function(resp){
-                console.log(resp);
+                // console.log(resp);
                  $.each(resp,function(key,value){
-                     console.log(value.nombre);
+                    //  console.log(value.nombre);
                      //document.getElementById("nombredestinatario").innerHTML = ""+value.nombre+""
                     $("#xlarge").find('input[name="nombredestinatario"]').val(value.nombre)
                     $("#xlarge").find('input[name="numtel"]').val(parseInt(value.telefono))
@@ -414,7 +414,7 @@
                     }
                  })
             },error:function(resp){
-                console.log(resp.responseText);
+                // console.log(resp.responseText);
             },complete: function() {
                 $("#overlay").fadeOut(300);
             }
@@ -433,7 +433,7 @@
                 "idregion" : idregion
             },
             success: function(data) {
-                console.log(data);
+                // console.log(data);
 
                 $.each(data, function (key, value){
                     let select = document.getElementById("select_comuna");
@@ -475,10 +475,10 @@
                         $("#overlay").fadeIn(300);
                     },
                     success:function(resp){
-                        console.log(resp)
+                        // console.log(resp)
                         
                     },error:function(resp){
-                        console.log(resp.responseText);
+                        // console.log(resp.responseText);
                     },complete: function() {
                         $("#overlay").fadeOut(300);
                     }

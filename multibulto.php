@@ -607,10 +607,10 @@
 
 	$('.chcksize').change(function(){
 		let index = $(this).closest('section').find('.m-input').val()
-		console.log(index)
+		// console.log(index)
 		let subindex = index-1		
 		let valuetipo = $(this).closest('label').find('h4').text()
-		console.log(valuetipo);
+		// console.log(valuetipo);
 		let tipo = 0
 		let inputs =  document.getElementsByName('tipo[]')
 		let btn = document.getElementsByName('botontipo[]');
@@ -637,7 +637,7 @@
 		//console.log(getpassStatus(index,"tipo"));
 		let response = getpassStatus(index,"tipo")
 
-		console.log(response);
+		// console.log(response);
 		if(response){
 			$(this).closest('#row').find('.formdisplay').addClass('show')
 		}
@@ -885,7 +885,7 @@
 				//VALIDAR TELEFONO 
 				if(telefono[index].value == ""){
 					telefono[index].parentNode.classList.add("vlderr")
-					console.log("telvacio");
+					// console.log("telvacio");
 					countererr++
 				}
 				else if(telefono[index].value.length <= 5){
@@ -903,7 +903,7 @@
 				if(direccion[index].value == ""){
 					direccion[index].classList.add("vlderr")
 					countererr++
-					console.log("dirvacio");
+					// console.log("dirvacio");
 				}
 				else if(direccion[index].value.length <= 5){
 					direccion[index].classList.add("vlderr")
@@ -917,7 +917,7 @@
 				if(numerodir[index].value == ""){
 					numerodir[index].classList.add("vlderr")
 					countererr++
-					console.log("dirvacio");
+					// console.log("dirvacio");
 				}
 				else if(numerodir[index].value.length <= 2){
 					numerodir[index].classList.add("vlderr")
@@ -931,7 +931,7 @@
 				if(detalle[index].value == ""){
 					detalle[index].classList.add("vlderr")
 					countererr++
-					console.log("dirvacio");
+					// console.log("dirvacio");
 				}
 				else if(detalle[index].value.length <= 3){
 					detalle[index].classList.add("vlderr")
@@ -1039,7 +1039,7 @@
 				//VALIDAR TELEFONO 
 				if(telefono[i].value == ""){
 					telefono[i].parentNode.classList.add("vlderr")
-					console.log("telvacio");
+					// console.log("telvacio");
 					countererr++
 				}
 				else if(telefono[i].value.length <= 5){
@@ -1054,7 +1054,7 @@
 				if(direccion[i].value == ""){
 					direccion[i].classList.add("vlderr")
 					countererr++
-					console.log("dirvacio");
+					// console.log("dirvacio");
 				}
 				else if(direccion[i].value.length <= 5){
 					direccion[i].classList.add("vlderr")
@@ -1249,7 +1249,7 @@
 				}
 			}
 		}
-			console.log(countererr);
+			// console.log(countererr);
 		if(countererr > 0 )
 		{
 			pass = false;
@@ -1261,8 +1261,8 @@
 	}
 
     $(document).ready(function(){
-        console.log(existbodegas);
-        console.log(countbodegas);
+        // console.log(existbodegas);
+        // console.log(countbodegas);
             if(existbodegas == 0){
                 Swal.fire({
                 position: 'center',
@@ -1349,7 +1349,7 @@
 									//console.log(resp);
 									location.reload()
 									if(resp==="error"){
-										console.log("creado");
+										// console.log("creado");
 										return false; 
 									}
 									else{
@@ -1360,7 +1360,7 @@
 							})
 					}
 					catch(error){
-						console.log(error);
+						// console.log(error);
 						return false;
 					}	
 				}
@@ -1369,7 +1369,7 @@
             el.addEventListener("click", e => {
                 let id = e.target.getAttribute("value");
                 id_bodega = id;
-                console.log(id_bodega);
+                // console.log(id_bodega);
                 $.ajax({
                     type: "POST",
                     url: "ws/bodega/getbodegaById.php",
@@ -1378,7 +1378,7 @@
                         "id_bodega" : id
                     },
                     success: function(data) {
-                        console.log(data);
+                        // console.log(data);
 
                         $.each(data, function (key, value){
 							document.getElementById("resumemyData").innerHTML = ""
@@ -1571,7 +1571,7 @@
 				counter ++
 				let index = counter - 1
 				let clone = $('#row').clone(true)
-				console.log(clone.find('#clifreselect').addClass('clonedclifre'))
+				// console.log(clone.find('#clifreselect').addClass('clonedclifre'))
 
 				clone.find("#nombredestinatario").val("")
 				clone.find("#nombredestinatario").removeClass('vlderr')
@@ -1668,7 +1668,7 @@
 											detalle:detalle[i].value,
 											numerodir:numerodir[i].value}]
 					}
-					console.log(arraydatos);
+					// console.log(arraydatos);
 					
 					$.ajax({
 						type: "POST",
@@ -1706,11 +1706,11 @@
 	$("body").on("click", "#DeleteRow", function () {
 		
 		if(counter<=1){
-				console.log("no se pueden tener 0 registros")
+				// console.log("no se pueden tener 0 registros")
 			}
 			else{
 				counter--;
-				console.log(counter);
+				// console.log(counter);
 				//console.log(counter);
 				let actual = $(this).closest('#row').find('.m-input').val();
 				// console.log(actual);
@@ -1743,11 +1743,11 @@
 						// nombreind[index].name = nombrenew;
 						//console.log("El nuevo nombre es: "+ nombrenew);
 						let idform = formgetid[index].id;
-						console.log("EL ID ENTRANTE ES "+idform+" VAMOS EN EL INDEX "+index);
-						console.log("SE INTENTARA REEMPLAZAR ESTO "+"toValidateBulto"+indexplus);
-						console.log("SE INTENTARA REEMPLAZAR ESTO "+"toValidateBulto"+index);
+						// console.log("EL ID ENTRANTE ES "+idform+" VAMOS EN EL INDEX "+index);
+						// console.log("SE INTENTARA REEMPLAZAR ESTO "+"toValidateBulto"+indexplus);
+						// console.log("SE INTENTARA REEMPLAZAR ESTO "+"toValidateBulto"+index);
 						let newformid = idform.replace( "toValidateBulto"+indexplus, "toValidateBulto"+index )
-						console.log("LA NUEVA CADENA DE FORM ES " + newformid);
+						// console.log("LA NUEVA CADENA DE FORM ES " + newformid);
 						idform[index].id = newformid; 
 					}	
 				}
@@ -1757,14 +1757,14 @@
 
 	$(".clonedcom").on('click',function(){
 		let idregion = $(this).closest("#row").find(".clonedreg").val();
-		console.log(idregion);
+		// console.log(idregion);
 		
 
 	})
 
 	$(".sel_comuna").on('click',function(){
 		let idregion = $(this).closest("#row").find(".sel_region").val();
-		console.log(idregion);
+		// console.log(idregion);
 	})
 
 </script>	

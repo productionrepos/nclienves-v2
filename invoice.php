@@ -345,7 +345,7 @@ if($credito == 0) {
                                         })
                                         .then(async (response) => {
                                             let estadoResponse = await response.json();
-                                            console.log(estadoResponse);
+                                            // console.log(estadoResponse);
 
                                             if(estadoResponse.trackId){
                                                 newTrackId = (estadoResponse.trackId);
@@ -369,7 +369,7 @@ if($credito == 0) {
                                             }
                                         })
 
-                                        console.log(newTrackId);
+                                        // console.log(newTrackId);
 
                                         var params = {
                                             "trackid": newTrackId,
@@ -382,9 +382,9 @@ if($credito == 0) {
                                             url: "./ws/bulto/insertTrackId2.php",
                                             dataType: 'json',
                                             success: function(data) {
-                                                console.log(data.status)
+                                                // console.log(data.status)
                                                 procesado = 1;
-                                                console.log(procesado);
+                                                // console.log(procesado);
                                                 Swal.fire(
                                                 'Pago procesado!',
                                                 'Tú pedido fue procesado por credito!',
@@ -392,7 +392,7 @@ if($credito == 0) {
                                                 );
                                                 window.location="detallepedido.php?id_pedido="+<?=$id_pedido?>;
                                             },error:function(data){
-                                                console.log(data.responseText);
+                                                // console.log(data.responseText);
                                                 // procesado = 1;
                                                 // console.log(procesado);
                                                 // Swal.fire(
@@ -414,7 +414,7 @@ if($credito == 0) {
                             }
                         },
                         error: function(data){
-                            console.log(data.message);
+                            // console.log(data.message);
                         }
                     })
             }

@@ -105,7 +105,7 @@
 				        }
             },highlight: function(element) {
                 var $el = $(element);
-                console.log($el);
+                // console.lo($el);
                 var $parent = $el.parents(".form-group");
                 $el.addClass("es-invalido");
 
@@ -125,7 +125,7 @@
                     data: $("#ingreso").serialize(),
                     dataType: 'json',
                     success: function(data) {
-                      console.log(data);
+                      // consolelog(data);
                         if(data.success==1) {
                         	window.location.href = "./";
                         }

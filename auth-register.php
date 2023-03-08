@@ -115,14 +115,14 @@
             messages: {
                 email_cliente: "Por favor ingrese un email válido",
                 password_cliente: {
-					required: "Por favor ingrese su contraseña",
-					minlength: "Debe poseer por lo menos 6 caracteres"
-				},
+                required: "Por favor ingrese su contraseña",
+                minlength: "Debe poseer por lo menos 6 caracteres"
+              },
                 password_cliente2: {
-					required: "Por favor ingrese su contraseña",
-					minlength: "Debe poseer por lo menos 6 caracteres",
-					equalTo: "Las contraseñas no coinciden"
-				}
+                required: "Por favor ingrese su contraseña",
+                minlength: "Debe poseer por lo menos 6 caracteres",
+                equalTo: "Las contraseñas no coinciden"
+              }
             },
             highlight: function(element) {
                 var $el = $(element);
@@ -146,12 +146,12 @@
                     dataType: 'json',
                     success: function(data) {
                         if(data.success==1) {
-							$(".toggle-block").toggle();
-							swal.fire("¡Bien hecho!", data.message, "success");
-              window.location = "index.php";
+                          $(".toggle-block").toggle();
+                          swal.fire("¡Bien hecho!", data.message, "success");
+                          // window.location = "index.php";
                         }
                         else {
-							swal.fire("Error", data.message, "error");
+							            swal.fire("Error", data.message, "error");
                         }
                     	$("#registro").trigger("reset");
                     },

@@ -349,14 +349,14 @@ include_once('./include/head.php');
 
     $('.modbtn').on('click',function(){
         id_bodega = $(this).closest('.card_bodegas').find('#idbod').val()
-        console.log(id_bodega)
+        // console.log(id_bodega)
         $.ajax({
             url: "ws/bodega/getbodegaById.php",
             type: "POST",
             dataType :'json',
             data: {"id_bodega" : id_bodega},
             success:function(resp){
-                console.log(resp)
+                // console.log(resp)
                 let form = document.getElementById('ModForm')
                 $.each(resp,function(key,value){
                     // console.log(value.comuna);
@@ -392,7 +392,7 @@ include_once('./include/head.php');
                         type: "POST",
                         data: JSON.stringify(dataajax),
                         success:function(resp){
-                            console.log(resp)
+                            // console.log(resp)
                             return false
                         }
                     })
@@ -522,7 +522,7 @@ include_once('./include/head.php');
                             })
                             $('#ModForm').modal('hide')
                             $(".resumen-bodegas").load(window.location.href +" .resumen-bodegas");
-                            console.log(resp)
+                            // console.log(resp)
                             return false
                         }
                     })
@@ -583,7 +583,7 @@ include_once('./include/head.php');
                             })
                         }
                     },error:function(resp){
-                        console.log(resp.responseText);
+                        // console.log(resp.responseText);
                     },complete: function() {
                         $("#overlay").fadeOut(300);
                     }

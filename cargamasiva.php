@@ -569,7 +569,7 @@ $(document).ready(function(){
                                             location.reload()
                                         }
                                     },error:function(resp){
-                                        console.log(resp.query);
+                                        // console.log(resp.query);
                                         if(existbodegas){
                                             location.reload()
                                         }
@@ -675,7 +675,7 @@ $(document).ready(function(){
                                             location.reload()
                                         }
                                     },error:function(resp){
-                                        console.log(resp.query);
+                                        // console.log(resp.query);
                                         if(existbodegas){
                                             location.reload()
                                         }
@@ -687,7 +687,7 @@ $(document).ready(function(){
                                 })
                         }
                         catch(error){
-                            console.log(error);
+                            // console.log(error);
                             return false;
                         }    
                         
@@ -756,7 +756,7 @@ $('.tbodyclick').on('change','#select_comuna',function(){
     {
         // console.log("no hay Comuna");
     }
-    console.log("LA COMUNA ESSSSSSSSSS!"+comuna);
+    // console.log("LA COMUNA ESSSSSSSSSS!"+comuna);
 })
 
 function validatenombre(valor,clase){
@@ -789,7 +789,7 @@ function getTableData(){
 
 
     $(".tbodyclick td").hasClass('err')? error = true : error=false;
-    console.log(error)
+    // console.log(error)
 
     if(error)
     {
@@ -844,8 +844,8 @@ function getTableData(){
                        window.location = "confirmarpedido.php?id_pedido="+data;
                 })
             },error:function(data){
-                console.log("Volvi, pero no sirvo para nada");
-                console.log(data.responseText);
+                // console.log("Volvi, pero no sirvo para nada");
+                // console.log(data.responseText);
             }
         })
     }
@@ -1145,7 +1145,7 @@ document.querySelectorAll("#usardir").forEach(el => {
                                 })
                         }
                         catch(error){
-                            console.log(error);
+                            // console.log(error);
                             return false;
                         }      
                     }

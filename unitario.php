@@ -544,7 +544,6 @@
                 include_once('./include/footer.php')
             ?>
             <script src="assets/js/jquery-validation/jquery.validate.js"></script>
-
             <script src="./js/newPedido.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="./js/rut.js"></script>
@@ -646,12 +645,12 @@
     $('#submitpedido').on('click',function(){
         if($('#useMini').checked == false && $('#useMini').checked == false){
                 Swal.fire({
-                position: 'bottom',
-                icon: 'error',
-                title: 'Ingrese el tipo de bulto a transportar',
-                showConfirmButton: false,
-                timer: 3200
-            })
+                    position: 'bottom',
+                    icon: 'error',
+                    title: 'Ingrese el tipo de bulto a transportar',
+                    showConfirmButton: false,
+                    timer: 3200
+                })
             let clickit = document.getElementById('showtipo').click()
         }
         

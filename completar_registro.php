@@ -70,7 +70,7 @@ $conexion->desconectar();
 						        <input type="text" class="form-control" name="email_datos_contacto" id="email_datos_contacto" value="<?=$datos_cliente->email_cliente?>" placeholder="">
 						        <br><span class="text-muted">* Correo personal, no cambiará el de ingreso</span>
 						    </div>
-						    <button type="button" class="btn btn-success btn-block mb-4">Completar registro</button>
+						    <button type="submit" class="btn btn-success btn-block mb-4">Completar registro</button>
 						</form>
 
 					</div>
@@ -174,17 +174,17 @@ $(document).ready(function(){
                     if(data.success==1) {
 						$(".toggle-block").toggle();
 						swal.fire({
-							title:"¡Modificado!",
+							title:"¡Modificado!, Puedes Iniciar Sesión",
 							text: data.message,
 							icon: "success",
 							confirmButtonColor: '#3085d6',
 							confirmButtonText: 'OK'
 						}).then((result) => {
 							if (result.isConfirmed) {
-								console.log('modificado');
-								// window.location = "index.php";
+								// console.log('modificado');
+								window.location = "index.php";
 							}else{
-								// window.location = "index.php";
+								window.location = "index.php";
 							}
 						})
                     }else {

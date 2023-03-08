@@ -849,13 +849,7 @@ $('#datoscomerciales').validate({
                     })
                 }
         }
-})
-
-
-
-
-
-                          
+})                         
 </script>
 
 </html>

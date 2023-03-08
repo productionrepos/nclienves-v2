@@ -71,26 +71,27 @@
             $tipo_servicio = "interregional urbano";
             $tp = "iru";
         }
-        if($idpaquete == 1){
+        // if($idpaquete == 1){
             
-        }
-        elseif($idpaquete == 2){
+        // }
+        // elseif($idpaquete == 2){
            
-        }
+        // }
 
-        if($tipo == 1 && $servicio == "icu" ){
+        if($idpaquete == 1 && $tp == "icu" ){
             $queryprecio = 'SELECT precio_comunal_paquete as precio  from paquete where id_paquete = 1';
         }
-        if($tipo == 1 && $servicio == "iru" ){
+        if($idpaquete == 1 && $tp == "iru" ){
             $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 1';
         }
 
-        if($tipo == 2 && $servicio == "icu" ){
+        if($idpaquete == 2 && $tp == "icu" ){
             $queryprecio = 'SELECT precio_comunal_paquete as precio from paquete where id_paquete = 2';
         }
-        if($tipo == 2 && $servicio == "iru" ){
+        if($idpaquete == 2 && $tp == "iru" ){
             $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 2';
         }
+
 
         $resprecio = $conn ->mysqli->query($queryprecio);
             $precio = $resprecio->fetch_object()->precio;

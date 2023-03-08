@@ -597,7 +597,13 @@
                 $.each(data, function (key, value){
                     //console.log(value.comuna);
                     document.getElementById("nombredestinatario").value = value.nombre
-                    document.getElementById('dir').value = value.direccion
+                    let calle = value.calle
+                    let numero = value.numero
+                    let detalle = value.casablock
+
+                    document.getElementById('dir').value = calle
+                    document.getElementById('numerodir').value = numero
+                    document.getElementById('detalle').value = detalle
                     document.getElementById('numtel').value = value.telefono
                     document.getElementById('correo').value = value.correo
                     // let vcomuna = document.getElementById('select_comuna').value;

@@ -368,53 +368,8 @@
                                 </div>
                             </div>
                             
-                            <div class="row justify-content-center">
-                                <div class="panel-body col-5" style="background-color: #60cbb196; margin: 20px; border-radius: 50px;padding: 30px;" >
-                                    <span class="timeline-date" >19:00</span>
-                                    <h4 class="blue" >03/03/2023</h1>
-                                    <p>
-                                        <a style="text-decoration: none;color: red;" href="#">Entregado</a>
-                                    </p>
-                                    <p>
-                                        <span>
-                                            <a style="text-decoration: none;color: #3e3e3f;" href="#" class="blue">Entrega exitosa</a>
-                                        </span>
-                                    </p>
-                                    <p>Nombre completo de quien recibe : Tamara Palomari</p>
-                                    <p>Rut Receptor : 105613640</p>
-                                    <p>Parentesco (Conserje, Mamá, Cliente, etc..) : amiga</p>
-                                    <div style="font-weight: 800;font-size: 18px;">Firma digital</div>
-                                    <div class="album row">
-                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
-                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/signature_answer_b8aff20f-e6e7-4717-a074-70368df3cc82.png" target="_blank" style="width: 100%;">
-                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/signature_answer_b8aff20f-e6e7-4717-a074-70368df3cc82.png" style="width:100%;height:100px">
-                                                </a>
-                                            </div>
-                                    </div>
-                                    <div style="font-weight: 800; font-size: 18px;">Foto </div>
-                                    <div class="album row">
-                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
-                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160013_5914975997838589505.jpg" target="_blank" style="width: 100%;">
-                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160013_5914975997838589505.jpg" style="width:100%;height:100px">
-                                                </a>
-                                            </div>
-                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
-                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160018_8675189283889503001.jpg" target="_blank" style="width: 100%;">
-                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160018_8675189283889503001.jpg" style="width:100%;height:100px">
-                                                </a>
-                                            </div>
-                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
-                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160023_5014969434535705222.jpg" target="_blank" style="width: 100%;">
-                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160023_5014969434535705222.jpg" style="width:100%;height:100px">
-                                                </a>
-                                            </div>
-                                            <div class="col-md-3" style=" padding: 0 2% 0 0;">
-                                                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160031_5811682112350141718.jpg" target="_blank" style="width: 100%;">
-                                                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160031_5811682112350141718.jpg" style="width:100%;height:100px">
-                                                </a>
-                                            </div>
-                                    </div>
-                                </div>
+                            <div class="row justify-content-center" id="infoFormulario">
+                                <!-- <div id="infoFormulario"></div> -->
                             </div>
                         </div>
                         <div style="display: none;" id="datosSeguimiento"></div>
@@ -447,11 +402,16 @@
     $('#datapackage').on('click',function(e){
         e.preventDefault();
         let trackid = $(this).closest('#questionTwo').find('#trackid').val()
-        // document.getElementById('trackIdlbl').innerHTML = ""
+        document.getElementById('infoFormulario').innerHTML = "";
         document.getElementById('trackIdlbl').innerHTML='';
         document.getElementById('datosSeguimiento').innerHTML='';
         document.getElementById('numguia').innerHTML='';
         numguia
+        let horaFecha = "";
+        let hora = "";
+        let html = "";
+        let estado = "";
+        let subStatus = "";
         
         $.ajax({
             type: "POST",
@@ -462,7 +422,7 @@
                 $.each(data,function(key,value){
                     $('#xlarge').modal('show');
                     console.log(value.estado);
-                    document.getElementById('trackIdlbl').innerHTML='Detalle de guía'
+                    document.getElementById('trackIdlbl').innerHTML='Evidencia'
                     document.getElementById('numguia').innerHTML= trackid
                     if(value.estado <= 3){
                         // estados internos
@@ -487,68 +447,127 @@
                             })
                             .then(async (response) => {
                                 console.log(response);
-                                let estadoResponse = await response.json();
-                                if(estadoResponse.response){
-                                    console.log(estadoResponse.response);
-                                    let jsonResponse = estadoResponse.response
-                                    let fecha;
-                                    let status;
-                                    //let fecha2;
-                                    if(jsonResponse.status_id == 2 || jsonResponse.status_id == 3){
-                                        status = jsonResponse.substatus
-                                        fecha = jsonResponse.arrived_at
-                                        fecha = new Date(fecha)
-                                        fecha = fecha.toLocaleString()
-                                    }else{
-                                        fecha = 'buscar'
-                                        status = "Pendiente de entrega"
-                                    }
-                                    document.getElementById('datosSeguimiento').innerHTML=`<div class="row">
-                                        <div class='col-6'>
-                                            <table class="table">
-                                                <tr>
-                                                    <td>
-                                                        Estado actual del Pedido
-                                                    </td>
-                                                    <td>
-                                                        Fecha cambio de estado
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        ${status}
-                                                    </td>
-                                                    <td>
-                                                        ${fecha}
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class='col-6'>
-                                            foto
-                                        </div>
-                                    </div>`
-                                }else{
-                                    console.log('Sin datos');
+                                let { identifier,status,status_id,substatus,substatus_code,
+                                    arrived_at,number_of_retries,histories,evaluation_answers
+                                } = await response.json();
+
+                                horaFecha = arrived_at.split(' ');
+                                hora = horaFecha[1].split('+');
+
+                                if(status_id == 1){
+                                    estado = 'En Ruta'
                                 }
+                                else if(status_id == 2){
+                                    estado = 'Entregado'
+                                }
+                                else if(status_id == 3){
+                                    estado = 'No Entregado'
+                                }
+                                // console.log(horaFecha);
+                                // console.log(hora);
+                                // console.log(estado);
+                                
+                                html += `<div class="panel-body col-8" style="background-color: #60cbb196; margin: 20px; border-radius: 50px;padding: 30px;" >
+                                            <span class="timeline-date"><h5 class="blue">${horaFecha[0]}</h5> ${hora[0]}</span>
+
+                                            <span>
+                                                <h5 style="text-decoration: none;color: red;">${estado}</h5>
+                                                <h5 style="text-decoration: none;color: #3e3e3f;" class="blue">${substatus}</h5>
+                                            </span>`;
+                                
+                                evaluation_answers.forEach(respuesta => {
+                                    if(respuesta.cast == 'photo'){
+                                        html += `<div style="font-weight: 800; font-size: 18px;">${respuesta.name}</div>
+                                        <div class="album row">`;
+                                        fotos = respuesta.value.split(',')
+                                        for(let i = 0; i < fotos.length ; i++){
+                                            html += `<div class="col-md-3" style=" padding: 0 2% 2% 0;">
+                                            <a href="${fotos[i]}" target="_blank" style="width: 100%;">
+                                            <img alt="package-deliver-img" class="img-responsive" src="${fotos[i]}" style="width:100%;height:100px">
+                                            </a>
+                                            </div>`;
+                                        }
+                                        html += `</div>`;
+                                    }
+                                    else if(respuesta.cast == 'signature'){
+                                        html += `<div style="font-weight: 800;font-size: 18px; padding: 3% 0 0 0;">${respuesta.name}</div>
+                                        <div class="album row">
+                                        <div class="col-md-3" style=" padding: 0 2% 2% 0;">
+                                        <a href="${respuesta.value}" target="_blank" style="width: 100%;">
+                                        <img alt="package-deliver-img" class="img-responsive" src="${respuesta.value}" style="width:100%;height:100px">
+                                        </a>
+                                        </div>
+                                        </div>`;
+                                    }
+                                    else{
+                                        html += `<p style="margin: 0px;padding:0px;">${respuesta.name} : ${respuesta.value}</p>`;
+                                    }
+                                });
+                                html += `</div>`;
+
+                                document.getElementById('infoFormulario').innerHTML=`${html}`;
+
+                                // if(estadoResponse.response){
+                                //     console.log(estadoResponse.response);
+                                //     let jsonResponse = estadoResponse.response
+                                //     let fecha;
+                                //     let status;
+                                //     //let fecha2;
+                                //     if(jsonResponse.status_id == 2 || jsonResponse.status_id == 3){
+                                //         status = jsonResponse.substatus
+                                //         fecha = jsonResponse.arrived_at
+                                //         fecha = new Date(fecha)
+                                //         fecha = fecha.toLocaleString()
+                                //     }else{
+                                //         fecha = 'buscar'
+                                //         status = "Pendiente de entrega"
+                                //     }
+                                //     document.getElementById('datosSeguimiento').innerHTML=`<div class="row">
+                                //         <div class='col-6'>
+                                //             <table class="table">
+                                //                 <tr>
+                                //                     <td>
+                                //                         Estado actual del Pedido
+                                //                     </td>
+                                //                     <td>
+                                //                         Fecha cambio de estado
+                                //                     </td>
+                                //                 </tr>
+                                //                 <tr>
+                                //                     <td>
+                                //                         ${status}
+                                //                     </td>
+                                //                     <td>
+                                //                         ${fecha}
+                                //                     </td>
+                                //                 </tr>
+                                //             </table>
+                                //         </div>
+                                //         <div class='col-6'>
+                                //             foto
+                                //         </div>
+                                //     </div>`
+                                // }else{
+                                //     console.log('Sin datos');
+                                // }
                             })
                         
                         }
                     }
                 })
             },
-                error: function(data){
-                    document.getElementById('trackIdlbl').innerHTML='';
-                    document.getElementById('datosSeguimiento').innerHTML='';
-                    document.getElementById('trackIdlbl').innerHTML='Número de Guía: '+trackid+', No existe';
-                    Swal.fire({
-                        title: 'ERROR',
-                        text: "El numero de guia ingresado no existe en el sistema.",
-                        icon: 'error',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Entendido!'
-                    })
+            error: function(data){
+                document.getElementById('trackIdlbl').innerHTML='';
+                document.getElementById('datosSeguimiento').innerHTML='';
+                document.getElementById('trackIdlbl').innerHTML='Número de Guía: '+trackid+', No existe';
+                Swal.fire({
+                    title: 'ERROR',
+                    text: "El numero de guia ingresado no existe en el sistema.",
+                    icon: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido!'
+                })
             }
         })
     })

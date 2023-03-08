@@ -110,11 +110,12 @@ if($resdatabulto = $conn->mysqli->query($querybulto)){
   <a id="apretameclick" class="col-2 btn btn-success">Apretame</a>
   <a id="apretameclick2" class="col-2 btn btn-success">Apretame2</a>
 <br>
+<div id="datosSeguimiento"></div>
 
 <?php
 require_once('./include/footer.php');
 $date = (new DateTime('now',new DateTimeZone('Chile/Continental')))->format('Y-m-d H:i:s');
-echo $date;
+// echo $date;
 ?>
 
 <script src="./js/testjs.js"></script>
@@ -140,11 +141,17 @@ echo $date;
   var token_beetrack = '4471afc1f7ee5051458a39d3bd5df4a5107ee7df1753a1bf8affef9b29aace75'
 
   $('#apretameclick').on('click',function(){
+    document.getElementById('datosSeguimiento').innerHTML='';
     let valor = document.getElementById('trackid').value
-    console.log(valor);
+    let fotos;
+    let formulario;
+    let estadoResponse;
+    let html;
+
+    // console.log(valor);
     // console.log(busquedaGet);
     let url = url_local + valor;
-    console.log(url);
+    // console.log(url);
 
     getBeetrack();
 
@@ -155,18 +162,42 @@ echo $date;
         })
         .then(async (response) => {
             // console.log(response);
-            let estadoResponse = await response.json();
-            if(estadoResponse.response){
-                console.log(estadoResponse.response);
+            estadoResponse = await response.json();
+            console.log(estadoResponse);
+            if(estadoResponse){
+                formulario = estadoResponse.evaluation_answers
+                html = `<table calss="table">`;
+                formulario.forEach(respuesta => {
+                    html += `<tr>`;
+                    if(respuesta.cast == 'photo'){
+                        fotos = respuesta.value.split(',')
+                        html += `
+                        <td>${respuesta.name}</td>
+                        <td>`;
+                        // console.log(fotos);
+                        for(let i = 0; i < fotos.length ; i++){
+                            // console.log(fotos[i]);
+                            html += `<a href="${fotos[i]}" target="_blank" style="width: 100%;">
+                                        <img alt="package-deliver-img" class="img-responsive" src="${fotos[i]}" style="width:100%;height:100px">
+                                    </a>`;
+                        }
+                        html += `</td>`;
+                    }else{
+                        html += `
+                        <td>${respuesta.name}</td>
+                        <td>${respuesta.value}</td>
+                        `;
+                    }
+                });
+                // console.log(estadoResponse);
+                html += `</table>`;
+                document.getElementById('datosSeguimiento').innerHTML=html;
             }else{
                 console.log('Sin datos');
             }
         })
-        // console.log(response);
-        // const data = await response.json();
-        // console.log(data);
-    
     }
+});
 
 
 
@@ -190,7 +221,6 @@ echo $date;
     //         console.log(data)
     //     }
     // })
-  });
 
         // var appoloData =<?php //echo json_encode($dataAppolo);?>;
         // var id_pedido = <?php //echo $id_pedido;?>;
@@ -290,3 +320,46 @@ $timestamp2 = strtotime($fin);
 ?>
 
 
+<div class="panel-body col-8" style="background-color: #60cbb196; margin: 20px; border-radius: 50px;padding: 30px;" >
+    <span class="timeline-date">19:00</span>
+    <h5 class="blue">03/03/2023</h5>
+        <p style="text-decoration: none;color: red;">Entregado</p>
+        <span>
+            <p style="text-decoration: none;color: #3e3e3f;" class="blue">Entrega exitosa</p>
+        </span>
+    <p style="margin: 0px;padding:0px;">Nombre completo de quien recibe : Tamara Palomari</p>
+    <!-- <p style="margin: 0px;padding:0px;">Rut Receptor : 105613640</p>
+    <p style="margin: 0px;padding:0px;">Parentesco (Conserje, Mamá, Cliente, etc..) : amiga</p> -->
+
+    <div style="font-weight: 800;font-size: 18px; margin: top 5px;">Firma digital</div>
+    <div class="album row">
+            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                <a href="https://cdn.beetrack.com/mobile_evaluations/images/signature_answer_b8aff20f-e6e7-4717-a074-70368df3cc82.png" target="_blank" style="width: 100%;">
+                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/signature_answer_b8aff20f-e6e7-4717-a074-70368df3cc82.png" style="width:100%;height:100px">
+                </a>
+            </div>
+    </div>
+    <div style="font-weight: 800; font-size: 18px;">Fotos </div>
+    <div class="album row">
+            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160013_5914975997838589505.jpg" target="_blank" style="width: 100%;">
+                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160013_5914975997838589505.jpg" style="width:100%;height:100px">
+                </a>
+            </div>
+            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160018_8675189283889503001.jpg" target="_blank" style="width: 100%;">
+                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160018_8675189283889503001.jpg" style="width:100%;height:100px">
+                </a>
+            </div>
+            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160023_5014969434535705222.jpg" target="_blank" style="width: 100%;">
+                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160023_5014969434535705222.jpg" style="width:100%;height:100px">
+                </a>
+            </div>
+            <div class="col-md-3" style=" padding: 0 2% 0 0;">
+                <a href="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160031_5811682112350141718.jpg" target="_blank" style="width: 100%;">
+                    <img alt="package-deliver-img" class="img-responsive" src="https://cdn.beetrack.com/mobile_evaluations/images/COMP_IMG_20230303_160031_5811682112350141718.jpg" style="width:100%;height:100px">
+                </a>
+            </div>
+    </div>
+</div>

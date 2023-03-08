@@ -143,23 +143,39 @@
 
 
          <!-- MODAL LARGE-->
-        <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog"
-            aria-labelledby="myModalLabel16" aria-hidden="true" style="padding: 60px; border-radius: 50px;">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
-                role="document">
-                <div class="modal-content" style="padding: 0px 50px;">
-                    <form class="form form" id="toValdiateBulto" >
-                        <div class="modal-header">
+         <div class="modal fade text-left" id="xlarge" tabindex="-1" role="dialog"
+                aria-labelledby="myModalLabel16" aria-hidden="true" style="border-radius: 50px;">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                    role="document" style="height: 25%;" >
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #00a77f;" >
                             <h2 class="modal-title" id="trackIdlbl"></h2>
-                            <input  style="display: none;" type="text" name="vid_bulto"/>
                         </div>
 
-                        <div id="datosSeguimiento"></div>
+                        <div class="container">  
+                            <div class="row">
+                                <div class="row justify-content-center">
+                                    <div class="col-2" style="text-align: end;">
+                                        <h4>Guía :</h4>
+                                    </div>
+                                    <div class="col-2">
+                                        <h4 id="numguia" style="font-weight: 800;"></h4>      
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row justify-content-center" id="infoFormulario">
+                                <!-- <div id="infoFormulario"></div> -->
+                            </div>
+                        </div>
+                        <div style="display: none;" id="datosSeguimiento"></div>
 
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+
+
+
    <!-- Footer contiene div de main app div -->
    <?php
         include_once('./include/footer.php')
@@ -279,11 +295,134 @@
 
         
     });
-    
+
+    url_busqueda = 'https://spreadfillment-back-dev.azurewebsites.net/api/infoBeetrack/infoPackage/'
+
     function buscarTrack(dato){
         console.log(dato);
-        $('#xlarge').modal('show');
-        document.getElementById('trackIdlbl').innerHTML= "Guia :"+ dato
+        document.getElementById('infoFormulario').innerHTML = "";
+        document.getElementById('trackIdlbl').innerHTML='';
+        let trackid = dato;
+        let horaFecha = "";
+        let hora = "";
+        let html = "";
+        let estado = "";
+        let subStatus = "";
+
+        $.ajax({
+            type: "POST",
+            url: "ws/bulto/getbultobytrackId.php",
+            dataType:'json',
+            data: {"track_id":trackid},
+            success: function(data) {
+                $.each(data,function(key,value){
+                    $('#xlarge').modal('show');
+                    console.log(value.estado);
+                    document.getElementById('trackIdlbl').innerHTML='Evidencia'
+                    document.getElementById('numguia').innerHTML= trackid
+                    if(value.estado <= 3){
+                        // estados internos
+                        if(value.estado == 0){
+                            document.getElementById('datosSeguimiento').innerHTML='<h4>Creado en sistema</h4>'
+                        }
+                        else if (value.estado == 2){
+                            document.getElementById('datosSeguimiento').innerHTML='<h4>Retirado</h4>'
+                        }
+                        else if (value.estado == 3){
+                            document.getElementById('datosSeguimiento').innerHTML='<h4>Recepcionado en bodega Spread</h4>'
+                        }
+                    }else if(value.estado > 3){
+                        // estados beetrack
+                        let url = url_busqueda + trackid
+                        console.log(url);
+                        getBeetrack();
+                        async function getBeetrack(){
+                            const response = await fetch(url, {
+                                method: 'GET',
+                                dataType: 'json',
+                            })
+                            .then(async (response) => {
+                                console.log(response);
+                                let { identifier,status,status_id,substatus,substatus_code,
+                                    arrived_at,number_of_retries,histories,evaluation_answers
+                                } = await response.json();
+
+                                horaFecha = arrived_at.split(' ');
+                                hora = horaFecha[1].split('+');
+
+                                if(status_id == 1){
+                                    estado = 'En Ruta'
+                                }
+                                else if(status_id == 2){
+                                    estado = 'Entregado'
+                                }
+                                else if(status_id == 3){
+                                    estado = 'No Entregado'
+                                }
+                                // console.log(horaFecha);
+                                // console.log(hora);
+                                // console.log(estado);
+                                
+                                html += `<div class="panel-body col-8" style="background-color: #60cbb196; margin: 20px; border-radius: 50px;padding: 30px;" >
+                                            <span class="timeline-date"><h5 class="blue">${horaFecha[0]}</h5> ${hora[0]}</span>
+
+                                            <span>
+                                                <h5 style="text-decoration: none;color: red;">${estado}</h5>
+                                                <h5 style="text-decoration: none;color: #3e3e3f;" class="blue">${substatus}</h5>
+                                            </span>`;
+                                
+                                evaluation_answers.forEach(respuesta => {
+                                    if(respuesta.cast == 'photo'){
+                                        html += `<div style="font-weight: 800; font-size: 18px;">${respuesta.name}</div>
+                                        <div class="album row">`;
+                                        fotos = respuesta.value.split(',')
+                                        for(let i = 0; i < fotos.length ; i++){
+                                            html += `<div class="col-md-3" style=" padding: 0 2% 2% 0;">
+                                            <a href="${fotos[i]}" target="_blank" style="width: 100%;">
+                                            <img alt="package-deliver-img" class="img-responsive" src="${fotos[i]}" style="width:100%;height:100px">
+                                            </a>
+                                            </div>`;
+                                        }
+                                        html += `</div>`;
+                                    }
+                                    else if(respuesta.cast == 'signature'){
+                                        html += `<div style="font-weight: 800;font-size: 18px; padding: 3% 0 0 0;">${respuesta.name}</div>
+                                        <div class="album row">
+                                        <div class="col-md-3" style=" padding: 0 2% 2% 0;">
+                                        <a href="${respuesta.value}" target="_blank" style="width: 100%;">
+                                        <img alt="package-deliver-img" class="img-responsive" src="${respuesta.value}" style="width:100%;height:100px">
+                                        </a>
+                                        </div>
+                                        </div>`;
+                                    }
+                                    else{
+                                        html += `<p style="margin: 0px;padding:0px;">${respuesta.name} : ${respuesta.value}</p>`;
+                                    }
+                                });
+                                html += `</div>`;
+
+                                document.getElementById('infoFormulario').innerHTML=`${html}`;
+                            })
+                        }
+                    }
+                })
+            },
+            error: function(data){
+                document.getElementById('trackIdlbl').innerHTML='';
+                document.getElementById('datosSeguimiento').innerHTML='';
+                document.getElementById('trackIdlbl').innerHTML='Número de Guía: '+trackid+', No existe';
+                Swal.fire({
+                    title: 'ERROR',
+                    text: "El numero de guia ingresado no existe en el sistema.",
+                    icon: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido!'
+                })
+            }
+        })
+
+        // document.getElementById('trackIdlbl').innerHTML= "Guia :"+ dato
     }
     
     document.addEventListener(

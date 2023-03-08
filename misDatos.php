@@ -778,6 +778,8 @@ $('#datoscomerciales').validate({
                                     showConfirmButton: false,
                                     timer: 2500
                                 })  
+                                location.reload()
+
                             }
 
                             if(resp.status == 0){
@@ -788,6 +790,8 @@ $('#datoscomerciales').validate({
                                     showConfirmButton: false,
                                     timer: 2500
                                 })  
+                                location.reload()
+
                             }
                            
                             return false;
@@ -815,7 +819,6 @@ $('#datoscomerciales').validate({
                         data: JSON.stringify(dataajax),
                         success:function(resp){
 
-                            // console.log(resp.response);
                             if(resp.status == 1){
                                 Swal.fire({
                                     position: 'bottom',
@@ -824,6 +827,7 @@ $('#datoscomerciales').validate({
                                     showConfirmButton: false,
                                     timer: 2500
                                 })  
+                                location.reload()
                             }
 
                             if(resp.status == 0){
@@ -834,6 +838,8 @@ $('#datoscomerciales').validate({
                                     showConfirmButton: false,
                                     timer: 2500
                                 })  
+                                location.reload()
+
                             }
                             return false;
                         },error:function(resp){

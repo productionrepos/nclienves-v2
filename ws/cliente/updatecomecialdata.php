@@ -31,15 +31,15 @@ if($action == "update"){
 
 
     echo json_encode(array("status"=>0,"response"=>$queryupdatedata));
-    // if($conn->mysqli->query($queryupdatedata)){
-    //     echo json_encode(array("status"=>1,"response"=>"Datos modificados exitosamente"));
-    //     // $datos = $conn->mysqli->query ($querysession);  
-    //     // $datos_cliente = $datos->fetch_object();
-    //     // $_SESSION['cliente'] = $datos_cliente;
+    if($conn->mysqli->query($queryupdatedata)){
+        echo json_encode(array("status"=>1,"response"=>"Datos modificados exitosamente"));
+        // $datos = $conn->mysqli->query ($querysession);  
+        // $datos_cliente = $datos->fetch_object();
+        // $_SESSION['cliente'] = $datos_cliente;
 
-    // }else{
-    //     echo json_encode(array("status"=>0,"response"=>"Error al modificar los datos"));
-    // }
+    }else{
+        echo json_encode(array("status"=>0,"response"=>"Error al modificar los datos"));
+    }
 
 }
 if($action=="insert"){

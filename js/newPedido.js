@@ -131,6 +131,7 @@ var tipo = 0;
             submitHandler: function(form,event){ 
                 event.preventDefault()
 
+
                 if (document.getElementById('useMini').checked) {
                     tipo = 1
                 }
@@ -139,24 +140,33 @@ var tipo = 0;
                 }
                 
                //console.log(tipo);
+
+               
                 
                try{
                   
-
-                    let nombredest = document.getElementById("nombredestinatario").value;
-                    let vdir = document.getElementById('dir').value;
-                    let vnumero = document.getElementById('numtel').value;
-                    let vcorreo = document.getElementById('correo').value;
-                    let vitem = document.getElementById('item').value;
-                    let vcosto = document.getElementById('cost').value;
-                    // let vidpaquete = document.getElementById('select_type').value;
-                    let vcomuna = document.getElementById('select_comuna').value;
-                    let vergion = document.getElementById('select_region').value;
-                    let vrut = document.getElementById('rut_datos_contacto').value;
-                    let vnumerodir = document.getElementById('numerodir').value;
-                    let vcasablock = document.getElementById('detalle').value;
+ // let vidpaquete = document.getElementById('select_type').value;
+                    const nombredest = document.getElementById("nombredestinatario").value;
+                    const vdir = document.getElementById('dir').value;
+                    const vnumero = document.getElementById('numtel').value;
+                    const vcorreo = document.getElementById('correo').value;
+                    const vitem = document.getElementById('item').value;
+                    const vcosto = document.getElementById('cost').value;
+                    const vcomuna = document.getElementById('select_comuna').value;
+                    const vergion = document.getElementById('select_region').value;
+                    const vrut = document.getElementById('rut_datos_contacto').value;
+                    const vnumerodir = document.getElementById('numerodir').value;
+                    const vcasablock = document.getElementById('detalle').value;
                   
-        
+                if(tipo == 0 || vitem == "" || vcosto ==""){
+                    Swal.fire({
+                        position: 'bottom',
+                        icon: 'error',
+                        title: "Complete todos los campos antes de enviar, falta epecificar información sobre el contenido del paquete",
+                        showConfirmButton: false,
+                        timer: 3500
+                    })
+                }else{
                     let dataajax = {
                         nombre: nombredest,
                         direccion: vdir,
@@ -173,7 +183,7 @@ var tipo = 0;
                         casablock : vcasablock
                     };
 
-                    console.log("EL CREAR CLIENTE ES :"+crearcliente.checked);
+                    // console.log("EL CREAR CLIENTE ES :"+crearcliente.checked);
                     
                         $.ajax({
                             url: "ws/cliente/newclienteFrecuente.php",
@@ -215,6 +225,9 @@ var tipo = 0;
 
                                 }
                         });
+
+                }
+                    
                        
                 }
                 catch(error){

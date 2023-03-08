@@ -544,7 +544,6 @@
                 include_once('./include/footer.php')
             ?>
             <script src="assets/js/jquery-validation/jquery.validate.js"></script>
-
             <script src="./js/newPedido.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="./js/rut.js"></script>
@@ -598,7 +597,13 @@
                 $.each(data, function (key, value){
                     //console.log(value.comuna);
                     document.getElementById("nombredestinatario").value = value.nombre
-                    document.getElementById('dir').value = value.direccion
+                    let calle = value.calle
+                    let numero = value.numero
+                    let detalle = value.casablock
+
+                    document.getElementById('dir').value = calle
+                    document.getElementById('numerodir').value = numero
+                    document.getElementById('detalle').value = detalle
                     document.getElementById('numtel').value = value.telefono
                     document.getElementById('correo').value = value.correo
                     // let vcomuna = document.getElementById('select_comuna').value;
@@ -646,12 +651,12 @@
     $('#submitpedido').on('click',function(){
         if($('#useMini').checked == false && $('#useMini').checked == false){
                 Swal.fire({
-                position: 'bottom',
-                icon: 'error',
-                title: 'Ingrese el tipo de bulto a transportar',
-                showConfirmButton: false,
-                timer: 3200
-            })
+                    position: 'bottom',
+                    icon: 'error',
+                    title: 'Ingrese el tipo de bulto a transportar',
+                    showConfirmButton: false,
+                    timer: 3200
+                })
             let clickit = document.getElementById('showtipo').click()
         }
         

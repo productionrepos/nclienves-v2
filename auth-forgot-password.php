@@ -44,16 +44,31 @@ if(isset($_SESSION['cliente'])) {
 <script>
     $('#reiniciarPassword').on('click',function(){
         var email_cliente = document.getElementById('email_cliente').value
-        console.log(email_cliente);
         $.ajax({
             type: "POST",
             url: "ws/cliente/olvido_password.php",
             data: JSON.stringify({"email_cliente":email_cliente}),
             dataType: 'json',
             success: function(data) {
-                console.log(data);
+                if(data.success==1) {
+                    $(".toggle-block").toggle();
+                    swal.fire({
+                        title:"¡Bien hecho!",
+                        text: data.message,
+                        icon: "success",
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location = "index.php";
+                        }else{
+                            window.location = "index.php";
+                        }
+                    })
+                }
             },
             error: function(data){
+                console.log('error');
                 console.log(data.responseText);
             }
         });

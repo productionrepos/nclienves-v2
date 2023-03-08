@@ -7,8 +7,6 @@ $data = json_decode($json);
 
 $email_cliente = $data->email_cliente;
 
-echo json_encode($email_cliente);
-
 if(!filter_var($email_cliente, FILTER_VALIDATE_EMAIL)):
     print_r(json_encode(array("success" => 0, "message" => "El email ingresado no es válido")));
     exit();
@@ -30,7 +28,7 @@ if($datos = $conexion->mysqli->query("SELECT * FROM cliente WHERE email_cliente=
         mail_olvido_password('Reinicio de contraseña', $email_cliente, $url);
         
         // header("Content-Type: application/json");
-        print_r(json_encode(array("success" => 1, "url"=>urldecode($url), "message" => "Hemos enviado un correo electrónico a $email_cliente para reiniciar su contraseña, en caso de no recibirlo revise su carpeta de correos no deseados [SPAM]")));
+        print_r(json_encode(array("success" => 1, "message" => "Hemos enviado un correo electrónico a $email_cliente para reiniciar su contraseña, en caso de no recibirlo revise su carpeta de correos no deseados [SPAM]")));
     }
     else {
         print_r(json_encode(array("success" => 0, "message" => "El email ingresado no se encuentra en nuestros registros")));

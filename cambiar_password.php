@@ -34,30 +34,12 @@ $conexion->desconectar();
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
+	<?php
+    $head = 'Spread | Reinicio contraseña';
+    include_once('./include/head.php');
+    ?>
 
-	<title>Spread | Reinicio contraseña</title>
-	<!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 11]>
-		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
-	<!-- Meta -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="description" content="" />
-	<meta name="keywords" content="">
-	<meta name="author" content="sendcargo" />
-	<!-- Favicon icon -->
-	<link rel="icon" href="assets/images/Logotipo_Spread_13.png" type="image/x-icon">
-
-	<!-- vendor css -->
-	<link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<div class="auth-wrapper">
+<div class="auth-wrapper d-flex align-items-center justify-content-center">
 	<div class="auth-content">
 		<div class="card">
 			<div class="row align-items-center text-center">
@@ -78,7 +60,7 @@ $conexion->desconectar();
 								<label class="floating-label" for="password_cliente2">Confirma tu nueva contraseña</label>
 								<input type="password" class="form-control" name="password_cliente2" id="password_cliente2">
 							</div>
-						    <button type="submit" class="btn btn-primary btn-block mb-4">Reiniciar contraseña</button>
+						    <button type="submit" class="btn btn-spread btn-block mb-4">Reiniciar contraseña</button>
 						</form>
 						<p class="mb-2 text-muted">¿La has recordado? <a href="./" class="f-w-400">Volver al ingreso</a></p>
 					</div>
@@ -150,8 +132,22 @@ $(document).ready(function(){
                 url: "ws/cliente/cambiar_password.php",
                 data: $("#cambiar_password").serialize(),
                 success: function(data) {
+					console.log(data);
                     if(data.success==1) {
-                    	window.location.href = "./?cambio_password";
+                            $(".toggle-block").toggle();
+                            swal.fire({
+                                title:"¡Clave Cambiada con exito!",
+                                text: data.message,
+                                icon: "success",
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location = "index.php";
+                                }else{
+                                    window.location = "index.php";
+								}
+                            })
                     }
                     else {
 						swal("Error", data.message, "error");
@@ -160,6 +156,7 @@ $(document).ready(function(){
                 	$("#cambiar_password").trigger("reset");
                 },
                 error: function(data){
+					console.log(data);
                 }
             });
         }

@@ -32,14 +32,23 @@ function mail_olvido_password ($asunto, $email, $url) {
 	$mail->CharSet = 'UTF-8';
 	$mail->isSMTP();
 
-	$mail->Host = getenv('smtp_host');
+    $mail->Host = 'smtp.gmail.com';
 	$mail->SMTPAuth = true;
-	$mail->Username = getenv('smtp_username');
-	$mail->Password = getenv('smtp_pass');
+	$mail->Username = 'noreply2@spread.cl';
+	$mail->Password = 'Spread_22';
 	$mail->SMTPSecure = 'tls';
-	$mail->Port = getenv('smtp_port');
+	$mail->Port = 587;
 
-	$mail->From = getenv('smtp_username');
+	$mail->From = 'noreply2@spread.cl';
+
+    // $mail->Host = getenv('smtp_host');
+    // $mail->SMTPAuth = true;
+    // $mail->Username = getenv('smtp_username');
+    // $mail->Password = getenv('smtp_pass');
+    // $mail->SMTPSecure = 'tls';
+    // $mail->Port = getenv('smtp_port');
+
+    // $mail->From = getenv('smtp_username');
 
 	$mail->FromName = 'Spread';
 	$mail->addAddress($email);

@@ -60,7 +60,7 @@
                   <i class="bi bi-shield-lock"></i>
                 </div>
               </div>
-              <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" id="btn-registrar">
+              <button class="btn btn-spread btn-block btn-lg shadow-lg mt-5" id="btn-registrar">
                 Crear cuenta
               </button>
             </form>
@@ -146,9 +146,18 @@
                     dataType: 'json',
                     success: function(data) {
                         if(data.success==1) {
-                          $(".toggle-block").toggle();
-                          swal.fire("¡Bien hecho!", data.message, "success");
-                          // window.location = "index.php";
+                            $(".toggle-block").toggle();
+                            swal.fire({
+                                title:"¡Bien hecho!",
+                                text: data.message,
+                                icon: "success",
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location = "index.php";
+                                }
+                            })
                         }
                         else {
 							            swal.fire("Error", data.message, "error");

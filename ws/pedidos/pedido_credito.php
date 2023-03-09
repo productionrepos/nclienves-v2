@@ -24,7 +24,7 @@ include('../bd/dbconn.php');
 $conexion = new bd();
 $conexion->conectar();
 
-$query = "SELECT * FROM pedido
+$query = 'SELECT * FROM pedido
 		INNER JOIN datos_contacto ON (pedido.id_cliente=datos_contacto.id_cliente)
 		INNER JOIN datos_comerciales ON (pedido.id_cliente=datos_comerciales.id_cliente)
 		INNER JOIN bodega ON (pedido.id_bodega=bodega.id_bodega)
@@ -32,7 +32,8 @@ $query = "SELECT * FROM pedido
 		INNER JOIN provincia ON (comuna.id_provincia=provincia.id_provincia)
 		INNER JOIN region ON (provincia.id_region=region.id_region) 
 		INNER JOIN cliente ON (pedido.id_cliente=cliente.id_cliente)
-		AND pedido.id_pedido=$id_pedido";
+		AND pedido.id_pedido= '.$id_pedido;
+		// . ' order by datos_contacto.id_datos_contacto desc limit 1';
 
 $datos_pedido = $conexion->mysqli->query($query)->fetch_object();
 

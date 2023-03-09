@@ -317,14 +317,14 @@ if($credito == 0) {
             confirmButtonText: 'Procesar pago!'
             }).then((result) => {
             if (result.isConfirmed) {
-                
+                let counterErr = "" ;
                 $.ajax({
                         type: "POST",
                         url: "ws/pedidos/pedido_credito.php",
                         data: {"id_pedido": <?=$id_pedido?>, "token": "<?=(md5($id_pedido.$id_cliente."pedido_credito#"))?>"},
                         success: function(data) {
                             if(data.success == 1) {
-
+                                console.log(data.success);
                                 newTrackId = "";
                                 appoloData.forEach((ap,i) => {
                                     setTimeout(function () {
@@ -341,7 +341,7 @@ if($credito == 0) {
                                                     "fecha": fecha,
                                                     "valor": "",
                                                     "descripcion": ""};
-                                        // console.log(request);
+                                        console.log(request);
                                         
                                         (async () => {
                                         const rawResponse = await fetch( url , {
@@ -355,7 +355,8 @@ if($credito == 0) {
                                         .then(async (response) => {
                                             let estadoResponse = await response.json();
                                             // console.log(estadoResponse);
-
+                                            //console.log("Mi trackid es :   " + estadoResponse.trackId);
+                                            console.log(estadoResponse);
                                             if(estadoResponse.trackId){
                                                 newTrackId = (estadoResponse.trackId);
                                             }else{
@@ -377,6 +378,7 @@ if($credito == 0) {
                                                 }
                                             }
                                         })
+                                        
 
                                         // console.log(newTrackId);
 
@@ -391,31 +393,42 @@ if($credito == 0) {
                                             url: "./ws/bulto/insertTrackId2.php",
                                             dataType: 'json',
                                             success: function(data) {
+                                                if(data.status == 3){
+                                                   
+                                                }
                                                 // console.log(data.status)
                                                 procesado = 1;
                                                 // console.log(procesado);
-                                                Swal.fire(
-                                                'Pago procesado!',
-                                                'Tú pedido fue procesado por credito!',
-                                                'success'
-                                                );
-                                                window.location="detallepedido.php?id_pedido="+<?=$id_pedido?>;
                                             },error:function(data){
                                                 // console.log(data.responseText);
                                                 // procesado = 1;
                                                 // console.log(procesado);
                                                 // Swal.fire(
-                                                // 'Pago procesado!',
+                                                    // 'Pago procesado!',
                                                 // 'Tú pedido fue procesado por credito!',
                                                 // 'success'
                                                 // );
                                                 // window.location="detallepedido.php?id_pedido="+id_pedido;
                                             }
                                         })
-
+                                        
                                         })();
-                                    }, i * 2000);
+                                    }, i * 4000);
                                 })
+
+                                swal.fire({
+                                    title:"¡Pedido procesado con exito!",
+                                    icon: "success",
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location="detallepedido.php?id_pedido="+<?=$id_pedido?>; 
+                                    }else{
+                                        window.location="detallepedido.php?id_pedido="+<?=$id_pedido?>;
+                                    }
+                                })
+                               
                             }
                             else {
                                 Swal.fire("Error", data.message, "error");

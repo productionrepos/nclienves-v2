@@ -23,9 +23,7 @@ if($action == "update"){
                                               ,razon_social_datos_comerciales="'.$razonsocial.'" ,telefono_datos_comerciales="'.$telcom.'"
                                               ,calle_datos_comerciales = "'.$dircom.'" ,numero_datos_comerciales="'.$numcom.'" 
                                               ,id_comuna = '.$comuna.' where id_cliente = '.$id_cliente;
-                                         
-
-
+    
     $querysession ='SELECT * FROM cliente LEFT JOIN datos_contacto ON (cliente.id_cliente=datos_contacto.id_cliente)
                             WHERE cliente.id_cliente='.$id_cliente;
 

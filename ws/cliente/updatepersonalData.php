@@ -8,7 +8,7 @@
 
     $conn = new bd();
     $conn->conectar();
-
+    
     $name = $data->name;
     $apellido = $data->apellido;
     $correo = $data->correo;

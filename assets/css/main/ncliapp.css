@@ -223,6 +223,18 @@
     }
 }
 
+#logochange{
+    max-height: 520px ;
+}
+@media (max-width: 500px) {
+    #logochange{
+        max-height: 2000px;
+    }
+}
+
+
+
+
 
 /* @media screen and (max-width: 1199px){
     #headpage{

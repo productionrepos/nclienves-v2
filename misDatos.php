@@ -76,12 +76,16 @@
                 include_once('./include/topbar.php');
             ?>
 
-            <div class="page-heading">
-                <h3>Mis Datos || Spread</h3>
+            <div class="row">
+                <div class="card resumen-envios col-lg-6 col-md-6 col-sm-8 col-12" style="padding: 20px; text-align: center;">
+                    <div class="">
+                            <h3 style="color: black; font-weight: 700;">Mis datos</h3>
+                    </div>
+                </div>
             </div>
             <div class="page-content">
                 
-                <div class="row personal" style="justify-content: space-between;">
+                <div class="row personal" style="color:black;font-size: 18px; font-weight: 600; justify-content: space-between;">
                     <div class="col-lg-5 col-md-12 resumen-envios">
                         <div>
                             <div class="card-header">
@@ -140,8 +144,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 col-md-12 resumen-envios" style="margin: 10px;">
-                        <div class="card" style="background-color: #66cab2;">
+                    <div class="col-lg-5 col-md-12 resumen-envios" style="color:black;font-size: 18px; font-weight: 600; margin: 10px;">
+                        <div class="card" style="background-color: #7ad9c200;">
                             <div class="">
                                 <h4 class="card-title">Modificar contraseña</h4>
                             </div>
@@ -201,7 +205,7 @@
 
 
           
-            <div class="row" style="justify-content: space-between; margin: 10px;">
+            <div class="row" style="justify-content: space-between; margin: 10px; color:black;font-size: 18px; font-weight: 600;">
                         <div class="col-lg-5 col-md-12 resumen-envios">
                             <div>
                                 <div class="card-header">
@@ -362,7 +366,7 @@
                             </div>
                         </div>
 
-                            <div class="col-lg-5 col-md-12 resumen-envios">
+                            <div id="logochange" class="col-lg-5 col-md-12 resumen-envios align-content-center">
                                 <div class="">
                                     <div class="card-header">
                                         <h4 class="card-title">Cambiar Logo</h4>
@@ -851,6 +855,13 @@ $('#datoscomerciales').validate({
         }
 })                         
 </script>
+
+<style>
+
+    .error{
+        color:red;
+    }
+</style>
 
 </html>
 

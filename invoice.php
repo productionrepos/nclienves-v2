@@ -264,9 +264,10 @@ if($credito == 0) {
                                                     <?php else:?>
                                                         <a href="<?=$url_pago?>" class="col-md-4 col-6 btn btn-success">Pagar</a>
                                                         <div class="row justify-content-end">
-
-                                                            <i style="color:#1a1f71; font-size: 40px;" class=" fa-brands fa-cc-visa"></i>
-                                                            <i style="color:#1a1f71; font-size: 40px;" class=" fa-brands fa-cc-mastercard"></i>
+                                                            <div class="col-6 ">
+                                                                <img src="include/img/logoFlow.png" alt="Logos plataforma pago" width="200px" height="70px" srcset="">
+                                                                <img src="include/img/logotarjeta.png" alt="Logos medios de pago" width="250px" height="40px" srcset="">
+                                                            </div>
                                                         </div>
                                                     
                                                 <?php endif;?>

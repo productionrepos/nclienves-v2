@@ -271,8 +271,10 @@ if($credito == 0) {
                                                         <a href="<?=$url_pago?>" class="col-md-4 col-6 btn btn-success">Pagar</a>
                                                         <div class="row justify-content-end">
                                                             <div class="col-6 ">
-                                                                <img src="include/img/logoFlow.png" alt="Logos plataforma pago" width="200px" height="70px" srcset="">
-                                                                <img src="include/img/logotarjeta.png" alt="Logos medios de pago" width="250px" height="40px" srcset="">
+                                                                <div class="row">
+                                                                    <img src="include/img/logoFlow.png" alt="Logos plataforma pago" width="200px" height="50px" srcset="">
+                                                                    <img src="include/img/logotarjeta.png" alt="Logos medios de pago" width="250px" height="40px" srcset="">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     

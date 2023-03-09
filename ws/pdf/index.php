@@ -7,7 +7,7 @@ $conexion = new bd();
 $conexion->conectar();
 
 $id_pedido = filter_input(INPUT_GET, "id_pedido", FILTER_SANITIZE_NUMBER_INT);
-echo $id_pedido;
+// echo $id_pedido;
 $token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
 
 
@@ -62,7 +62,7 @@ if($datos = $conexion->mysqli->query($query)) {
 
 	}
 	else {
-		header("Location: /datos_comerciales.php?pdf");
+		header("Location: /misDatos.php?pdf=fallo&id_pedido=".$id_pedido);
 		$conexion->desconectar();
 		exit();
 	}

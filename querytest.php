@@ -4,9 +4,9 @@
     header('Location: index.php');
   }
   
-  if($_SESSION['cliente']->id_cliente != 1394 && $_SESSION['cliente']->id_cliente != 1373){
-    header('Location: index.php');
-  }
+//   if($_SESSION['cliente']->id_cliente != 1394 && $_SESSION['cliente']->id_cliente != 1373){
+//     header('Location: index.php');
+//   }
 require_once('./ws/bd/dbconn.php');
 $conn = new bd();
 $conn->conectar();
@@ -116,7 +116,37 @@ if($resdatabulto = $conn->mysqli->query($querybulto)){
 require_once('./include/footer.php');
 $date = (new DateTime('now',new DateTimeZone('Chile/Continental')))->format('Y-m-d H:i:s');
 // echo $date;
+
+$params = array( 
+    "apiKey" => "3FCFF277-D0F0-45FE-821F-8F963B64L7B1",
+    "commerceId" => "36399"
+  ); 
+  $keys = array_keys($params);
+  sort($keys);
+$secretKey = '88efefedfe738f4a77e19cbe48a804c5461af01d';
+
+$toSign = "";
+foreach($keys as $key) {
+  $toSign .= $key . $params[$key];
+};
+$url = 'https://www.flow.cl/api';
+$url = $url . '/payment/getStatusByCommerceId';
+// agrega la firma a los parámetros
+$signature = hash_hmac('sha256', $toSign , $secretKey);
+$params["s"] = $signature;
+//Codifica los parámetros en formato URL y los agrega a la URL
+$url = $url . "?" . http_build_query($params);
+
+echo "<br>".$url."<br>";
 ?>
+
+<form method="post" action="confirmacionPago.php">
+    <!-- <input hidden="token" value=""> -->
+    <input type="hidden" name="token" value="179F0C1F1C8E629E0DCCA56ADFF9F1F4FD461CDY">
+    <!-- <input type="hidden" name="token" value="CEB6DE9D686709637010BDEFE77DAAA14F71FCCW"> -->
+    <input type="submit">
+</form>
+<!-- https://www.flow.cl/app/web/pay.php?token=CEB6DE9D686709637010BDEFE77DAAA14F71FCCW -->
 
 <script src="./js/testjs.js"></script>
 <script src="js/xlsxReader.js"></script>

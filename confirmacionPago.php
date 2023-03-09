@@ -1,5 +1,7 @@
 <?php
 session_start();
+print_r($_SESSION); echo "<br>";
+print_r($_POST); echo "<br>";
 
 $existeSesion = 0;
 if(!isset($_SESSION['cliente'])){
@@ -44,7 +46,7 @@ INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
 INNER JOIN region re on re.id_region = pro.id_region
 where bu.id_pedido ='. $id_pedido;
 
-if($resdatabulto = $conn->mysqli->query($querybulto)){
+if($resdatabulto = $conexion->mysqli->query($querybulto)){
   while($datares = $resdatabulto->fetch_object()){
     $datosbultos [] = $datares;
   }
@@ -70,7 +72,8 @@ if($resdatabulto = $conn->mysqli->query($querybulto)){
 
 
 if($respuesta->status==2) {
-    $query = "UPDATE pedido SET estado_pedido=2 and estado_logistico=1 WHERE id_pedido=$id_pedido";
+    $query = "UPDATE pedido SET estado_pedido=2, estado_logistico=1 WHERE id_pedido=$id_pedido";
+    echo "<br>".$query."<br>";
     if(!$conexion->mysqli->query($query)) {
         echo $conexion->mysqli->error;
         $conexion->desconectar();
@@ -162,7 +165,6 @@ else {
             <div class="page-content" style="color:3e3e3f;">
             <?php
             
-             //href="detalle_pedido.php?id_pedido= PHP  $id_pedido  PHP"
                 if($respuesta->status == 2):
                      
             ?>
@@ -174,7 +176,7 @@ else {
                             <p>Estimado <?=$datos_cliente->nombres_datos_contacto?> <?=$datos_cliente->apellidos_datos_contacto?>, hemos confirmado el pago para el pedido #<?=$id_pedido?>.</p>
                             <p>Nos pondremos en contacto contigo prontamente para coordinar el retiro de los paquetes incluidos.</p>
                             <p>Nuestro compromiso es recepcionarlo dentro de las 24 horas próximas.</p>
-                            <a href="detallepedido.php?id_pedido=<?php echo $id_pedido ?>" class="btn btn-primary mb-4 btn-block text-white">Ir al pedido y continuar con el proceso</a>
+                            <a href="detallepedido.php?id_pedido=<?php echo $id_pedido ?>" class="btn btn-spread mb-4 btn-block text-white">Ir al pedido y continuar con el proceso</a>
                             <div class="table-responsive mt-4">
                                 <table class="table invoice-detail-table table-bordered">
                                     <thead>
@@ -226,31 +228,31 @@ else {
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="table-responsive">
+                            <!-- <div class="table-responsive">
                                 <table class="table invoice-detail-table table-bordered">
                                     <thead>
                                         <tr>
                                             <td class="text-center" colspan="2"><b>Detalle</b></td>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody> -->
                                         <?php
-                                        foreach($respuesta->optional as $concepto => $precio):
+                                        // foreach($respuesta->optional as $concepto => $precio):
                                         ?>
-                                        <tr>
+                                        <!-- <tr>
                                             <td>
-                                                <?=$concepto?>
+                                                <?php //$concepto?>
                                             </td>
                                             <td>
-                                                <?=$precio?>
+                                                <?php //$precio?>
                                             </td>
-                                        </tr>
+                                        </tr> -->
                                         <?php
-                                        endforeach;
+                                        // endforeach;
                                         ?>
-                                    </tbody>
+                                    <!-- </tbody>
                                 </table>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -262,7 +264,7 @@ else {
                         <p>Estimado <?=$datos_cliente->nombres_datos_contacto?> <?=$datos_cliente->apellidos_datos_contacto?>, hemos tenido problemas para confirmar su pedido #<?=$id_pedido?>.</p>
                         <p>No se he realizado ningún cargo a su cuenta.</p>
                         <p>Lamentamos las molestias, usted podría volver a intentarlo en este enlace.</p>
-                        <a href="invoice.php?id_pedido=<?=$id_pedido?>" class="btn btn-primary mb-4 btn-block text-white">Ir al pedido y reintentar el pago.</a>
+                        <a href="invoice.php?id_pedido=<?=$id_pedido?>" class="btn btn-spread mb-4 btn-block text-white">Ir al pedido y reintentar el pago.</a>
                     </div>
 		        </div>
             <?php endif;?>

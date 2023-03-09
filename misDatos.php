@@ -9,6 +9,24 @@
     $conn = new bd();
     $conn -> conectar();
 
+    $fallo = 0;
+    $id_pedido = 0;
+    $token = "";
+    $server = $_SERVER['HTTP_HOST'];
+
+    if($_SERVER['HTTP_HOST'] == 'localhost:8080'){
+        $http = 'http://';
+    }else{
+        $http = 'https://';
+    }
+
+    if(isset($_GET['pdf'])){
+        $fallo = 1;
+        $id_pedido = $_GET['id_pedido'];
+        $token = md5($id_pedido."pdf_etiquetas");
+        
+    }
+
     $countdatoscomerciales = 0;
 
     $queryregion='Select Nombre_region as nombre,id_region as id from region where id_region in (6,7,8)';
@@ -34,7 +52,8 @@
 
 
 
-
+    $region = 7;
+    $comuna = 0;
 
     if($rescomercial = $conn->mysqli->query($querydatoscomerciales)){
         if($rescomercial->num_rows > 0)
@@ -44,9 +63,17 @@
                 $datoscomerciales [] = $datacomercial;
             }
 
+            foreach($datoscomerciales as $dt){
+                $region = $dt->region;
+                $comuna = $dt->comuna;
+            }
             $countdatoscomerciales=1;
         }else{
             $countdatoscomerciales=0;
+//             $datosArray = json_encode(["region"=>1,"comuna"=>1])
+// ;            // Array ( [0] => stdClass Object ( [nombre] => Empresa de prueba nclientesV2 [rut] => 20.136.448-5 [razon] => Programando nclientesV2 [telefono] => 953061585 [calle] => Calle de Prueba nclientesV2 [numero] => 1140 [comuna] => 133 [region] => 7 ) )
+//             $datoscomerciales [] = ["0"=>$datosArray];
+//             print_r($datoscomerciales);
         }
 
         
@@ -281,7 +308,7 @@
                                                         <div class="form-group">
                                                             <label for="Comuna">Comuna </label>
                                                             <select class="form-select" name="select_comunacli" id="select_comunacli">
-                                                                <option value=""></option>
+                                                                <option value="0"></option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -421,15 +448,23 @@
 
 <script>
 
-    <?php foreach($datoscomerciales as $dc):?>
-    const region = <?php echo $dc->region;?>;
-    const comunacomercial = <?php echo $dc->comuna;?>;
-    <?php endforeach;?>
     const comercialdatarows = <?php echo $countdatoscomerciales;?>;
+    const region = <?php echo $region;?>;
+    const comunacomercial = <?php echo $comuna;?>;
+    const fallo = <?php echo $fallo;?>;
+    const idpedido = <?php echo $id_pedido;?>;
+    const token = '<?php echo $token;?>';
+    const http = '<?php echo $http;?>';
+    const server = '<?php echo $server;?>';
+
     $(document).ready(function(){
+        if(fallo == 1){
+            swal.fire("Error", "Se requieren los datos comerciales para la impresión de etiqueta. Si usted es una persona natural, rellene con su información personal.", "error");
+        }
+
         document.getElementById('select_regioncli').value = region;
         $('#select_regioncli').change()
-        console.log(comunacomercial);
+        // console.log(comunacomercial);
 
 
 
@@ -500,7 +535,7 @@ $('#datospersonales').validate({
                     success:function(resp){
                         if(resp.status == 1){
                             Swal.fire({
-                                position: 'bottom',
+                                
                                 icon: 'success',
                                 title: resp.response,
                                 showConfirmButton: false,
@@ -511,7 +546,7 @@ $('#datospersonales').validate({
 
                         if(resp.status == 0){
                             Swal.fire({
-                                position: 'bottom',
+                                
                                 icon: 'error',
                                 title: resp.response,
                                 showConfirmButton: false,
@@ -582,7 +617,7 @@ $('#passchange').validate({
 
                     if(resp.status == 0){
                         Swal.fire({
-                            position: 'bottom',
+                            
                             icon: 'error',
                             title: resp.response,
                             showConfirmButton: false,
@@ -606,7 +641,7 @@ $('#passchange').validate({
                                 success:function(resp){
                                     if(resp.status == 1 ){
                                         Swal.fire({
-                                            position: 'bottom',
+                                            
                                             icon: 'success',
                                             title: resp.response,
                                             showConfirmButton: false,
@@ -616,7 +651,7 @@ $('#passchange').validate({
                                     }
                                     if(resp.status == 0 ){
                                         Swal.fire({
-                                            position: 'bottom',
+                                            
                                             icon: 'error',
                                             title: resp.response,
                                             showConfirmButton: false,
@@ -632,7 +667,7 @@ $('#passchange').validate({
 
                         }else{
                             Swal.fire({
-                                position: 'bottom',
+                                
                                 icon: 'error',
                                 title: "Las NUEVAS contraseñas no coinciden, porfavor intenta nuevamente",
                                 showConfirmButton: false,
@@ -667,6 +702,7 @@ $("#select_regioncli").on('change',function(){
         success: function(data) {
             
             var select = document.getElementById("select_comunacli");
+            select.options[select.options.length] = new Option("","0",false,false);
             $.each(data, function (key, value){
                 
                 if(value.id == comunacomercial){
@@ -747,67 +783,83 @@ $('#datoscomerciales').validate({
         },
         submitHandler: function(form,e){
            event.preventDefault()
-           console.log(comercialdatarows);
+        //    console.log(comercialdatarows);
            
                 const vfancom = document.getElementById('fancom').value
-                console.log(vfancom);
                 const vdircom = document.getElementById('dircom').value
                 const vnumcom = document.getElementById('numcom').value
                 const vrutcom = document.getElementById('rutcom').value
                 const vtelcom = document.getElementById('telcom').value
                 const vrazonsocial = document.getElementById('razonsocial').value
                 const vcomuna = document.getElementById('select_comunacli').value
+                console.log(vcomuna);
+                console.log(comercialdatarows);
                 if(comercialdatarows == 0){
-                    console.log(comercialdatarows);
-                    console.log("insert");
-                    let dataajax = {fancom : vfancom,
-                                dircom : vdircom,
-                                numcom : vnumcom,
-                                rutcom : vrutcom,
-                                telcom : vtelcom,
-                                razonsocial : vrazonsocial,
-                                comuna : vcomuna,
-                                action:"insert"};
-                    $.ajax({
-                        url: "ws/cliente/updatecomecialdata.php",
-                        type: "POST",
-                        dataType: 'json',
-                        data: JSON.stringify(dataajax),
-                        success:function(resp){
-                            if(resp.status == 1){
-                                Swal.fire({
-                                    position: 'bottom',
-                                    icon: 'success',
-                                    title: resp.response,
-                                    showConfirmButton: false,
-                                    timer: 2500
-                                })  
-                                location.reload()
+                    if(vcomuna == 0 ){
+                        Swal.fire({        
+                            icon: 'error',
+                            title: 'Debe elegir su comuna de Datos Comerciales',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }else{
+                        // console.log(comercialdatarows);
+                        console.log("insert");
+                        let dataajax = {fancom : vfancom,
+                                    dircom : vdircom,
+                                    numcom : vnumcom,
+                                    rutcom : vrutcom,
+                                    telcom : vtelcom,
+                                    razonsocial : vrazonsocial,
+                                    comuna : vcomuna,
+                                    action:"insert"};
+                        $.ajax({
+                            url: "ws/cliente/updatecomecialdata.php",
+                            type: "POST",
+                            dataType: 'json',
+                            data: JSON.stringify(dataajax),
+                            success:function(resp){
+                                console.log(resp);
+                                if(resp.status == 1){
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: resp.response,
+                                        showConfirmButton: false,
+                                        timer: 2500
+                                    })    
 
+                                    if(fallo == 0){
+                                        location.reload()
+                                    }else{
+                                        window.location.href= `${http}${server}/ws/pdf/?id_pedido=${idpedido}&token=${token}`;
+                                    }
+    
+                                }
+    
+                                if(resp.status == 0){
+                                    Swal.fire({
+                                        
+                                        icon: 'error',
+                                        title: resp.response,
+                                        showConfirmButton: false,
+                                        timer: 2500
+                                    })  
+                                    location.reload()
+    
+                                }
+                               
+                                return false;
+                            },error:function(resp){
+    
+                                return false;
                             }
-
-                            if(resp.status == 0){
-                                Swal.fire({
-                                    position: 'bottom',
-                                    icon: 'error',
-                                    title: resp.response,
-                                    showConfirmButton: false,
-                                    timer: 2500
-                                })  
-                                location.reload()
-
-                            }
-                           
-                            return false;
-                        },error:function(resp){
-
-                            return false;
-                        }
-                    })
+                        })
+                    }
                 }
-                if(comercialdatarows == 1){
-                    console.log(comercialdatarows);
-                    console.log("update");
+                else if(comercialdatarows == 1){
+
+                    // console.log(comercialdatarows);
+                    // console.log("update");
                     let dataajax = {fancom : vfancom,
                                 dircom : vdircom,
                                 numcom : vnumcom,
@@ -825,18 +877,22 @@ $('#datoscomerciales').validate({
 
                             if(resp.status == 1){
                                 Swal.fire({
-                                    position: 'bottom',
+                                    
                                     icon: 'success',
                                     title: resp.response,
                                     showConfirmButton: false,
                                     timer: 2500
                                 })  
-                                location.reload()
+                                if(fallo == 0){
+                                    location.reload()
+                                }else{
+                                    window.location.href= `${http}.${server}?>/ws/pdf/?id_pedido=${idpedido}&token=${token}`;
+                                }
                             }
 
                             if(resp.status == 0){
                                 Swal.fire({
-                                    position: 'bottom',
+                                    
                                     icon: 'error',
                                     title: resp.response,
                                     showConfirmButton: false,

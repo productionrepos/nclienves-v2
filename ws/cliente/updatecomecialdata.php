@@ -49,7 +49,7 @@ if($action=="insert"){
                     WHERE cliente.id_cliente='.$id_cliente;
 
 
-    if($conn->mysqli->query($queryupdatedata)){
+    if($conn->mysqli->query($queryinsert)){
     echo json_encode(array("status"=>1,"response"=>"Datos Creados exitosamente"));
     // $datos = $conn->mysqli->query ($querysession);  
     // $datos_cliente = $datos->fetch_object();

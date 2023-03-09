@@ -26,6 +26,8 @@ $flowApi = new FlowApi();
 $respuesta = (object)$flowApi->send($serviceName, $params, "GET");
 $informacion_pago_pedido = json_encode($respuesta);
 
+print_r($respuesta);
+
 $id_pedido = $respuesta->commerceOrder;
 
 
@@ -280,8 +282,8 @@ else {
     const fecha = '<?php echo $date;?>';
     var request = "";
     var newTrackId;
-    var url = 'http://localhost:8000/api/pymes/ingresarPyme'
-    // var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
+    // var url = 'http://localhost:8000/api/pymes/ingresarPyme'
+    var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
 
     $(document).ready(function(){
 

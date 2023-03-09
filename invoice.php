@@ -66,7 +66,7 @@ FROM bulto bu
 INNER JOIN comuna co on co.id_comuna = bu.id_comuna
 INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
 INNER JOIN region re on re.id_region = pro.id_region
-where bu.id_pedido ='. $id_pedido;
+where bu.id_pedido ='. $id_pedido.' and Deleted = 0';
 
 if($resdatabulto = $conn->mysqli->query($querybulto)){
   while($datares = $resdatabulto->fetch_object()){
@@ -143,7 +143,13 @@ if($credito == 0) {
     try {
         $flowApi = new FlowApi;
         $respuesta = $flowApi->send("payment/create", $params,"POST");
-        $url_pago = $respuesta["url"] . "?token=" . $respuesta["token"];
+        if(isset($respuesta["url"])){
+            $url_pago = $respuesta["url"] . "?token=" . $respuesta["token"];
+        }else{
+            // print_r($respuesta);
+            header("Location: PedidosPendientes.php");
+            exit();
+        }
     } catch (Exception $e) {
         echo $e->getCode() . " - " . $e->getMessage();
         exit();

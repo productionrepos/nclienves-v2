@@ -2,10 +2,10 @@
     include_once('../bd/dbconn.php');
     $conn = new bd();
     $conn->conectar();
-    $rut = $_POST['rut'];
+    $id = $_POST['id'];
 
     $query = 'Select nombre, rut, telefono,calle,numero,casablock, correo,region, comuna from cliente_frecuente
-                where rut="'.$rut.'"';
+                where id="'.$id.'"';
 
 
     if($response = $conn->mysqli->query($query)){

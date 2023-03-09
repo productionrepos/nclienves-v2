@@ -36,7 +36,7 @@
        
         
         $queryinsertclifre = 'INSERT INTO cliente_frecuente (rut, nombre, calle, numero,casablock,correo, telefono, comuna, region, id_cliente)
-        VALUES("'.$rut.'","'.$nombre.'","'.$direccion.'","'.$numerodir.'","'.$detalle.'","'.$correo.'",'.$telefono.','.$comuna.','.$region.','.$id_cliente.')';
+        VALUES("'.$rut.'","'.$nombre.'","'.$direccion.'","'.$numerodir.'","'.$casablock.'","'.$correo.'",'.$telefono.','.$comuna.','.$region.','.$id_cliente.')';
            
         
         if( $conn->mysqli->query($queryinsertclifre))

@@ -419,7 +419,7 @@ if($credito == 0) {
                             }
                             else {
                                 Swal.fire("Error", data.message, "error");
-                                finalizado();
+                                // finalizado();
                             }
                         },
                         error: function(data){

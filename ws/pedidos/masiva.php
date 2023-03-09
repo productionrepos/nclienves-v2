@@ -26,8 +26,6 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
         {
             $id_pedido = $conn -> mysqli -> insert_id;
 
-            
-
             $counter = 0;
             $jsonbultotemporal = [];
 
@@ -116,17 +114,17 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
                     //BUSCAR PRECIOS EN BD
 
 
-                    if($tipo == 1 && $servicio == "icu" ){
+                    if($idpaquete == 1 && $tipo == "icu" ){
                         $queryprecio = 'SELECT precio_comunal_paquete as precio  from paquete where id_paquete = 1';
                     }
-                    if($tipo == 1 && $servicio == "iru" ){
+                    if($idpaquete == 1 && $tipo == "iru" ){
                         $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 1';
                     }
             
-                    if($tipo == 2 && $servicio == "icu" ){
+                    if($idpaquete == 2 && $tipo == "icu" ){
                         $queryprecio = 'SELECT precio_comunal_paquete as precio from paquete where id_paquete = 2';
                     }
-                    if($tipo == 2 && $servicio == "iru" ){
+                    if($idpaquete == 2 && $tipo == "iru" ){
                         $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 2';
                     }
             
@@ -162,7 +160,7 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
                         $conn->mysqli->query($querydeletebultotemporal);
                        
                     }else{
-                        echo $querybulto;
+                        //echo $querybulto;
                         //echo $conn->mysqli->error;
                     }
                }

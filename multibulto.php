@@ -78,10 +78,6 @@
                                 <div class="col-8">
                                     <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
                                 </div>
-                                <div class="form-check form-switch col-4" style="justify-items: end;">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
-                                </div>
                                 <div class="col-md-6 col-lg-6 col-sm-8" >
                                     <div class="form-group">
                                         <label for="form_dir">Dirección</label>
@@ -231,10 +227,6 @@
 																					<div class="col-8">
 																						<label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
 																					</div>
-																					<div class="form-check form-switch col-4" style="justify-items: end;">
-																						<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-																						<label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
-																					</div>
 																					<div class="col-md-6 col-lg-6 col-sm-8" >
 																						<div class="form-group">
 																							<label for="form_dir">Dirección</label>
@@ -251,15 +243,15 @@
 																					</div>
 																					<div class="col-md-3 col-lg-3 col-sm-6">
 																						<div class="form-group">
-																							<label for="first-name-column">Nombre</label>
-																							<input type="text" id="form_nombre" name="form_nombre" class="form-control"
+																							<label for="first-name-column">Depto/casa/block etc.</label>
+																							<input type="text" id="form_detalledir" name="form_detalledir" class="form-control"
 																								placeholder="Casa, Depto, Bodega, etc.">
 																						</div>
 																					</div>
 																					<div class="col-md-3 col-lg-3 col-sm-6">
 																						<div class="form-group">
-																							<label for="first-name-column">Depto/casa/block etc.</label>
-																							<input type="text" id="form_detalledir" name="form_detalledir" class="form-control"
+																							<label for="first-name-column">Nombre</label>
+																							<input type="text" id="form_nombre" name="form_nombre" class="form-control"
 																								placeholder="Casa, Depto, Bodega, etc.">
 																						</div>
 																					</div>

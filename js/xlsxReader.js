@@ -174,7 +174,27 @@ excelInput.addEventListener('change',async function(){
                             
                             // console.log("EL CONTADOR VA EN"+counter)
                             console.log("INDEX EN "+counter +"      "+row[i])
-                            tdrow.push(row[i])
+
+                            let valueofindex = row[i]
+                            if(valueofindex == null){
+                                console.log("es un valor nulo");
+                            }else{
+                                if(i ==0 || i ==2 || i==3 || i==4||i ==5 && row[i] != null){
+
+                                    if(!isNaN(valueofindex)){
+                                        console.log("Es un numero");
+                                        let numtostr = valueofindex.toString()
+                                        let replacedtext = numtostr.replace(/[^a-zA-Z0-9 ]/g, '')
+                                        tdrow.push(replacedtext)
+                                    }else{
+                                        let replacedtext = valueofindex.replace(/[^a-zA-Z0-9 ]/g, '')
+                                        tdrow.push(replacedtext)
+                                    }
+
+                                }else{
+                                    tdrow.push(row[i])
+                                }
+                            }    
 
                             if(i==0 && row[i] == null)
                             {
@@ -435,7 +455,8 @@ excelInput.addEventListener('change',async function(){
                                         }
                                     }
                                     if(index == 8){
-                                        let comunas = ["","Algarrobo","Buin","Cabildo","Calera de Tango","Calle Larga","Cartagena","Casablanca","Catemu","Cerrillos","Cerro Navia","Colina","Conchalí","Concón","Curacavi","El Bosque","El Monte","El Quisco","El Tabo","Estación Central","Hijuelas","Huechuraba","Independencia","Isla de Maipo","La Calera","La Cisterna","La Cruz","La Florida","La Granja","La Ligua","La Pintana","La Reina","Lampa","Las Condes","Limache","Llay Llay","Lo Barnechea","Lo Espejo","Lo Prado","Los Andes","Macul","Maipú","María Pinto","Melipilla","Nogales","Ñuñoa","Olmué","Padre Hurtado","Paine","Panquehue","Papudo","Pedro Aguirre Cerda","Peñaflor","Peñalolén","Petorca","Pirque","Providencia","Puchuncaví","Pudahuel","Puente Alto","Putaendo","Quilicura","Quillota","Quilpué","Quinta Normal","Quintero","Recoleta","Renca","Rinconada","San Antonio","San Bernardo","San Esteban","San Felipe","San Joaquín","San José de Maipo","San Miguel","San Ramón","Santa María","Santiago","Santo Domingo","Talagante","Valparaíso","Villa Alemana","Viña del Mar","Vitacura","Zapallar"]
+                                        let comunas = ["","Algarrobo","Buin","Cabildo","Calera de Tango","Calle Larga","Cartagena","Casablanca","Catemu","Cerrillos","Cerro Navia","CHEPICA","CHIMBARONGO","CODEGUA","COINCO","Colina","COLTAUCO","Conchalí","Concón","Curacavi","DOÑIHUE","El Bosque","El Monte","El Quisco","El Tabo","Estación Central","GRANEROS","Hijuelas","Huechuraba","Independencia","Isla de Maipo","La Calera","La Cisterna","La Cruz","LA ESTRELLA","La Florida","La Granja","La Ligua","La Pintana","La Reina","Lampa","LAS CABRAS","Las Condes","Limache","LITUECHE","Llay Llay","Lo Barnechea","Lo Espejo","LO MIRANDA","Lo Prado","LOLOL","Los Andes","MACHALI","Macul","Maipú","MALLOA","MARCHIGUE","María Pinto","Melipilla","MOSTAZAL","NANCAGUA","NAVIDAD","Nogales","Ñuñoa","OLIVAR","Olmué","Padre Hurtado","Paine","PALMILLA","Panquehue","Papudo","PAREDONES","Pedro Aguirre Cerda","PELEQUEN","Peñaflor","Peñalolén","PERALILLO","Petorca","PEUMO","PICHIDEGUA","PICHILEMU","Pirque","PLACILLA","Providencia","Puchuncaví","Pudahuel","Puente Alto","PUMANQUE","Putaendo","Quilicura","Quillota","Quilpué","QUINTA DE TILCOCO","Quinta Normal","Quintero","RANCAGUA","Recoleta","Renca","RENGO","REQUINOA","Rinconada","ROSARIO","San Antonio","San Bernardo","San Esteban","San Felipe","SAN FERNANDO","SAN FRANCISCO DE MOSTAZAL","San Joaquín","San José de Maipo","San Miguel","San Ramón","SAN VICENTE DE TAGUA TAGUA","SANTA CRUZ","Santa María","Santiago","Santo Domingo","Talagante","Valparaíso","Villa Alemana","Viña del Mar","Vitacura","Zapallar",]
+                                        
                                         let options =""
                                         let arrerr = arrayerr[7]
                                         //console.log(arrerr);
@@ -518,7 +539,8 @@ excelInput.addEventListener('change',async function(){
 
                 
         }
-    }catch{
+    }catch(error){
+        console.log(error);
         $('#excel-input').val("")
         swal.fire({
             title : "Ups",

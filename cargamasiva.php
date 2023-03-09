@@ -100,10 +100,6 @@ else{
                                 <div class="col-8">
                                     <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
                                 </div>
-                                <div class="form-check form-switch col-4" style="justify-items: end;">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
-                                </div>
                                 <div class="col-md-6 col-lg-6 col-sm-8" >
                                     <div class="form-group">
                                         <label for="form_dir">Dirección</label>
@@ -255,10 +251,6 @@ else{
                                                                                     <div class="direnvio row" style="background-color: #66cab2;">
                                                                                         <div class="col-8">
                                                                                             <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
-                                                                                        </div>
-                                                                                        <div class="form-check form-switch col-4" style="justify-items: end;">
-                                                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                                                                                            <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
                                                                                         </div>
                                                                                         <div class="col-md-6 col-lg-6 col-sm-8" >
                                                                                             <div class="form-group">
@@ -845,7 +837,7 @@ function getTableData(){
                 })
             },error:function(data){
                 // console.log("Volvi, pero no sirvo para nada");
-                // console.log(data.responseText);
+                console.log(data.responseText);
             }
         })
     }
@@ -857,12 +849,14 @@ $('.tbodyclick').on('blur','td',function(){
     let clase = $(this).attr('class').split(' ')[0]
     let valor = $(this).text().trim()    
     var letras="abcdefghyjklmnñopqrstuvwxyz-*/+,.<>/?|:;'{}[]-=()*&^%$#@!`~"
+    let simbolos = `-*/+,.<>/?|:;'{}[]-=()"*&^%$#@!`+'`';
     // console.log("El valor de comuna es "+comuna);
     // console.log(clase);
     // console.log("VALOR DEL TD INGRESADO" + valor+"|"+clase);
     // console.log("cadena mide "+valor.trim().length);
     // console.log("este es el valor del select tipo "+tipo);
     var tn = 0;
+    var ts = 0;
     if(clase == 'tdtel'){
         texto = valor.toLowerCase();
         for(i=0; i<texto.length; i++){
@@ -872,15 +866,31 @@ $('.tbodyclick').on('blur','td',function(){
                 }
             }
     }
-        if(clase == "tddelete"){
 
+    if(clase == 'tdnom'){
+        texto = valor.toLowerCase();
+        for(i=0; i<texto.length; i++){
+                if (simbolos.indexOf(texto.charAt(i),0)!=-1){
+                    // console.log("tiene letrassssss");
+                    ts++
+                }
+            }
+    }
+        if(clase == "tddelete"){
+          
         }
         else if(clase == "tdnom" && valor == "" ){
             
             $(this).css('border', '1px solid red')
             $(this).prop('title','Debe ingresar un nombre')
             $(this).addClass('err')
-        }else if(clase == "tdnom" && valor.length < 5){
+        }else if(clase =='tdnom' && ts>0){
+            $(this).css('border', '1px solid red')
+            $(this).prop('title','El nombre posee carcteres especiales')
+            $(this).addClass('err')
+            $(this).text("")
+        }
+        else if(clase == "tdnom" && valor.length < 5){
 
             $(this).css('border', '1px solid red')
             $(this).prop('title','El nombre debe tener 5 caracteres como min')
@@ -927,8 +937,6 @@ $('.tbodyclick').on('blur','td',function(){
             $(this).prop('title','Solo se pueden ingresar numeros')
             $(this).addClass('err')
             $(this).text("")
-            
-            
         }else if(clase == "tdtel" && valor.length < 9 ){
 
             $(this).css('border', '1px solid red')

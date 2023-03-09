@@ -93,11 +93,7 @@
                 <div class="direnvio row" style="background-color: #66cab2;">
                     <div class="col-8">
                         <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
-                    </div>
-                    <div class="form-check form-switch col-4" style="justify-items: end;">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
-                    </div>
+                    </div> 
                     <div class="col-md-6 col-lg-6 col-sm-8" >
                         <div class="form-group">
                             <label for="form_dir">Dirección</label>
@@ -249,11 +245,7 @@
                                                                             <div class="direnvio row" style="background-color: #66cab2;">
                                                                                 <div class="col-8">
                                                                                     <label for=""><h3>Mi Dirección</h3> (lugar donde retiraremos tú pedido)</label>
-                                                                                </div>
-                                                                                <div class="form-check form-switch col-4" style="justify-items: end;">
-                                                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                                                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Guardar dirección</label>
-                                                                                </div>
+                                                                                </div> 
                                                                                 <div class="col-md-6 col-lg-6 col-sm-8" >
                                                                                     <div class="form-group">
                                                                                         <label for="form_dir">Dirección</label>
@@ -270,18 +262,18 @@
                                                                                 </div>
                                                                                 <div class="col-md-3 col-lg-3 col-sm-6">
                                                                                     <div class="form-group">
+                                                                                        <label for="first-name-column">Depto/casa/block etc.</label>
+                                                                                        <input type="text" id="form_detalledir" name="form_detalledir" class="form-control"
+                                                                                            placeholder="Casa, Depto, Bodega, etc.">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-3 col-lg-3 col-sm-6">
+                                                                                    <div class="form-group">
                                                                                         <label for="first-name-column">Nombre</label>
                                                                                         <input type="text" id="form_nombre" name="form_nombre" class="form-control"
                                                                                             placeholder="Casa, Depto, Bodega, etc.">
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-md-3 col-lg-3 col-sm-6">
-                                                                                        <div class="form-group">
-                                                                                            <label for="first-name-column">Depto/casa/block etc.</label>
-                                                                                            <input type="text" id="form_detalledir" name="form_detalledir" class="form-control"
-                                                                                                placeholder="Casa, Depto, Bodega, etc.">
-                                                                                        </div>
-                                                                                    </div>
                                                                                 <div class="col-md-6 col-lg-6 col-sm-8">
                                                                                     <label for="Comuna">Región </label>
                                                                                     <select class="form-select" name="select_regioncli" id="select_regioncli">
@@ -353,7 +345,7 @@
                                                                 <?php
                                                                     foreach($clientesfre as $key=>$cliente ):
                                                                 ?>
-                                                                <option value="<?=$cliente->rut?>"><?php echo $cliente->nombre.' | '.$cliente->calle?></option>
+                                                                <option value="<?=$cliente->id?>"><?php echo $cliente->nombre.' | '.$cliente->calle?></option>
                                                                 <?php endforeach;?>
                                                             </optgroup>
                                                         </select>
@@ -580,8 +572,8 @@
     }
 
     $('#clifreselect').on('change',function(){
-        let rut = $(this).val()
-        // console.log(rut);
+        let id = $(this).val()
+        // console.log(id);
 
 
         $.ajax({
@@ -589,7 +581,7 @@
             url: "ws/cliente/getclientefrecuente.php",
             dataType: 'json',
             data: {
-                "rut" : rut
+                "id" : id
             },
             success: function(data) {
                 //console.log(data);
@@ -871,7 +863,7 @@ $("#select_regioncli2").on('change',function(){
                                             region: vregion};
                             
                     
-                            alert(JSON.stringify(dataajax));
+                            // alert(JSON.stringify(dataajax));
                                     $.ajax({
                                     url: "ws/bodega/newBodega.php",
                                     type: "POST",

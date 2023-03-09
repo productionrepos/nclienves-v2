@@ -418,7 +418,7 @@ if($credito == 0) {
                                 })
                             }
                             else {
-                                swal("Error", data.message, "error");
+                                Swal.fire("Error", data.message, "error");
                                 finalizado();
                             }
                         },
@@ -428,7 +428,7 @@ if($credito == 0) {
                     })
             }
             else{ 
-                swal("Se ha cancelado el pago de este pedido", {
+                Swal.fire("Se ha cancelado el pago de este pedido", {
                             icon: "error",
                 })
             }

@@ -7,8 +7,9 @@ $conexion = new bd();
 $conexion->conectar();
 
 $id_pedido = filter_input(INPUT_GET, "id_pedido", FILTER_SANITIZE_NUMBER_INT);
-// echo $id_pedido;
+echo $id_pedido."<br>";
 $token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+echo $token."<br>";
 
 
 if(empty($id_pedido) && !is_numeric($id_pedido)):
@@ -40,11 +41,13 @@ INNER JOIN comuna AS comuna_origen ON (bodega.id_comuna = comuna_origen.id_comun
 INNER JOIN datos_comerciales ON (pedido.id_cliente=datos_comerciales.id_cliente)
 WHERE bulto.id_pedido=$id_pedido
 ";
+echo $query."<br>";
 
 //https://via.placeholder.com/750x300/FFFFFF/000000/?text=WebsiteBuilders.com
 
 
 if($datos = $conexion->mysqli->query($query)) {
+	var_dump($datos); echo "<br>";
 	if($datos->num_rows>0) {
 		while($dato = $datos->fetch_assoc()) {
 			if(strlen($dato['carril'])==1) {
@@ -62,7 +65,8 @@ if($datos = $conexion->mysqli->query($query)) {
 
 	}
 	else {
-		header("Location: /misDatos.php?pdf=fallo&id_pedido=".$id_pedido);
+		echo "fallo"."<br>";
+		// header("Location: /misDatos.php?pdf=fallo&id_pedido=".$id_pedido);
 		$conexion->desconectar();
 		exit();
 	}
@@ -124,3 +128,4 @@ function upca($upc_code) {
     $upc = substr($upc_code,0,11);
     if (strlen($upc) == 11 && strlen($upc_code) <= 12) { $oddPositions = $upc[0] + $upc[2] + $upc[4] + $upc[6] + $upc[8] + $upc[10]; $oddPositions *= 3; $evenPositions= $upc[1] + $upc[3] + $upc[5] + $upc[7] + $upc[9]; $sumEvenOdd = $oddPositions + $evenPositions; $checkDigit = (10 - ($sumEvenOdd % 10)) % 10; } return $upc_code.$checkDigit;
 }
+?>

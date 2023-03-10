@@ -42,32 +42,14 @@ INNER JOIN pedido ON (bulto.id_pedido=pedido.id_pedido)
 INNER JOIN bodega ON (pedido.id_bodega=bodega.id_bodega)
 INNER JOIN comuna AS comuna_origen ON (bodega.id_comuna = comuna_origen.id_comuna)
 INNER JOIN datos_comerciales ON (pedido.id_cliente=datos_comerciales.id_cliente)
-WHERE bulto.id_pedido=$id_pedido
-";
-
-//https://via.placeholder.com/750x300/FFFFFF/000000/?text=WebsiteBuilders.com
-
+WHERE bulto.id_pedido=".$id_pedido;
 
 if($datos = $conexion->mysqli->query($query)) {
 	if($datos->num_rows>0) {
 		while($dato = $datos->fetch_assoc()) {
-			if(strlen($dato['carril'])==1) {
-				$dato['carril'] = "0".$dato['carril'];
-			}
-			if(!file_exists('../../../uploads/logos/logo_'.md5($dato['id_cliente']).'.png')) {
-				$dato['imagen_logo'] = 'https://via.placeholder.com/750x300/FFFFFF/000000/0/?text='.urlencode($dato['nombre_comercio']);
-			}
-			else {
-				$dato['imagen_logo'] = 'https://app.spread.cl/uploads/logos/logo_'.md5($dato['id_cliente']).'.png';
-			}
-
-			$dato['codigo_barras_completo'] = upca($dato['codigo_barras']);
+			
 			array_push($bultos, $dato);
-			if($debug) {
-				echo "<pre>";
-				print_r($dato);
-				exit();
-			}
+
 		}
 
 	}
@@ -125,13 +107,14 @@ foreach($bultos as $datos_bulto) {
 		},
 		$plantilla
 	);
+	// echo $html;
 	$mpdf->WriteHTML($html);
 }
 if($debug) {
 	$mpdf->Output();
 }
 else {
-	$mpdf->Output("Etiquetas solicitud #$id_pedido.pdf", 'D');
+	$mpdf->Output("Etiquetas pedido ".$id_pedido.".pdf", 'D');
 }
 
 function upca($upc_code) {

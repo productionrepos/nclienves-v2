@@ -302,7 +302,7 @@
 										<div class="card">
 										<div class="card-header">
 											<h4 class="card-title">Formulario de envío(Datos destinatario)</h4>
-											<input type="text" class="form-control m-input" value="1"/>
+											<input type="text" style="display: none;" class="form-control m-input" value="1"/>
 										</div>
 										
 										<div class="card-content">
@@ -377,9 +377,6 @@
 															<button type="submit" class="submit btn btn-primary me-1 mb-1 col-12" value="Submit"> Enviar </button>
 														</div> -->
 														<div class="row mt-3" style="justify-content: space-between;">
-															<div class="col-md-2 col-2">
-																<a onclick="resetClienteData()" style="cursor: pointer" title="Limpiar formulario"> <i class="fa-solid fa-hand-sparkles" style="font-size: 30px;"></i> </a>
-															</div>
 															<div class="col-md-6 col-12">
 																<button type="button" class="deploy btn btn-spread me-1 mb-1 col-12" id="deploy"> Continuar</button>
 															</div>
@@ -925,7 +922,7 @@
 					countererr++
 					// console.log("dirvacio");
 				}
-				else if(detalle[index].value.length <= 3){
+				else if(detalle[index].value.length <= 1){
 					detalle[index].classList.add("vlderr")
 					countererr++
 				}

@@ -305,6 +305,9 @@ if($credito == 0) {
         // var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
         var url = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
         var procesado;
+        var conteoAppolo;
+        var totalAppolo;
+        var erroresAppolo;
 
         $('#procesarcredito').on('click',function(){
            
@@ -316,20 +319,21 @@ if($credito == 0) {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Procesar pago!'
-            }).then((result) => {
-            if (result.isConfirmed) {
-                let counterErr = "" ;
-                $.ajax({
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    let counterErr = "" ;
+                    await $.ajax({
                         type: "POST",
                         url: "ws/pedidos/pedido_credito.php",
                         data: {"id_pedido": <?php echo $id_pedido?>, "token": "<?php echo (md5($id_pedido.$id_cliente."pedido_credito#"))?>"},
-                        success: function(data) {
-                            console.log(data);
+                        success: async function(data) {
                             if(data.success == 1) {
-                                procesado = 0;
-                                console.log(`procesado inicial ${procesado}`);
                                 newTrackId = "";
-                                appoloData.forEach((ap,i) => {
+                                conteoAppolo = 0;
+                                erroresAppolo = 0;
+                                totalAppolo = appoloData.length;
+                                await appoloData.forEach((ap,i) => {
+
                                     setTimeout(function () {
                                         request = {"guide" : ap.guide,
                                                     "name_client" : ap.name_client,
@@ -357,7 +361,7 @@ if($credito == 0) {
                                         })
                                         .then(async (response) => {
                                             let estadoResponse = await response.json();
-                                            console.log(estadoResponse);
+                                            // console.log(estadoResponse);
 
                                             if(estadoResponse.trackId){
                                                 newTrackId = (estadoResponse.trackId);
@@ -381,12 +385,13 @@ if($credito == 0) {
                                             }
                                         })
 
-                                        console.log(newTrackId);
+                                        // console.log(newTrackId);
 
                                         var params = {
                                             "trackid": newTrackId,
                                             "codigo_barra": ap.guide
                                         }
+                                        console.log(params);
 
                                         $.ajax({
                                             data: JSON.stringify(params),
@@ -394,66 +399,58 @@ if($credito == 0) {
                                             url: "./ws/bulto/insertTrackId2.php",
                                             dataType: 'json',
                                             success: function(data) {
-                                                console.log(data);
+                                                conteoAppolo = conteoAppolo + 1;
                                                 if(data.status == 1){
-                                                    procesado = 1;
+                                                    // console.log(data);
+                                                }else{
+                                                    erroresAppolo = erroresAppolo + 1;
                                                 }
-                                                // console.log(data.status)
-                                                // console.log(procesado);
-                                                // Swal.fire(
-                                                // 'Pago procesado!',
-                                                // 'Tú pedido fue procesado por credito!',
-                                                // 'success'
-                                                // );
-                                                // window.location="detallepedido.php?id_pedido="+id_pedido;
+                                                if(conteoAppolo == totalAppolo){
+                                                    if(erroresAppolo == 0){
+                                                        swal.fire({
+                                                        title:"¡Pedido procesado con exito!",
+                                                        icon: "success",
+                                                        confirmButtonColor: '#3085d6',
+                                                        confirmButtonText: 'OK'
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                window.location="detallepedido.php?id_pedido="+<?php echo $id_pedido; ?>; 
+                                                            }else{
+                                                                window.location="detallepedido.php?id_pedido="+<?php echo $id_pedido; ?>;
+                                                            }
+                                                        })
+                                                    }else{
+                                                    swal.fire({
+                                                        title:"Hubo un problema en la generación del numero de numero de guia",
+                                                        icon: "error",
+                                                        confirmButtonColor: '#3085d6',
+                                                        confirmButtonText: 'OK'
+                                                    })
+                                                    }
+                                                }
                                             },error:function(data){
                                                 // console.log(data);
                                             }
                                         })
 
                                         })();
-                                    }, i * 4000);
+                                    }, i * 2000);
                                 })
-                                console.log(`procesado final ${procesado}`);
-                                if(procesado == 1){
-                                    swal.fire({
-                                        title:"¡Pedido procesado con exito!",
-                                        icon: "success",
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'OK'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location="detallepedido.php?id_pedido="+<?php echo $id_pedido; ?>; 
-                                        }else{
-                                            window.location="detallepedido.php?id_pedido="+<?php echo $id_pedido; ?>;
-                                        }
-                                    })
-                                }
-                                else if(procesado == 0){
-                                    swal.fire({
-                                        title:"Hubo un problema en la generación del numero de numero de guia",
-                                        icon: "error",
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'OK'
-                                    })
-                                }
-                               
                             }
                             else {
                                 Swal.fire("Error", data.message, "error");
-                                // finalizado();
                             }
                         },
                         error: function(data){
                             // console.log(data.message);
                         }
                     })
-            }
-            else{ 
-                Swal.fire("Se ha cancelado el pago de este pedido", {
-                            icon: "error",
-                })
-            }
+                }
+                else{ 
+                    Swal.fire("Se ha cancelado el pago de este pedido", {
+                                icon: "error",
+                    })
+                }
 
             }) 
         })

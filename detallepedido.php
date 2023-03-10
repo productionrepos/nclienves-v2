@@ -149,10 +149,12 @@ $http = 'http://';
                                     <tbody>
                                         <?php
                                             foreach($bultos as $bulto){?>
-                                            <td><?php echo $bulto->track_spread; ?></td>
-                                            <td><?php echo $bulto->nombre_bulto; ?></td>
-                                            <td><?php echo $bulto->direccion_bulto; ?></td>
-                                            <td><?php echo moneda($bulto->precio_bulto); ?></td>
+                                            <tr>
+                                                <td><?php echo $bulto->track_spread; ?></td>
+                                                <td><?php echo $bulto->nombre_bulto; ?></td>
+                                                <td><?php echo $bulto->direccion_bulto; ?></td>
+                                                <td><?php echo moneda($bulto->precio_bulto); ?></td>
+                                            </tr>
                                         <?php }
                                         ?>
                                     </tbody>

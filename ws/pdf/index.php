@@ -50,6 +50,7 @@ if($datos = $conexion->mysqli->query($query)) {
 	var_dump($datos); echo "<br>";
 	if($datos->num_rows>0) {
 		while($dato = $datos->fetch_assoc()) {
+			echo "estoy en el while"."<br>";
 			if(strlen($dato['carril'])==1) {
 				$dato['carril'] = "0".$dato['carril'];
 			}
@@ -61,6 +62,7 @@ if($datos = $conexion->mysqli->query($query)) {
 			}
 			$dato['codigo_barras_completo'] = upca($dato['codigo_barras']);
 			array_push($bultos, $dato);
+			print_r($bultos);
 		}
 
 	}

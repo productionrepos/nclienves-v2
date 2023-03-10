@@ -11,12 +11,12 @@ if(empty($id_pedido) && !is_numeric($id_pedido)):
 endif;
 
 if(empty($token) || strlen($token)!=32):
-    echo (json_encode(array("success" => 0, "message" => "Se requiere el token, intente recargando la página")));
+    echo (json_encode(array("success" => 0, "message" => "Se requiere el token, intente recargando la pagina")));
     exit();
 endif;
 
 if($token!=md5($id_pedido.$id_cliente."pedido_credito#")) {
-    echo (json_encode(array("success" => 0, "message" => "Token inválido, intente recargando la página")));
+    echo (json_encode(array("success" => 0, "message" => "Token invalido, intente recargando la pagina")));
     exit();
 }
 
@@ -70,7 +70,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
 if($conexion->mysqli->query("UPDATE pedido SET estado_pedido=3, estado_logistico=1 WHERE id_pedido=$id_pedido")) {
-    echo (json_encode(array("success" => 1, "message" => "Su pago a crédito ha sido procesado exitosamente")));
+    echo (json_encode(array("success" => 1, "message" => "Su pago a credito ha sido procesado exitosamente")));
 }
 else {
 	echo (json_encode(array("success" => 0, "message" => $conexion->mysqli->error)));

@@ -304,7 +304,7 @@ if($credito == 0) {
         // var url = 'http://localhost:8000/api/pymes/ingresarPyme'
         // var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
         var url = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
-        var procesado = 0;
+        var procesado;
 
         $('#procesarcredito').on('click',function(){
            
@@ -322,10 +322,12 @@ if($credito == 0) {
                 $.ajax({
                         type: "POST",
                         url: "ws/pedidos/pedido_credito.php",
-                        data: {"id_pedido": <?=$id_pedido?>, "token": "<?=(md5($id_pedido.$id_cliente."pedido_credito#"))?>"},
+                        data: {"id_pedido": <?php echo $id_pedido?>, "token": "<?php echo (md5($id_pedido.$id_cliente."pedido_credito#"))?>"},
                         success: function(data) {
+                            console.log(data);
                             if(data.success == 1) {
-                                console.log(data.success);
+                                procesado = 0;
+                                console.log(`procesado inicial ${procesado}`);
                                 newTrackId = "";
                                 appoloData.forEach((ap,i) => {
                                     setTimeout(function () {
@@ -355,13 +357,13 @@ if($credito == 0) {
                                         })
                                         .then(async (response) => {
                                             let estadoResponse = await response.json();
-                                            // console.log(estadoResponse);
+                                            console.log(estadoResponse);
 
                                             if(estadoResponse.trackId){
                                                 newTrackId = (estadoResponse.trackId);
                                             }else{
                                                 if(estadoResponse.error.sql){
-                                                    const Response = await await fetch( url , {
+                                                    const Response = await fetch( url , {
                                                         method: 'POST',
                                                         headers: {
                                                             'Accept': 'application/json',
@@ -379,7 +381,7 @@ if($credito == 0) {
                                             }
                                         })
 
-                                        // console.log(newTrackId);
+                                        console.log(newTrackId);
 
                                         var params = {
                                             "trackid": newTrackId,
@@ -392,6 +394,7 @@ if($credito == 0) {
                                             url: "./ws/bulto/insertTrackId2.php",
                                             dataType: 'json',
                                             success: function(data) {
+                                                console.log(data);
                                                 if(data.status == 1){
                                                     procesado = 1;
                                                 }
@@ -411,6 +414,7 @@ if($credito == 0) {
                                         })();
                                     }, i * 4000);
                                 })
+                                console.log(`procesado final ${procesado}`);
                                 if(procesado == 1){
                                     swal.fire({
                                         title:"¡Pedido procesado con exito!",
@@ -424,7 +428,8 @@ if($credito == 0) {
                                             window.location="detallepedido.php?id_pedido="+<?php echo $id_pedido; ?>;
                                         }
                                     })
-                                }else{
+                                }
+                                else if(procesado == 0){
                                     swal.fire({
                                         title:"Hubo un problema en la generación del numero de numero de guia",
                                         icon: "error",

@@ -37,33 +37,33 @@ $query = 'SELECT * FROM pedido
 
 $datos_pedido = $conexion->mysqli->query($query)->fetch_object();
 
-$html = "
-<table border=1>
-	<tr>
-		<td>Pedido</td>
-		<td>$datos_pedido->id_pedido</td>
-	<tr>
-		<td>Nombre</td>
-		<td>$datos_pedido->nombres_datos_contacto $datos_pedido->apellidos_datos_contacto </td>
-	</tr>
-	<tr>
-		<td>Teléfono</td>
-		<td>$datos_pedido->telefono_datos_contacto</td>
-	</tr>
-	<tr>
-		<td>Email</td>
-		<td>$datos_pedido->email_cliente</td>
-	</tr>
-	<tr>
-		<td>Bodega</td>
-		<td>$datos_pedido->nombre_bodega</td>
-	</tr>
-</table>
+// $html = "
+// <table border=1>
+// 	<tr>
+// 		<td>Pedido</td>
+// 		<td>$datos_pedido->id_pedido</td>
+// 	<tr>
+// 		<td>Nombre</td>
+// 		<td>$datos_pedido->nombres_datos_contacto $datos_pedido->apellidos_datos_contacto </td>
+// 	</tr>
+// 	<tr>
+// 		<td>Teléfono</td>
+// 		<td>$datos_pedido->telefono_datos_contacto</td>
+// 	</tr>
+// 	<tr>
+// 		<td>Email</td>
+// 		<td>$datos_pedido->email_cliente</td>
+// 	</tr>
+// 	<tr>
+// 		<td>Bodega</td>
+// 		<td>$datos_pedido->nombre_bodega</td>
+// 	</tr>
+// </table>
 
-";
+// ";
 
-include('../include/email_nuevo_credito.php');
-mail_nuevo_credito("Nuevo pedido a crédito #$id_pedido", 'contacto@spread.cl', $html);
+// include('../include/email_nuevo_credito.php');
+// mail_nuevo_credito("Nuevo pedido a crédito #$id_pedido", 'contacto@spread.cl', $html);
 
 
 header("Access-Control-Allow-Origin: *");

@@ -908,7 +908,7 @@
 					countererr++
 					// console.log("dirvacio");
 				}
-				else if(numerodir[index].value.length <= 2){
+				else if(numerodir[index].value.length <= 1){
 					numerodir[index].classList.add("vlderr")
 					countererr++
 				}

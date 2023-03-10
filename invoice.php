@@ -327,6 +327,8 @@ if($credito == 0) {
                         url: "ws/pedidos/pedido_credito.php",
                         data: {"id_pedido": <?php echo $id_pedido?>, "token": "<?php echo (md5($id_pedido.$id_cliente."pedido_credito#"))?>"},
                         success: async function(data) {
+                            console.log('data');
+                            console.log(data);
                             if(data.success == 1) {
                                 newTrackId = "";
                                 conteoAppolo = 0;
@@ -442,7 +444,8 @@ if($credito == 0) {
                             }
                         },
                         error: function(data){
-                            // console.log(data.message);
+                            console.log('data');
+                            console.log(data);
                         }
                     })
                 }

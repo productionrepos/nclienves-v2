@@ -285,8 +285,9 @@ else {
     var request = "";
     var newTrackId;
     // var url = 'http://localhost:8000/api/pymes/ingresarPyme'
-    var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
-
+    // var url = 'https://spreadfillment-back-dev.azurewebsites.net/api/pymes/ingresarPyme'
+    var url = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
+    
     $(document).ready(function(){
 
         if(existeSesion == 0){

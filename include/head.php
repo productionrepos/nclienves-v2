@@ -33,6 +33,11 @@
     <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/choices.js/2.8.3/styles/css/choices.css">
 
+    <link
+      rel="shortcut icon"
+      href="../include/img/Logotipo Spread_--13.png"
+      type="image/png"
+    />
 
 
     <link rel="stylesheet" href="./assets/css/shared/iconly.css" />

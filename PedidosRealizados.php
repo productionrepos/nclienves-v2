@@ -182,8 +182,8 @@
     ?>
     <!-- <script src="assets/js/plugins/jquery.dataTables.min.js"></script>
     <script src="assets/js/plugins/dataTables.bootstrap4.min.js"></script> -->
-    <script src="./assets/extensions/datatables.net-bs5/js/dataTables.bootstrap4.min.js"></script>
-    <script src="./assets/extensions/datatables.net-bs5/js/jquery.dataTables.min.js"></script>
+    <!-- <script src="./assets/extensions/datatables.net-bs5/js/dataTables.bootstrap4.min.js"></script>
+    <script src="./assets/extensions/datatables.net-bs5/js/jquery.dataTables.min.js"></script> -->
 <script>
     $(document).ready(function(){
 

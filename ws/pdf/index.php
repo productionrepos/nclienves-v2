@@ -1,9 +1,4 @@
 <?php
-$debug = false;
-if(isset($_GET['debug'])) {
-$debug = true;
-}
-
 require_once __DIR__ . '/vendor/autoload.php';
 require_once('../bd/dbconn.php');
 
@@ -29,7 +24,6 @@ if($token!=md5($id_pedido."pdf_etiquetas")) {
     exit();
 }
 
-
 $bultos = array();
 
 $query = "
@@ -45,31 +39,11 @@ INNER JOIN datos_comerciales ON (pedido.id_cliente=datos_comerciales.id_cliente)
 WHERE bulto.id_pedido=$id_pedido
 ";
 
-//https://via.placeholder.com/750x300/FFFFFF/000000/?text=WebsiteBuilders.com
-
-
 if($datos = $conexion->mysqli->query($query)) {
 	if($datos->num_rows>0) {
 		while($dato = $datos->fetch_assoc()) {
-			if(strlen($dato['carril'])==1) {
-				$dato['carril'] = "0".$dato['carril'];
-			}
-			if(!file_exists('../../../uploads/logos/logo_'.md5($dato['id_cliente']).'.png')) {
-				$dato['imagen_logo'] = 'https://via.placeholder.com/750x300/FFFFFF/000000/0/?text='.urlencode($dato['nombre_comercio']);
-			}
-			else {
-				$dato['imagen_logo'] = 'https://app.spread.cl/uploads/logos/logo_'.md5($dato['id_cliente']).'.png';
-			}
-
-			$dato['codigo_barras_completo'] = upca($dato['codigo_barras']);
 			array_push($bultos, $dato);
-			if($debug) {
-				echo "<pre>";
-				print_r($dato);
-				exit();
-			}
 		}
-
 	}
 	else {
 		header("Location: /misDatos.php?pdf=fallo&id_pedido=".$id_pedido);
@@ -127,23 +101,7 @@ foreach($bultos as $datos_bulto) {
 	);
 	$mpdf->WriteHTML($html);
 }
-if($debug) {
-	$mpdf->Output();
-}
-else {
-	$mpdf->Output("Etiquetas solicitud #$id_pedido.pdf", 'D');
-}
 
-function upca($upc_code) {
-    $upc = substr($upc_code,0,11);
-    if (strlen($upc) == 11 && strlen($upc_code) <= 12) {
+$mpdf->Output("Etiquetas solicitud #$id_pedido.pdf", 'D');
 
-		$oddPositions = $upc[0] + $upc[2] + $upc[4] + $upc[6] + $upc[8] + $upc[10]; 
-		$oddPositions *= 3;
-		$evenPositions= $upc[1] + $upc[3] + $upc[5] + $upc[7] + $upc[9];
-		$sumEvenOdd = $oddPositions + $evenPositions;
-		$checkDigit = (10 - ($sumEvenOdd % 10)) % 10;
-
-	} 
-	return $upc_code.$checkDigit;
-}
+?>

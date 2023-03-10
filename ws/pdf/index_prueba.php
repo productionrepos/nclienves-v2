@@ -1,4 +1,8 @@
 <?php
+$debug = false;
+if(isset($_GET['debug'])) {
+$debug = true;
+}
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once('../bd/dbconn.php');
@@ -7,9 +11,7 @@ $conexion = new bd();
 $conexion->conectar();
 
 $id_pedido = filter_input(INPUT_GET, "id_pedido", FILTER_SANITIZE_NUMBER_INT);
-echo $id_pedido."<br>";
 $token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
-echo $token."<br>";
 
 
 if(empty($id_pedido) && !is_numeric($id_pedido)):
@@ -27,6 +29,7 @@ if($token!=md5($id_pedido."pdf_etiquetas")) {
     exit();
 }
 
+
 $bultos = array();
 
 $query = "
@@ -41,31 +44,35 @@ INNER JOIN comuna AS comuna_origen ON (bodega.id_comuna = comuna_origen.id_comun
 INNER JOIN datos_comerciales ON (pedido.id_cliente=datos_comerciales.id_cliente)
 WHERE bulto.id_pedido=$id_pedido
 ";
-echo $query."<br>";
 
 //https://via.placeholder.com/750x300/FFFFFF/000000/?text=WebsiteBuilders.com
 
 
 if($datos = $conexion->mysqli->query($query)) {
-	var_dump($datos); echo "<br>";
 	if($datos->num_rows>0) {
 		while($dato = $datos->fetch_assoc()) {
-			echo "estoy en el while"."<br>";
+			if(strlen($dato['carril'])==1) {
+				$dato['carril'] = "0".$dato['carril'];
+			}
 			if(!file_exists('../../../uploads/logos/logo_'.md5($dato['id_cliente']).'.png')) {
 				$dato['imagen_logo'] = 'https://via.placeholder.com/750x300/FFFFFF/000000/0/?text='.urlencode($dato['nombre_comercio']);
 			}
 			else {
 				$dato['imagen_logo'] = 'https://app.spread.cl/uploads/logos/logo_'.md5($dato['id_cliente']).'.png';
 			}
-			$dato['codigo_barras_completo'] = $dato['codigo_barras'];
+
+			$dato['codigo_barras_completo'] = upca($dato['codigo_barras']);
 			array_push($bultos, $dato);
-			print_r($bultos); echo "<br>";
+			if($debug) {
+				echo "<pre>";
+				print_r($dato);
+				exit();
+			}
 		}
 
 	}
 	else {
-		echo "fallo"."<br>";
-		// header("Location: /misDatos.php?pdf=fallo&id_pedido=".$id_pedido);
+		header("Location: /misDatos.php?pdf=fallo&id_pedido=".$id_pedido);
 		$conexion->desconectar();
 		exit();
 	}
@@ -110,22 +117,33 @@ $plantilla = file_get_contents('etiqueta.html');
 
 
 foreach($bultos as $datos_bulto) {
-	print_r($bultos); echo "<br>";
+
 	$html = preg_replace_callback(
 		"|{(\w*)}|",
 		function ($matches) use ($datos_bulto) {
-			print_r($matches);echo "<br>";
 			return $datos_bulto[$matches[1]];
 		},
 		$plantilla
 	);
 	$mpdf->WriteHTML($html);
 }
+if($debug) {
+	$mpdf->Output();
+}
+else {
+	$mpdf->Output("Etiquetas solicitud #$id_pedido.pdf", 'D');
+}
 
-$mpdf->Output("Etiquetas solicitud #$id_pedido.pdf", 'D');
+function upca($upc_code) {
+    $upc = substr($upc_code,0,11);
+    if (strlen($upc) == 11 && strlen($upc_code) <= 12) {
 
-// function upca($upc_code) {
-//     $upc = substr($upc_code,0,11);
-//     if (strlen($upc) == 11 && strlen($upc_code) <= 12) { $oddPositions = $upc[0] + $upc[2] + $upc[4] + $upc[6] + $upc[8] + $upc[10]; $oddPositions *= 3; $evenPositions= $upc[1] + $upc[3] + $upc[5] + $upc[7] + $upc[9]; $sumEvenOdd = $oddPositions + $evenPositions; $checkDigit = (10 - ($sumEvenOdd % 10)) % 10; } return $upc_code.$checkDigit;
-// }
-?>
+		$oddPositions = $upc[0] + $upc[2] + $upc[4] + $upc[6] + $upc[8] + $upc[10]; 
+		$oddPositions *= 3;
+		$evenPositions= $upc[1] + $upc[3] + $upc[5] + $upc[7] + $upc[9];
+		$sumEvenOdd = $oddPositions + $evenPositions;
+		$checkDigit = (10 - ($sumEvenOdd % 10)) % 10;
+
+	} 
+	return $upc_code.$checkDigit;
+}

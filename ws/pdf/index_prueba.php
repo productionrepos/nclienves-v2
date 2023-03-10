@@ -42,8 +42,7 @@ INNER JOIN pedido ON (bulto.id_pedido=pedido.id_pedido)
 INNER JOIN bodega ON (pedido.id_bodega=bodega.id_bodega)
 INNER JOIN comuna AS comuna_origen ON (bodega.id_comuna = comuna_origen.id_comuna)
 INNER JOIN datos_comerciales ON (pedido.id_cliente=datos_comerciales.id_cliente)
-WHERE bulto.id_pedido=$id_pedido
-";
+WHERE bulto.id_pedido=".$id_pedido;
 
 if($datos = $conexion->mysqli->query($query)) {
 	if($datos->num_rows>0) {
@@ -108,14 +107,14 @@ foreach($bultos as $datos_bulto) {
 		},
 		$plantilla
 	);
-	echo $html;
+	// echo $html;
 	$mpdf->WriteHTML($html);
 }
 if($debug) {
 	$mpdf->Output();
 }
 else {
-	// $mpdf->Output("Etiquetas solicitud #$id_pedido.pdf", 'D');
+	$mpdf->Output("Etiquetas pedido ".$id_pedido.".pdf", 'D');
 }
 
 function upca($upc_code) {

@@ -19,6 +19,8 @@
             WHERE c.id_cliente='. $id_cli .' AND p.estado_pedido>=2 
             order by p.timestamp_pedido desc';
 
+    
+
     $existe = false;
     if($res = $conn->mysqli->query($query)){
         $datapedido = array();
@@ -38,6 +40,7 @@
         exit();
     }
     $suma=0;
+
 ?>
 
 <!DOCTYPE html>
@@ -94,13 +97,52 @@
                                         $index =0;
                                         $conn->conectar();
                                             if($existe):
+                                                $counterpedido = 0;
                                                 foreach($datapedido as $pedido):
+                                                    $counterpedido ++;
+                                                    $total = 0 ;
+                                                    $fivecounter = 0;
+                                                    $sixcounter = 0;
+                                                    $id_estado_logistico = [];
+                                                    $querylogistico = "SELECT estado_logistico FROM bulto WHERE id_pedido = ".$pedido->id_pedido;
+
+                                                    $responsequerylogistico = $conn->mysqli->query($querylogistico);
+
+                                                    while($datoslogisticos = $responsequerylogistico->fetch_object()){
+                                                        $id_estado_logistico [] = $datoslogisticos;
+                                                    }
+                                                    $total_estados = count($id_estado_logistico);
+                                                    $total = $total_estados;
+                                                    $logo = "";
+                                                    foreach($id_estado_logistico as $id_logistico){
+                                                        $estado_logistico = $id_logistico->estado_logistico;
+                                                        if($estado_logistico ==5){
+                                                            $fivecounter ++;
+                                                        }
+
+                                                        if($estado_logistico ==6){
+                                                            $sixcounter ++;
+                                                        }
+
+                                                    }
+
+                                                    if($fivecounter == $total ){
+                                                        $logo = '<i style="color: #00FF00; font-size:30px;" class="fa-solid fa-check"></i>';
+                                                    }else if($sixcounter > 0 ){
+
+                                                        $logo = '<i style="color: #D0342C ; font-size: 30px;" class="fa-solid fa-info"></i>';
+                                                    }
+                                                    else{
+                                                        $logo = '<i class="fa-solid fa-clock" style="font-size: 30px; color: #eed202"></i>';
+                                                    }
+
                                                     $queryCantidad = 'select count(id_bulto) as suma from bulto where id_pedido ='.$pedido->id_pedido;
                                                     if($response = $conn->mysqli->query($queryCantidad)){
                                                         $suma = $response ->fetch_object();
                                                     }
                                     ?>
                                                     <tr>
+                                                        
                                                         <td><span class="idpedido"><?=$pedido->id_pedido?></span></td>
                                                         <td><?=date('d/m/Y',$pedido->timestamp_pedido)?></td>
                                                         <td><?=$pedido->nombre_bodega?></td>
@@ -119,7 +161,10 @@
 
                                                             </a>
                                                         </td>
-                                                        <td>Check verde - Información rojo - reloj (pendientes)</td>
+                                                        <td style="text-align: center;"> 
+                                                            
+                                                            <?php echo $logo;?>
+                                                        </td>
                                                         <td><a href="detallepedido.php?id_pedido=<?=$pedido->id_pedido?>" class='btn btn-spread'>Revisar Pedido</a></td>
                                                         
                                                     </tr>

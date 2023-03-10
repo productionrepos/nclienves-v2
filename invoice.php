@@ -326,6 +326,7 @@ if($credito == 0) {
                         type: "POST",
                         url: "ws/pedidos/pedido_credito.php",
                         data: {"id_pedido": <?php echo $id_pedido?>, "token": "<?php echo (md5($id_pedido.$id_cliente."pedido_credito#"))?>"},
+                        dataType: 'json',
                         success: async function(data) {
                             console.log('data');
                             console.log(data);

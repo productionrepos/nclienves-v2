@@ -6,23 +6,6 @@ $conexion->conectar();
 $id_pedido = filter_input(INPUT_GET, "id_pedido", FILTER_SANITIZE_NUMBER_INT);
 $token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
 
-
-if(empty($id_pedido) && !is_numeric($id_pedido)):
-    print_r(json_encode(array("success" => 0, "message" => "Algo anda muy mal")));
-    exit();
-endif;
-
-if(empty($token) || strlen($token)!=32):
-    print_r(json_encode(array("success" => 0, "message" => "Se requiere el token")));
-    exit();
-endif;
-
-if($token!=md5($id_pedido."pdf_etiquetas")) {
-    print_r(json_encode(array("success" => 0, "message" => "Token inválido")));
-    exit();
-}
-
-
 $bultos = array();
 
 $query = "
@@ -40,9 +23,7 @@ WHERE bulto.id_pedido=".$id_pedido;
 if($datos = $conexion->mysqli->query($query)) {
 	if($datos->num_rows>0) {
 		while($dato = $datos->fetch_assoc()) {
-			
 			array_push($bultos, $dato);
-
 		}
 
 	}
@@ -53,10 +34,12 @@ if($datos = $conexion->mysqli->query($query)) {
 	}
 }
 else {
-	echo $conexion->mysqli->error;
+	// echo $conexion->mysqli->error;
 	$conexion->desconectar();
 	exit();
 }
+
+
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -70,6 +53,11 @@ $mpdf = new \Mpdf\Mpdf([
 	'margin_header' => 10,
 	'margin_footer' => 10
 ]);
+
+$mpdf->SetProtection(array('print'));
+$mpdf->SetTitle("Etiquetas pedido ".$id_pedido.".pdf");
+$mpdf->SetAuthor("SPREAD");
+$mpdf->SetDisplayMode('fullpage');
 
 foreach($bultos as $datos_bulto) {
 	// print_r($datos_bulto);
@@ -256,11 +244,4 @@ foreach($bultos as $datos_bulto) {
 }
 
 
-
-$mpdf->SetProtection(array('print'));
-$mpdf->SetTitle("Etiquetas pedido ".$id_pedido.".pdf");
-$mpdf->SetAuthor("SPREAD");
-$mpdf->SetDisplayMode('fullpage');
-
-// $mpdf->Output("Etiquetas pedido ".$id_pedido.".pdf", 'D');
 $mpdf->Output();

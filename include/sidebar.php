@@ -102,6 +102,12 @@
                                     <span>Test Query</span>
                                 </a>
                             </li>
+                            <li class="sidebar-item  ">
+                                <a href="/querytest2.php" class='sidebar-link'>
+                                    <i class="fa-solid fa-warehouse"></i>
+                                    <span>Test Query 2</span>
+                                </a>
+                            </li>
                         <?php  endif;?>
         
                     </ul>

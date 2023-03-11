@@ -1,8 +1,9 @@
 <?php
+ob_start();
 error_reporting(E_ALL); 
 ini_set('display_errors', 1);
 
-require_once __DIR__ . '/vendor/autoload.php';
+
 require_once('../bd/dbconn.php');
 
 $conexion = new bd();
@@ -12,20 +13,20 @@ $id_pedido = filter_input(INPUT_GET, "id_pedido", FILTER_SANITIZE_NUMBER_INT);
 $token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
 
 
-if(empty($id_pedido) && !is_numeric($id_pedido)):
-    print_r(json_encode(array("success" => 0, "message" => "Algo anda muy mal")));
-    exit();
-endif;
+// if(empty($id_pedido) && !is_numeric($id_pedido)):
+//     print_r(json_encode(array("success" => 0, "message" => "Algo anda muy mal")));
+//     exit();
+// endif;
 
-if(empty($token) || strlen($token)!=32):
-    print_r(json_encode(array("success" => 0, "message" => "Se requiere el token")));
-    exit();
-endif;
+// if(empty($token) || strlen($token)!=32):
+//     print_r(json_encode(array("success" => 0, "message" => "Se requiere el token")));
+//     exit();
+// endif;
 
-if($token!=md5($id_pedido."pdf_etiquetas")) {
-    print_r(json_encode(array("success" => 0, "message" => "Token inválido")));
-    exit();
-}
+// if($token!=md5($id_pedido."pdf_etiquetas")) {
+//     print_r(json_encode(array("success" => 0, "message" => "Token inválido")));
+//     exit();
+// }
 
 
 $bultos = array();
@@ -62,6 +63,10 @@ else {
 	$conexion->desconectar();
 	exit();
 }
+
+ob_end_flush();
+
+require_once __DIR__ . '/vendor/autoload.php';
 
 $mpdf = new \Mpdf\Mpdf([
 	'mode' => 'utf-8',

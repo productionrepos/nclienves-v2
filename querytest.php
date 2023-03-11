@@ -58,8 +58,9 @@ $http = 'http://';
   <input type="text" name="trackid" id="trackid" aria-describedby="helpId" placeholder="Número de pedido" value="125958">
   <!-- <a id="apretameclick" class="col-2 btn btn-success">Apretame</a><br><br> -->
 
-  <a href="<?php echo $http.$_SERVER['HTTP_HOST']?>/ws/pdf/index_prueba.php?id_pedido=<?=$id_pedido?>&token=<?=md5($id_pedido."pdf_etiquetas")?>" 
-    type="button" class="btn btn-lg btn-block btn-spread">
+  <a href="<?php echo $http.$_SERVER['HTTP_HOST']?>/ws/pdf/ejemplo.php?id_pedido=<?=$id_pedido?>&token=<?=md5($id_pedido."pdf_etiquetas")?>" 
+    type="button" class="btn btn-lg btn-block btn-spread"
+    Target="_blank">
         <i class="fa fa-download d-flex"></i>
         Descargue aquí el archivo para imprimir las etiquetas que debe adherir en los bultos
     </a>

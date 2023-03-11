@@ -1,262 +1,71 @@
 <?php
+error_reporting(E_ALL); 
+ini_set('display_errors', 1);
 
-$html = '
-<html>
-<head>
-<style>
-body {font-family: sans-serif;
-	font-size: 10pt;
-}
-p {	margin: 0pt; }
-table.items {
-	border: 0.1mm solid #000000;
-}
-td { vertical-align: top; }
-.items td {
-	border-left: 0.1mm solid #000000;
-	border-right: 0.1mm solid #000000;
-}
-table thead td { background-color: #EEEEEE;
-	text-align: center;
-	border: 0.1mm solid #000000;
-	font-variant: small-caps;
-}
-.items td.blanktotal {
-	background-color: #EEEEEE;
-	border: 0.1mm solid #000000;
-	background-color: #FFFFFF;
-	border: 0mm none #000000;
-	border-top: 0.1mm solid #000000;
-	border-right: 0.1mm solid #000000;
-}
-.items td.totals {
-	text-align: right;
-	border: 0.1mm solid #000000;
-}
-.items td.cost {
-	text-align: "." center;
-}
-</style>
-</head>
-<body>
-<!--mpdf
-<htmlpageheader name="myheader">
-<table width="100%"><tr>
-<td width="50%" style="color:#0000BB; "><span style="font-weight: bold; font-size: 14pt;">Acme Trading Co.</span><br />123 Anystreet<br />Your City<br />GD12 4LP<br /><span style="font-family:dejavusanscondensed;">&#9742;</span> 01777 123 567</td>
-<td width="50%" style="text-align: right;">Invoice No.<br /><span style="font-weight: bold; font-size: 12pt;">0012345</span></td>
-</tr></table>
-</htmlpageheader>
-<htmlpagefooter name="myfooter">
-<div style="border-top: 1px solid #000000; font-size: 9pt; text-align: center; padding-top: 3mm; ">
-Page {PAGENO} of {nb}
-</div>
-</htmlpagefooter>
-<sethtmlpageheader name="myheader" value="on" show-this-page="1" />
-<sethtmlpagefooter name="myfooter" value="on" />
-mpdf-->
-<div style="text-align: right">Date: 13th November 2008</div>
-<table width="100%" style="font-family: serif;" cellpadding="10"><tr>
-<td width="45%" style="border: 0.1mm solid #888888; "><span style="font-size: 7pt; color: #555555; font-family: sans;">SOLD TO:</span><br /><br />345 Anotherstreet<br />Little Village<br />Their City<br />CB22 6SO</td>
-<td width="10%">&nbsp;</td>
-<td width="45%" style="border: 0.1mm solid #888888;"><span style="font-size: 7pt; color: #555555; font-family: sans;">SHIP TO:</span><br /><br />345 Anotherstreet<br />Little Village<br />Their City<br />CB22 6SO</td>
-</tr></table>
-<br />
-<table class="items" width="100%" style="font-size: 9pt; border-collapse: collapse; " cellpadding="8">
-<thead>
-<tr>
-<td width="15%">Ref. No.</td>
-<td width="10%">Quantity</td>
-<td width="45%">Description</td>
-<td width="15%">Unit Price</td>
-<td width="15%">Amount</td>
-</tr>
-</thead>
-<tbody>
-<!-- ITEMS HERE -->
-<tr>
-<td align="center">MF1234567</td>
-<td align="center">10</td>
-<td>Large pack Hoover bags</td>
-<td class="cost">&pound;2.56</td>
-<td class="cost">&pound;25.60</td>
-</tr>
-<tr>
-<td align="center">MX37801982</td>
-<td align="center">1</td>
-<td>Womans waterproof jacket<br />Options - Red and charcoal.</td>
-<td class="cost">&pound;102.11</td>
-<td class="cost">&pound;102.11</td>
-</tr>
-<tr>
-<td align="center">MR7009298</td>
-<td align="center">25</td>
-<td>Steel nails; oval head; 30mm x 3mm. Packs of 1000.</td>
-<td class="cost">&pound;12.26</td>
-<td class="cost">&pound;325.60</td>
-</tr>
-<tr>
-<td align="center">MF1234567</td>
-<td align="center">10</td>
-<td>Large pack Hoover bags</td>
-<td class="cost">&pound;2.56</td>
-<td class="cost">&pound;25.60</td>
-</tr>
-<tr>
-<td align="center">MX37801982</td>
-<td align="center">1</td>
-<td>Womans waterproof jacket<br />Options - Red and charcoal.</td>
-<td class="cost">&pound;102.11</td>
-<td class="cost">&pound;102.11</td>
-</tr>
-<tr>
-<td align="center">MR7009298</td>
-<td align="center">25</td>
-<td>Steel nails; oval head; 30mm x 3mm. Packs of 1000.</td>
-<td class="cost">&pound;12.26</td>
-<td class="cost">&pound;325.60</td>
-</tr>
-<tr>
-<td align="center">MF1234567</td>
-<td align="center">10</td>
-<td>Large pack Hoover bags</td>
-<td class="cost">&pound;2.56</td>
-<td class="cost">&pound;25.60</td>
-</tr>
-<tr>
-<td align="center">MX37801982</td>
-<td align="center">1</td>
-<td>Womans waterproof jacket<br />Options - Red and charcoal.</td>
-<td class="cost">&pound;102.11</td>
-<td class="cost">&pound;102.11</td>
-</tr>
-<tr>
-<td align="center">MR7009298</td>
-<td align="center">25</td>
-<td>Steel nails; oval head; 30mm x 3mm. Packs of 1000.</td>
-<td class="cost">&pound;12.26</td>
-<td class="cost">&pound;325.60</td>
-</tr>
-<tr>
-<td align="center">MF1234567</td>
-<td align="center">10</td>
-<td>Large pack Hoover bags</td>
-<td class="cost">&pound;2.56</td>
-<td class="cost">&pound;25.60</td>
-</tr>
-<tr>
-<td align="center">MX37801982</td>
-<td align="center">1</td>
-<td>Womans waterproof jacket<br />Options - Red and charcoal.</td>
-<td class="cost">&pound;102.11</td>
-<td class="cost">&pound;102.11</td>
-</tr>
-<tr>
-<td align="center">MR7009298</td>
-<td align="center">25</td>
-<td>Steel nails; oval head; 30mm x 3mm. Packs of 1000.</td>
-<td class="cost">&pound;12.26</td>
-<td class="cost">&pound;325.60</td>
-</tr>
-<tr>
-<td align="center">MF1234567</td>
-<td align="center">10</td>
-<td>Large pack Hoover bags</td>
-<td class="cost">&pound;2.56</td>
-<td class="cost">&pound;25.60</td>
-</tr>
-<tr>
-<td align="center">MX37801982</td>
-<td align="center">1</td>
-<td>Womans waterproof jacket<br />Options - Red and charcoal.</td>
-<td class="cost">&pound;102.11</td>
-<td class="cost">&pound;102.11</td>
-</tr>
-<tr>
-<td align="center">MF1234567</td>
-<td align="center">10</td>
-<td>Large pack Hoover bags</td>
-<td class="cost">&pound;2.56</td>
-<td class="cost">&pound;25.60</td>
-</tr>
-<tr>
-<td align="center">MX37801982</td>
-<td align="center">1</td>
-<td>Womans waterproof jacket<br />Options - Red and charcoal.</td>
-<td class="cost">&pound;102.11</td>
-<td class="cost">&pound;102.11</td>
-</tr>
-<tr>
-<td align="center">MR7009298</td>
-<td align="center">25</td>
-<td>Steel nails; oval head; 30mm x 3mm. Packs of 1000.</td>
-<td class="cost">&pound;12.26</td>
-<td class="cost">&pound;325.60</td>
-</tr>
-<tr>
-<td align="center">MR7009298</td>
-<td align="center">25</td>
-<td>Steel nails; oval head; 30mm x 3mm. Packs of 1000.</td>
-<td class="cost">&pound;12.26</td>
-<td class="cost">&pound;325.60</td>
-</tr>
-<tr>
-<td align="center">MF1234567</td>
-<td align="center">10</td>
-<td>Large pack Hoover bags</td>
-<td class="cost">&pound;2.56</td>
-<td class="cost">&pound;25.60</td>
-</tr>
-<tr>
-<td align="center">MX37801982</td>
-<td align="center">1</td>
-<td>Womans waterproof jacket<br />Options - Red and charcoal.</td>
-<td class="cost">&pound;102.11</td>
-<td class="cost">&pound;102.11</td>
-</tr>
-<tr>
-<td align="center">MR7009298</td>
-<td align="center">25</td>
-<td>Steel nails; oval head; 30mm x 3mm. Packs of 1000.</td>
-<td class="cost">&pound;12.26</td>
-<td class="cost">&pound;325.60</td>
-</tr>
-<!-- END ITEMS HERE -->
-<tr>
-<td class="blanktotal" colspan="3" rowspan="6"></td>
-<td class="totals">Subtotal:</td>
-<td class="totals cost">&pound;1825.60</td>
-</tr>
-<tr>
-<td class="totals">Tax:</td>
-<td class="totals cost">&pound;18.25</td>
-</tr>
-<tr>
-<td class="totals">Shipping:</td>
-<td class="totals cost">&pound;42.56</td>
-</tr>
-<tr>
-<td class="totals"><b>TOTAL:</b></td>
-<td class="totals cost"><b>&pound;1882.56</b></td>
-</tr>
-<tr>
-<td class="totals">Deposit:</td>
-<td class="totals cost">&pound;100.00</td>
-</tr>
-<tr>
-<td class="totals"><b>Balance due:</b></td>
-<td class="totals cost"><b>&pound;1782.56</b></td>
-</tr>
-</tbody>
-</table>
-<div style="text-align: center; font-style: italic;">Payment terms: payment due in 30 days</div>
-</body>
-</html>
-';
+require_once __DIR__ . '/vendor/autoload.php';
+require_once('../bd/dbconn.php');
 
-$path = (getenv('MPDF_ROOT')) ? getenv('MPDF_ROOT') : __DIR__;
-require_once $path . '/vendor/autoload.php';
+$conexion = new bd();
+$conexion->conectar();
+
+$id_pedido = filter_input(INPUT_GET, "id_pedido", FILTER_SANITIZE_NUMBER_INT);
+$token = filter_input(INPUT_GET, "token", FILTER_SANITIZE_STRING);
+
+
+if(empty($id_pedido) && !is_numeric($id_pedido)):
+    print_r(json_encode(array("success" => 0, "message" => "Algo anda muy mal")));
+    exit();
+endif;
+
+if(empty($token) || strlen($token)!=32):
+    print_r(json_encode(array("success" => 0, "message" => "Se requiere el token")));
+    exit();
+endif;
+
+if($token!=md5($id_pedido."pdf_etiquetas")) {
+    print_r(json_encode(array("success" => 0, "message" => "Token inválido")));
+    exit();
+}
+
+
+$bultos = array();
+
+$query = "
+SELECT pedido.id_pedido AS pedido,bulto.codigo_barras_bulto AS codigo_barras, datos_comerciales.id_cliente, rut_datos_comerciales AS rut_comercio, telefono_datos_comerciales as telefono_comercio, nombre_fantasia_datos_comerciales AS nombre_comercio, nombre_bulto AS nombre_destinatario, direccion_bulto AS direccion_destinatario, telefono_bulto AS telefono_destinatario, email_bulto AS email_destinatario, comuna_destino.nombre_comuna AS comuna_destinatario, region_destino.nombre_region AS region_destinatario, comuna_destino.carril_comuna AS carril,concat(calle_bodega,' ',numero_bodega) AS direccion_origen, nombre_bodega AS nombre_bodega_origen, comuna_origen.nombre_comuna AS comuna_origen, bulto.track_spread as track
+FROM bulto
+INNER JOIN comuna AS comuna_destino ON (bulto.id_comuna = comuna_destino.id_comuna)
+INNER JOIN provincia AS provincia_destino ON (comuna_destino.id_provincia=provincia_destino.id_provincia)
+INNER JOIN region AS region_destino ON (provincia_destino.id_region=region_destino.id_region)
+INNER JOIN pedido ON (bulto.id_pedido=pedido.id_pedido)
+INNER JOIN bodega ON (pedido.id_bodega=bodega.id_bodega)
+INNER JOIN comuna AS comuna_origen ON (bodega.id_comuna = comuna_origen.id_comuna)
+INNER JOIN datos_comerciales ON (pedido.id_cliente=datos_comerciales.id_cliente)
+WHERE bulto.id_pedido=".$id_pedido;
+
+if($datos = $conexion->mysqli->query($query)) {
+	if($datos->num_rows>0) {
+		while($dato = $datos->fetch_assoc()) {
+			
+			array_push($bultos, $dato);
+
+		}
+
+	}
+	else {
+		header("Location: /misDatos.php?pdf=fallo&id_pedido=".$id_pedido);
+		$conexion->desconectar();
+		exit();
+	}
+}
+else {
+	echo $conexion->mysqli->error;
+	$conexion->desconectar();
+	exit();
+}
 
 $mpdf = new \Mpdf\Mpdf([
+	'mode' => 'utf-8',
+	'format' => [200, 400],
 	'margin_left' => 20,
 	'margin_right' => 15,
 	'margin_top' => 48,
@@ -265,15 +74,196 @@ $mpdf = new \Mpdf\Mpdf([
 	'margin_footer' => 10
 ]);
 
+foreach($bultos as $datos_bulto) {
+	// print_r($datos_bulto);
+	$html = '<!DOCTYPE html>
+	<html>
+	  <head>
+		<meta charset="utf-8" />
+		<title>Etiqueta</title>
+	  </head>
+	  <body>
+	
+	
+	
+		<div style="margin-bottom:10px">
+		  <table style="border-color: white !important;">
+			<tbody>
+			  <tr>
+				<td width="60%" class="text-center" style="border: 0px;">
+				  <p style="font-size:80px; color: #00a77f;">SPREAD</p>
+				</td>
+				<td width="40%" style="border: 0px;" class="text-left">
+				 www.spread.cl
+				<br>
+				
+				<br>
+				contacto@spread.cl
+				</td>
+			  </tr>
+			</tbody>
+		  </table>
+		</div>
+	
+	
+	
+		<table>
+		  <tbody>
+			<tr>
+			  <td width="50%" class="text-center"><b class="titulo-td">Comercio</b></td>
+			  <td width="50%" class="text-center"><b class="titulo-td">Bodega</b></td>
+			</tr>
+			<tr>
+			  <td width="50%" class="text-center">'.$datos_bulto["nombre_comercio"].'</b></td>
+			  <td width="50%" class="text-center">'.$datos_bulto["nombre_bodega_origen"].'</b></td>
+			</tr>
+			<tr>
+			  <td width="50%" class="text-center"><b class="titulo-td">Dirección</b></td>
+			  <td width="50%" class="text-center"><b class="titulo-td">Comuna</b></td>
+			</tr>
+			<tr>
+			  <td width="50%" class="text-center">'.$datos_bulto["direccion_origen"].'</b></td>
+			  <td width="50%" class="text-center">'.$datos_bulto["comuna_origen"].'</b></td>
+			</tr>
+			<tr>
+			  <td width="50%" class="text-center"><b class="titulo-td">Teléfono</b></td>
+			  <td width="50%" class="text-center"><b class="titulo-td">Nro Pedido </b></td>
+			</tr>
+			<tr>
+			  <td width="50%" class="text-center">'.$datos_bulto["telefono_comercio"].'</b></td>
+			  <td width="50%" class="text-center">'.$datos_bulto["pedido"].'</b></td>
+			</tr>
+		  </tbody>
+		</table>
+	
+	
+	
+		<div style="margin-bottom:70px; margin-top:70px"> 
+		  <table width="100%">
+			<tr>
+			  <td width="100%" style="border: 0px;">
+				<div class="codigo_barra" style="text-align: center;">
+				  <barcode code="'.$datos_bulto["track"].'" type="EAN128A" class="barcode" size="4" height="0.5"/>
+				</div>
+			  </td>
+			</tr>
+			<tr>
+			  <td align="center">
+				  <h1>'.$datos_bulto["track"].'</h1>
+				  <p>Numero de Guia</p>
+			  </td>
+			</tr>
+		  </table>
+		</div>
+	
+	
+	
+	
+	
+	 
+		<table>
+		  <thead>
+			<tr>
+			  <td class="text-center" colspan="2"><b class="titulo">Destinatario</b></td>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			  <td width="50%" class="text-center"><b class="titulo-td">Nombre</b></td>
+			  <td width="50%" class="text-center"><b class="titulo-td">Dirección</b></td>
+			</tr>
+			<tr>
+			  <td class="text-center">'.$datos_bulto["nombre_destinatario"].'</td>
+			  <td class="text-center">'.$datos_bulto["direccion_destinatario"].'</td>
+			</tr>
+			<tr>
+			  <td width="50%" class="text-center"><b class="titulo-td">Comuna</b></td>
+			  <td width="50%" class="text-center"><b class="titulo-td">Región</b></td>
+			</tr>
+			<tr>
+			  <td class="text-center">'.$datos_bulto["comuna_destinatario"].'</td>
+			  <td class="text-center">'.$datos_bulto["region_destinatario"].'</td>
+			</tr>
+			<tr>
+			  <td width="50%" class="text-center"><b class="titulo-td">Teléfono</b></td>
+			  <td width="50%" class="text-center"><b class="titulo-td">Email</b></td>
+			</tr>
+			<tr>
+			  <td class="text-center">'.$datos_bulto["telefono_destinatario"].'</td>
+			  <td class="text-center">'.$datos_bulto["email_destinatario"].'</td>
+			</tr>
+		  </tbody>
+		</table>
+	
+	
+	
+		<pagebreak></pagebreak>
+	  </body>
+	  <style>
+		body {
+		  font-size: 20px;
+		  min-height: 900px;
+		}
+		table {
+		  display: block;
+		  width: 100%;
+		  border-collapse: collapse;
+		  border-spacing: 2px;
+		  border-color: grey;
+		  margin-top: 5px;
+		}
+		td {
+		  border: 1px solid #e2e5e8;
+		  padding: 10px;
+		}
+		.td-carril {
+		  border: 3px solid black;
+		  padding: 0px;
+		}
+		.text-center {
+		  text-align: center !important;
+		}
+		.text-left {
+		  text-align: right !important;
+		  font-size: 30px;
+		}
+		.titulo-td {
+		  font-size: 20px !important;
+		}
+		.titulo-td-carril {
+		  font-size: 40px !important;
+		}
+		.titulo {
+		  font-size: 24px !important;
+		}
+		.codigo_barra {
+		  margin-bottom:40px;
+		  text-align:center;
+		  padding-right: 50px;
+		}
+		.carril {
+		  font-size: 100px;
+		}
+	  </style>
+	</html>';
+
+	// $html = preg_replace_callback(
+	// 	"|{(\w*)}|",
+	// 	function ($matches) use ($datos_bulto) {
+	// 		return $datos_bulto[$matches[1]];
+	// 	},
+	// 	$plantilla
+	// );
+	// echo $html;
+	$mpdf->WriteHTML($html);
+}
+
+
+
 $mpdf->SetProtection(array('print'));
-$mpdf->SetTitle("Acme Trading Co. - Invoice");
-$mpdf->SetAuthor("Acme Trading Co.");
-$mpdf->SetWatermarkText("Paid");
-$mpdf->showWatermarkText = true;
-$mpdf->watermark_font = 'DejaVuSansCondensed';
-$mpdf->watermarkTextAlpha = 0.1;
+$mpdf->SetTitle("Etiquetas pedido ".$id_pedido.".pdf");
+$mpdf->SetAuthor("SPREAD");
 $mpdf->SetDisplayMode('fullpage');
 
-$mpdf->WriteHTML($html);
-
+// $mpdf->Output("Etiquetas pedido ".$id_pedido.".pdf", 'D');
 $mpdf->Output();

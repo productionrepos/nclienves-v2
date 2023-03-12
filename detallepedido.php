@@ -94,11 +94,11 @@ $http = 'http://';
 ?>
 
 <!DOCTYPE html>
-<html lang="en" lang="en">
+<html style=" overflow: hidden" lang="en">
 <!-- <?php
   //require_once('./include/head.php')
 ?> -->
-<head>
+<head >
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -152,14 +152,14 @@ $http = 'http://';
     </script>
 
 </head>
-<body  lang="en">
+<body style=" overflow: hidden"  lang="en">
     <div id="overlay">
         <div class="cv-spinner">
             <span class="spinner"></span>
         </div>
     </div>    
     
-    <div id="app" style="  overflow: auto;  scroll-snap-type: y mandatory;">
+    <div id="app">
         <!-- SideBar -->
         <?php
             include_once('./include/sidebar.php');

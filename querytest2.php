@@ -13,21 +13,6 @@
     $conexion = new bd();
     $conexion->conectar();
 
-    include('./include/busquedas/busquedaEnvios.php');
-    $inicio = date("Y-m-01");
-    $timestamp1 = strtotime($inicio);
-    $hasretiros = false;
-
-    $arraybultospendientes = [];
-
-    $fin = date("Y-m-t");
-    $timestamp2 = strtotime($fin);
-
-    $cantEnvios = totalEnvios($id_cliente,$timestamp1,$timestamp2);
-    $cantEnviosEntregados = totalEnviosEntregados($id_cliente,$timestamp1,$timestamp2);
-    $cantEnviosEnTransito = totalEnviosEnTransito($id_cliente,$timestamp1,$timestamp2);
-    $cantEnviosConProblemas = totalEnviosConProblemas($id_cliente,$timestamp1,$timestamp2);
-
     $bultos = [];
     $totalbultos = 0;
 
@@ -36,10 +21,6 @@
     }else{
         $http = 'servidor';
     }
-    
-    $querypendientes = "Select * from pedido where id_cliente =".$id_cliente.' and estado_pedido > 1 and estado_logistico=1';
-    
-
 
 
     $querybultosporpedido = "SELECT pedido.id_pedido AS pedido,bulto.codigo_barras_bulto AS codigo_barras, datos_comerciales.id_cliente, rut_datos_comerciales AS rut_comercio, telefono_datos_comerciales as telefono_comercio, nombre_fantasia_datos_comerciales AS nombre_comercio, nombre_bulto AS nombre_destinatario, direccion_bulto AS direccion_destinatario, telefono_bulto AS telefono_destinatario, email_bulto AS email_destinatario, comuna_destino.nombre_comuna AS comuna_destinatario, region_destino.nombre_region AS region_destinatario, comuna_destino.carril_comuna AS carril,concat(calle_bodega,' ',numero_bodega) AS direccion_origen, nombre_bodega AS nombre_bodega_origen, comuna_origen.nombre_comuna AS comuna_origen, bulto.track_spread as track
@@ -58,66 +39,6 @@
         $bultos [] = $ressbultos;
       }
       $totalbultos = $responsebultos->num_rows; 
-    }
-
-
-
-
-
-    if(mysqli_num_rows($resppendientes = $conexion->mysqli->query($querypendientes))>0){
-
-        $hasretiros = true;
-        while($pendientes = $resppendientes->fetch_object()){
-            $pend [] = $pendientes;
-        }
-
-        $cantidadpendientes = count($pend);
-           
-        foreach($pend  as $pp){
-            
-            $querybultos = "SELECT bu.track_spread as trackid,
-                            CONCAT(bo.calle_bodega,' ',bo.numero_bodega) as direccion,
-                            pe.timestamp_pedido as fecha,
-                            pe.id_pedido as idpedido
-                            from bulto bu inner join pedido pe on pe.id_pedido = bu.id_pedido 
-                            inner join bodega bo on bo.id_bodega = pe.id_bodega where pe.id_pedido =".$pp->id_pedido;
-
-            if($resbultosretiro = $conexion->mysqli->query($querybultos)){
-
-                while($bultospend = $resbultosretiro->fetch_object()){
-                    $bultospendientes [] = $bultospend;
-                }
-
-                foreach($bultospendientes as $bultopendiente){
-                    // print_r($bultopendiente);
-                    $trackid = $bultopendiente->trackid;
-
-                    $direccion = $bultopendiente->direccion;
-
-                    $fecha = $bultopendiente->fecha;
-
-                    $idpedido = $bultopendiente->idpedido;
-
-                    $hora = date('h:j:s',$fecha);
-                    $fechaestimada = "";
-                    if($hora > '12:00:00'){
-                        $formatfecha = date('d-m-Y',$fecha);
-                        $fechaplus = strtotime($formatfecha."+ 1 days");
-                        $fechaestimada = date('d/m/Y',$fechaplus);
-                    }else{
-                        $fechaestimada = date('d/m/Y',$fecha);
-                    }
-                    
-                    array_push($arraybultospendientes,["trackid" => $trackid,
-                                                        "direccion" => $direccion,
-                                                        "fechaestimada" => $fechaestimada,
-                                                        "IDPEDIDO" => $idpedido]);
-                }
-            }
-
-            $bultospendientes = [];
-        }
-       
     }
 
 
@@ -180,9 +101,17 @@
 
     <!-- ??????????? barcode ??? -->
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+EAN13+Text&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+EAN13+Text&display=swap" rel="stylesheet"> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js" 
+        integrity="sha512-QEAheCz+x/VkKtxeGoDq6nsGyzTx/0LMINTgQjqZ0h3+NjP+bCsPYz3hn0HnBkGmkIFSr7QcEZT+KyEM7lbLPQ==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer">
+    </script>
+
+    
 
 
     
@@ -203,15 +132,16 @@
                   include_once('./include/topbar.php');
               ?>
         
-              <div class="container-fluid" id="containermainmenu">
+                <div class="container-fluid" id="containermainmenu">
                
                   <div class="page-content" style="color:3e3e3f;">
-                   <a 
-                      id="pdfbyJS" type="button" class="btn btn-lg btn-block btn-spread">
-                      <i class="fa fa-download d-flex"></i>
-                      PDF GENERADO POR JAVASCRIPT
+                    
+                    <a 
+                        id="pdfbyJS" type="button" class="btn btn-lg btn-block btn-spread">
+                        <i class="fa fa-download d-flex"></i>
+                        PDF GENERADO POR JAVASCRIPT
                     </a>
-                  </div>
+                </div>
     </div>
     
 
@@ -276,8 +206,12 @@
             <tr>
               <td width="100%" style="border: 0px;">
                 <div>
-                  <strong>EAN-13:</strong>
-                  <span class="ean-barcode">11011999</span>
+                    <canvas id="barcode"></canvas>
+                    <script>
+                        JsBarcode("#barcode", "<?php echo $bulto->track; ?>");
+                    </script>
+                  <!-- <strong>EAN-13:</strong>
+                  <span class="ean-barcode">11011999</span> -->
                 </div>
                 <!-- <div class="codigo_barra" style="text-align: center;">
                   <barcode code="123223" type="EAN128A" class="barcode" size="4" height="0.5"/>
@@ -377,13 +311,14 @@
     }
   </style>
   <script>
+    // JsBarcode("#barcode", "358853358");
 
     window.jsPDF = window.jspdf.jsPDF;
     window.html2canvas = html2canvas;
     var totalbultos = <?=$totalbultos;?>;
     
   $('#pdfbyJS').on('click', async function(){
-    var doc = new jsPDF('p','px', [550, 410]);
+    var doc = new jsPDF('p','mm', [200, 280]);
 
     let canvases = document.querySelectorAll(".formpdf");
     
@@ -392,16 +327,17 @@
       
       await html2canvas(canvases[i]).then(canvas=>{
 
-          let width = canvas.width;
-          let height = canvas.height;
+        //   let width = canvas.width;
+        //   let height = canvas.height;
+        var width = doc.internal.pageSize.getWidth();
+        var height = doc.internal.pageSize.getHeight();
           if(i>0){
             doc.addPage();
           }
 
           doc.setPage(i+1);
-
           let dataURL = canvas.toDataURL('image/jpeg');
-          doc.addImage(dataURL, 'JPEG', 0, 0, 700 , 400)
+          doc.addImage(dataURL, 'JPEG', 0, 0,  width+50  , height+50 )
           
         })
       }

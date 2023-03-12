@@ -318,7 +318,7 @@
     var totalbultos = <?=$totalbultos;?>;
     
   $('#pdfbyJS').on('click', async function(){
-    var doc = new jsPDF('p','mm', [200, 280]);
+    var doc = new jsPDF('p','pt', 'a4');
 
     let canvases = document.querySelectorAll(".formpdf");
     
@@ -337,7 +337,7 @@
 
           doc.setPage(i+1);
           let dataURL = canvas.toDataURL('image/jpeg');
-          doc.addImage(dataURL, 'JPEG', 0, 0,  width+50  , height+50 )
+          doc.addImage(dataURL, 'JPEG', 0, 0,  width * 1.5  , height)
           
         })
       }

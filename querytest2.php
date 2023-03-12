@@ -5,23 +5,26 @@
         header("Location: index.php");
     endif;
 
+    if(!isset($_GET['id_pedido'])):
+      header("Location: index.php");
+    endif;
+
+    $id_pedido = $_GET['id_pedido'];
+
+    $bultos = [];
+    
+    $totalbultos = 0;
+
     $id_cliente = $_SESSION['cliente']->id_cliente;
 
-    $id_pedido = 36468;
 
+    //$id_pedido = 36468;
+    
     require_once('./ws/bd/dbconn.php');
     $conexion = new bd();
     $conexion->conectar();
 
-    $bultos = [];
-    $totalbultos = 0;
-
-    if($_SERVER['HTTP_HOST'] == 'localhost:8080'){
-        $http = 'local';
-    }else{
-        $http = 'servidor';
-    }
-
+  
 
     $querybultosporpedido = "SELECT pedido.id_pedido AS pedido,bulto.codigo_barras_bulto AS codigo_barras, datos_comerciales.id_cliente, rut_datos_comerciales AS rut_comercio, telefono_datos_comerciales as telefono_comercio, nombre_fantasia_datos_comerciales AS nombre_comercio, nombre_bulto AS nombre_destinatario, direccion_bulto AS direccion_destinatario, telefono_bulto AS telefono_destinatario, email_bulto AS email_destinatario, comuna_destino.nombre_comuna AS comuna_destinatario, region_destino.nombre_region AS region_destinatario, comuna_destino.carril_comuna AS carril,concat(calle_bodega,' ',numero_bodega) AS direccion_origen, nombre_bodega AS nombre_bodega_origen, comuna_origen.nombre_comuna AS comuna_origen, bulto.track_spread as track
                               FROM bulto
@@ -111,15 +114,13 @@
         referrerpolicy="no-referrer">
     </script>
 
-    
-
-
-    
-
-
-
 </head>
 <body  style=" overflow: hidden">
+  <div id="overlay">
+      <div class="cv-spinner">
+          <span class="spinner"></span>
+      </div>
+  </div>
   <div id="app">
         <!-- SideBar -->
         <?php
@@ -201,14 +202,14 @@
             </tr>
           </tbody>
         </table>
-        <div style="margin-bottom:70px; margin-top:70px;margin-left: 21%;"> 
+        <div style="margin-bottom:70px; margin-top:70px;margin-left: 33%;"> 
           <table width="100%">
             <tr>
               <td width="100%" style="border: 0px;">
                 <div>
-                    <canvas id="barcode"></canvas>
+                    <canvas id="barcode<?php echo $bulto->track;?>"></canvas>
                     <script>
-                        JsBarcode("#barcode", "<?php echo $bulto->track; ?>");
+                        JsBarcode("#barcode<?php echo $bulto->track; ?>", "<?php echo $bulto->track; ?>");
                     </script>
                   <!-- <strong>EAN-13:</strong>
                   <span class="ean-barcode">11011999</span> -->
@@ -226,39 +227,42 @@
             </tr>
           </table>
         </div>
-        <table style="margin-left: 4%;">
-          <thead>
-            <tr>
-              <td class="text-center" colspan="2"><b class="titulo">Destinatario</b></td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td width="50%" class="text-center"><b class="titulo-td">Nombre</b></td>
-              <td width="50%" class="text-center"><b class="titulo-td">Dirección</b></td>
-            </tr>
-            <tr>
-              <td class="text-center"><?php echo $bulto->nombre_destinatario;?></td>
-              <td class="text-center"><?php echo $bulto->direccion_destinatario;?></td>
-            </tr>
-            <tr>
-              <td width="50%" class="text-center"><b class="titulo-td">Comuna</b></td>
-              <td width="50%" class="text-center"><b class="titulo-td">Región</b></td>
-            </tr>
-            <tr>
-              <td class="text-center"><?php echo $bulto->comuna_destinatario;?></td>
-              <td class="text-center"><?php echo $bulto->region_destinatario;?></td>
-            </tr>
-            <tr>
-              <td width="50%" class="text-center"><b class="titulo-td">Teléfono</b></td>
-              <td width="50%" class="text-center"><b class="titulo-td">Email</b></td>
-            </tr>
-            <tr>
-              <td class="text-center"><?php echo $bulto->telefono_destinatario;?></td>
-              <td class="text-center"><?php echo $bulto->email_destinatario;?></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="row justify-content-center">
+          <table class="col-10">
+            <thead class="personaldatalabelhead">
+              <tr>
+                <td class="text-center" colspan="2"><b class="titulo">Destinatario</b></td>
+              </tr>
+            </thead>
+            <tbody class="personaldatalabelbody">
+              <tr>
+                <td width="50%" class="text-center"><b class="titulo-td">Nombre</b></td>
+                <td width="50%" class="text-center"><b class="titulo-td">Dirección</b></td>
+              </tr>
+              <tr>
+                <td class="text-center"><?php echo $bulto->nombre_destinatario;?></td>
+                <td class="text-center"><?php echo $bulto->direccion_destinatario;?></td>
+              </tr>
+              <tr>
+                <td width="50%" class="text-center"><b class="titulo-td">Comuna</b></td>
+                <td width="50%" class="text-center"><b class="titulo-td">Región</b></td>
+              </tr>
+              <tr>
+                <td class="text-center"><?php echo $bulto->comuna_destinatario;?></td>
+                <td class="text-center"><?php echo $bulto->region_destinatario;?></td>
+              </tr>
+              <tr>
+                <td width="50%" class="text-center"><b class="titulo-td">Teléfono</b></td>
+                <td width="50%" class="text-center"><b class="titulo-td">Email</b></td>
+              </tr>
+              <tr>
+                <td class="text-center"><?php echo $bulto->telefono_destinatario;?></td>
+                <td class="text-center"><?php echo $bulto->email_destinatario;?></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
     </div> 
     <?php
       endforeach;
@@ -321,27 +325,27 @@
     var doc = new jsPDF('p','pt', 'a4');
 
     let canvases = document.querySelectorAll(".formpdf");
-    
+    $("#overlay").fadeIn(300);
     for(var i = 0; i < canvases.length ; i++){
       console.log(canvases[i]);
       
       await html2canvas(canvases[i]).then(canvas=>{
 
-        //   let width = canvas.width;
-        //   let height = canvas.height;
-        var width = doc.internal.pageSize.getWidth();
-        var height = doc.internal.pageSize.getHeight();
+          let width = canvas.width;
+          let height = canvas.height;
+        // var width = doc.internal.pageSize.getWidth();
+        // var height = doc.internal.pageSize.getHeight();
           if(i>0){
             doc.addPage();
           }
-
           doc.setPage(i+1);
           let dataURL = canvas.toDataURL('image/jpeg');
-          doc.addImage(dataURL, 'JPEG', 0, 0,  width * 1.5  , height)
+          doc.addImage(dataURL, 'JPEG', 0, 0, width*0.70, height*0.65 )
           
         })
       }
-      // doc.output("dataurlnewwindow");
+      // doc.output("dataurlnewwindow");.
+      $("#overlay").fadeOut(300);
       doc.save();
   })
   </script>

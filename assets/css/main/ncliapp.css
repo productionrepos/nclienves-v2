@@ -418,3 +418,12 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
+
+.formpdf{
+    min-width: 800px;
+    min-height: 1300px;
+    max-width: 800px;
+    max-height: 1300px;
+}
+
+

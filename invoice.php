@@ -46,7 +46,7 @@ if($datos_pedido->estado >= 2){
 
 
 
-$querytotal = 'SELECT sum(precio_bulto) as total from bulto where id_pedido='.$id_pedido;
+$querytotal = 'SELECT sum(precio_bulto) as total from bulto where id_pedido='.$id_pedido.' and Deleted = 0';
 if($restotal = $conn->mysqli->query($querytotal)){
     $totalneto = $restotal->fetch_object()->total;
 }
@@ -66,7 +66,7 @@ FROM bulto bu
 INNER JOIN comuna co on co.id_comuna = bu.id_comuna
 INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
 INNER JOIN region re on re.id_region = pro.id_region
-where bu.id_pedido ='. $id_pedido.' and Deleted = 0';
+where bu.id_pedido ='. $id_pedido.' and bu.Deleted = 0';
 
 if($resdatabulto = $conn->mysqli->query($querybulto)){
   while($datares = $resdatabulto->fetch_object()){

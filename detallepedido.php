@@ -94,7 +94,7 @@ $http = 'http://';
 ?>
 
 <!DOCTYPE html>
-<html style=" overflow: hidden" lang="en">
+<html lang="en">
 <!-- <?php
   //require_once('./include/head.php')
 ?> -->
@@ -152,7 +152,7 @@ $http = 'http://';
     </script>
 
 </head>
-<body style=" overflow: hidden"  lang="en">
+<body lang="en">
     <div id="overlay">
         <div class="cv-spinner">
             <span class="spinner"></span>
@@ -256,127 +256,143 @@ $http = 'http://';
 
             </div>
 
-<?php
-require_once('./include/footer.php')
-?>
-
-<?php
-      $counter = 0;
-      foreach($bultoss as $bulto):
-        $counter ++;
-    ?>
-     <div class="formpdf" style="margin-left: 10%; z-index: -10;">
-        <div style="margin-bottom:10px">
-          <table style="margin-left: 2%;border-color: white !important;">
+      <footer >
+        <div class="footer clearfix mb-0 text-muted">
+            <div class="float-start">
+                <p style="color:#3e3e3f">2023 &copy; Spread</p>
+            </div>
+        </div>
+      </footer> 
+    <div style= "max-height: 1px;overflow: hidden;">
+      <?php
+        $counter = 0;
+        foreach($bultoss as $bulto):
+          $counter ++;
+      ?>
+      <div class="formpdf" style="margin-left: 10%; z-index: -10;">
+          <div style="margin-bottom:10px">
+            <table style="margin-left: 2%;border-color: white !important;">
+              <tbody>
+                <tr>
+                  <td width="60%" class="text-center" style="border: 0px;">
+                    <p style="font-size:80px; color: #00a77f;">SPREAD</p>
+                  </td>
+                  <td width="40%" style="border: 0px;" class="text-left">
+                  www.spread.cl
+                  <br>
+                  
+                  <br>
+                  contacto@spread.cl
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <table style="margin-left: 5%;">
             <tbody>
               <tr>
-                <td width="60%" class="text-center" style="border: 0px;">
-                  <p style="font-size:80px; color: #00a77f;">SPREAD</p>
-                </td>
-                <td width="40%" style="border: 0px;" class="text-left">
-                www.spread.cl
-                <br>
-                
-                <br>
-                contacto@spread.cl
-                </td>
+                <td width="50%" class="text-center"><b class="titulo-td">Comercio</b></td>
+                <td width="50%" class="text-center"><b class="titulo-td">Bodega</b></td>
               </tr>
-            </tbody>
-          </table>
-        </div>
-        <table style="margin-left: 5%;">
-          <tbody>
-            <tr>
-              <td width="50%" class="text-center"><b class="titulo-td">Comercio</b></td>
-              <td width="50%" class="text-center"><b class="titulo-td">Bodega</b></td>
-            </tr>
-            <tr>
-              <td width="50%" class="text-center"><?php echo $bulto->nombre_comercio?></b></td>
-              <td width="50%" class="text-center"><?php echo $bulto->nombre_bodega_origen?></b></td>
-            </tr>
-            <tr>
-              <td width="50%" class="text-center"><b class="titulo-td">Dirección</b></td>
-              <td width="50%" class="text-center"><b class="titulo-td">Comuna</b></td>
-            </tr>
-            <tr>
-              <td width="50%" class="text-center"><?php echo $bulto->direccion_origen?></b></td>
-              <td width="50%" class="text-center"><?php echo $bulto->comuna_origen?></b></td>
-            </tr>
-            <tr>
-              <td width="50%" class="text-center"><b class="titulo-td">Teléfono</b></td>
-              <td width="50%" class="text-center"><b class="titulo-td">Nro Pedido </b></td>
-            </tr>
-            <tr>
-              <td width="50%" class="text-center"><?php echo $bulto->telefono_comercio?></b></td>
-              <td width="50%" class="text-center"><?php echo $bulto->pedido?></b></td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="margin-bottom:70px; margin-top:70px;margin-left: 33%;"> 
-          <table width="100%">
-            <tr>
-              <td width="100%" style="border: 0px;">
-                <div>
-                    <canvas id="barcode<?php echo $bulto->track;?>"></canvas>
-                    <script>
-                        JsBarcode("#barcode<?php echo $bulto->track; ?>", "<?php echo $bulto->track; ?>");
-                    </script>
-                  <!-- <strong>EAN-13:</strong>
-                  <span class="ean-barcode">11011999</span> -->
-                </div>
-                <!-- <div class="codigo_barra" style="text-align: center;">
-                  <barcode code="123223" type="EAN128A" class="barcode" size="4" height="0.5"/>
-                </div> -->
-              </td>
-            </tr>
-            <tr>
-              <td>
-                  <h1><?php echo $bulto->track?></h1>
-                  <p>Numero de Guia</p>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="row justify-content-center">
-          <table class="col-10">
-            <thead class="personaldatalabelhead">
               <tr>
-                <td class="text-center" colspan="2"><b class="titulo">Destinatario</b></td>
+                <td width="50%" class="text-center"><?php echo $bulto->nombre_comercio?></b></td>
+                <td width="50%" class="text-center"><?php echo $bulto->nombre_bodega_origen?></b></td>
               </tr>
-            </thead>
-            <tbody class="personaldatalabelbody">
               <tr>
-                <td width="50%" class="text-center"><b class="titulo-td">Nombre</b></td>
                 <td width="50%" class="text-center"><b class="titulo-td">Dirección</b></td>
-              </tr>
-              <tr>
-                <td class="text-center"><?php echo $bulto->nombre_destinatario;?></td>
-                <td class="text-center"><?php echo $bulto->direccion_destinatario;?></td>
-              </tr>
-              <tr>
                 <td width="50%" class="text-center"><b class="titulo-td">Comuna</b></td>
-                <td width="50%" class="text-center"><b class="titulo-td">Región</b></td>
               </tr>
               <tr>
-                <td class="text-center"><?php echo $bulto->comuna_destinatario;?></td>
-                <td class="text-center"><?php echo $bulto->region_destinatario;?></td>
+                <td width="50%" class="text-center"><?php echo $bulto->direccion_origen?></b></td>
+                <td width="50%" class="text-center"><?php echo $bulto->comuna_origen?></b></td>
               </tr>
               <tr>
                 <td width="50%" class="text-center"><b class="titulo-td">Teléfono</b></td>
-                <td width="50%" class="text-center"><b class="titulo-td">Email</b></td>
+                <td width="50%" class="text-center"><b class="titulo-td">Nro Pedido </b></td>
               </tr>
               <tr>
-                <td class="text-center"><?php echo $bulto->telefono_destinatario;?></td>
-                <td class="text-center"><?php echo $bulto->email_destinatario;?></td>
+                <td width="50%" class="text-center"><?php echo $bulto->telefono_comercio?></b></td>
+                <td width="50%" class="text-center"><?php echo $bulto->pedido?></b></td>
               </tr>
             </tbody>
           </table>
-        </div>
+          <div style="margin-bottom:70px; margin-top:70px;margin-left: 33%;"> 
+            <table width="100%">
+              <tr>
+                <td width="100%" style="border: 0px;">
+                  <div>
+                      <canvas id="barcode<?php echo $bulto->track;?>"></canvas>
+                      <script>
+                          JsBarcode("#barcode<?php echo $bulto->track; ?>", "<?php echo $bulto->track; ?>");
+                      </script>
+                    <!-- <strong>EAN-13:</strong>
+                    <span class="ean-barcode">11011999</span> -->
+                  </div>
+                  <!-- <div class="codigo_barra" style="text-align: center;">
+                    <barcode code="123223" type="EAN128A" class="barcode" size="4" height="0.5"/>
+                  </div> -->
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <h1><?php echo $bulto->track?></h1>
+                    <p>Numero de Guia</p>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="row justify-content-center">
+            <table class="col-10">
+              <thead class="personaldatalabelhead">
+                <tr>
+                  <td class="text-center" colspan="2"><b class="titulo">Destinatario</b></td>
+                </tr>
+              </thead>
+              <tbody class="personaldatalabelbody">
+                <tr>
+                  <td width="50%" class="text-center"><b class="titulo-td">Nombre</b></td>
+                  <td width="50%" class="text-center"><b class="titulo-td">Dirección</b></td>
+                </tr>
+                <tr>
+                  <td class="text-center"><?php echo $bulto->nombre_destinatario;?></td>
+                  <td class="text-center"><?php echo $bulto->direccion_destinatario;?></td>
+                </tr>
+                <tr>
+                  <td width="50%" class="text-center"><b class="titulo-td">Comuna</b></td>
+                  <td width="50%" class="text-center"><b class="titulo-td">Región</b></td>
+                </tr>
+                <tr>
+                  <td class="text-center"><?php echo $bulto->comuna_destinatario;?></td>
+                  <td class="text-center"><?php echo $bulto->region_destinatario;?></td>
+                </tr>
+                <tr>
+                  <td width="50%" class="text-center"><b class="titulo-td">Teléfono</b></td>
+                  <td width="50%" class="text-center"><b class="titulo-td">Email</b></td>
+                </tr>
+                <tr>
+                  <td class="text-center"><?php echo $bulto->telefono_destinatario;?></td>
+                  <td class="text-center"><?php echo $bulto->email_destinatario;?></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-    </div> 
-    <?php
-      endforeach;
-    ?>
+      </div> 
+      <?php
+        endforeach;
+      ?>
+
+    </div>
+
+  <script src="../assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+  <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+  <script src="../assets/js/pages/dashboard.js"></script>
+  <script src="../assets/js/bootstrap.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/extensions/jquery/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/2.8.3/choices.js"></script>
+  <script src="assets/js/pages/form-element-select.js"></script>
+    
 
 </body>
 <style>
@@ -451,8 +467,7 @@ require_once('./include/footer.php')
           }
           doc.setPage(i+1);
           let dataURL = canvas.toDataURL('image/jpeg');
-          doc.addImage(dataURL, 'JPEG', 0, 0, width*0.70, height*0.65 )
-          
+          doc.addImage(dataURL, 'JPEG', 0, 0, width*0.35, height*0.30 )
         })
       }
       // doc.output("dataurlnewwindow");.

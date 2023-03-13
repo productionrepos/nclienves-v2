@@ -1,7 +1,5 @@
 <?php
 session_start();
-print_r($_SESSION); echo "<br>";
-print_r($_POST); echo "<br>";
 
 $existeSesion = 0;
 if(!isset($_SESSION['cliente'])){
@@ -27,8 +25,6 @@ $serviceName = "payment/getStatus";
 $flowApi = new FlowApi();
 $respuesta = (object)$flowApi->send($serviceName, $params, "GET");
 $informacion_pago_pedido = json_encode($respuesta);
-
-print_r($respuesta);
 
 $id_pedido = $respuesta->commerceOrder;
 

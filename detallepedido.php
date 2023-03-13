@@ -467,7 +467,7 @@ $http = 'http://';
           }
           doc.setPage(i+1);
           let dataURL = canvas.toDataURL('image/jpeg');
-          doc.addImage(dataURL, 'JPEG', 0, 0, width*0.35, height*0.30 )
+          doc.addImage(dataURL, 'JPEG', 0, 0, 500, 600)
         })
       }
       // doc.output("dataurlnewwindow");.

@@ -182,24 +182,23 @@ var tipo = 0;
                         numerodir : vnumerodir,
                         casablock : vcasablock
                     };
-
                     // console.log("EL CREAR CLIENTE ES :"+crearcliente.checked);
                     
-                        $.ajax({
-                            url: "ws/cliente/newclienteFrecuente.php",
-                            type: "POST",
-                            data: JSON.stringify(dataajax)
-                            ,success:function(resp){
+                    $.ajax({
+                        url: "ws/cliente/newclienteFrecuente.php",
+                        type: "POST",
+                        data: JSON.stringify(dataajax)
+                        ,success:function(resp){
+                            console.log(resp);
+                        },
+                        error : function(resp){
                                 console.log(resp);
-                            },
-                            error : function(resp){
-                                    console.log(resp);
-                                    return false;
-                                }
-                        });
+                                return false;
+                            }
+                    });
                     
                     
-                    //alert(JSON.stringify(dataajax));
+                    // alert(JSON.stringify(dataajax));
                             $.ajax({
                             url: "ws/pedidos/newPedido.php",
                             type: "POST",

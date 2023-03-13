@@ -5,20 +5,20 @@
         header("Location: index.php");
     endif;
 
-    if(!isset($_GET['id_pedido'])):
-      header("Location: index.php");
-    endif;
+    // if(!isset($_GET['id_pedido'])):
+    //   header("Location: index.php");
+    // endif;
 
-    $id_pedido = $_GET['id_pedido'];
+    // $id_pedido = $_GET['id_pedido'];
 
     $bultos = [];
-    
+
     $totalbultos = 0;
 
-    $id_cliente = $_SESSION['cliente']->id_cliente;
+    // $id_cliente = $_SESSION['cliente']->id_cliente;
 
 
-    //$id_pedido = 36468;
+    $id_pedido = 36468;
     
     require_once('./ws/bd/dbconn.php');
     $conexion = new bd();
@@ -49,7 +49,7 @@
 
 
 <!DOCTYPE html>
-<html  style=" overflow: hidden" lang="en">
+<html  lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -115,7 +115,8 @@
     </script>
 
 </head>
-<body  style=" overflow: hidden">
+
+<body  >
   <div id="overlay">
       <div class="cv-spinner">
           <span class="spinner"></span>
@@ -127,29 +128,32 @@
             include_once('./include/sidebar.php');
         ?>
        
-      <div id="main"  class="layout-navbar">
+    <div id="main"  class="layout-navbar">
 
-              <?php
-                  include_once('./include/topbar.php');
-              ?>
+      <?php
+          include_once('./include/topbar.php');
+      ?>
         
-                <div class="container-fluid" id="containermainmenu">
-               
-                  <div class="page-content" style="color:3e3e3f;">
-                    
-                    <a 
-                        id="pdfbyJS" type="button" class="btn btn-lg btn-block btn-spread">
-                        <i class="fa fa-download d-flex"></i>
-                        PDF GENERADO POR JAVASCRIPT
-                    </a>
-                </div>
+      <div class="container-fluid" id="containermainmenu">
+      
+        <div class="page-content" style="color:3e3e3f;">
+          
+          <a 
+              id="pdfbyJS" type="button" class="btn btn-lg btn-block btn-spread">
+              <i class="fa fa-download d-flex"></i>
+              PDF GENERADO POR JAVASCRIPT
+          </a>
+        </div>
+      </div>
+      <footer >
+        <div class="footer clearfix mb-0 text-muted">
+            <div class="float-start">
+                <p style="color:#3e3e3f">2023 &copy; Spread</p>
+            </div>
+        </div>
+      </footer> 
     </div>
-    
-
-
-    <?php
-        include_once('./include/footer.php')
-    ?> 
+    <!-- <div style="max-height: 1px;overflow: hidden;"> -->
     <?php
       $counter = 0;
       foreach($bultos as $bulto):
@@ -267,6 +271,21 @@
     <?php
       endforeach;
     ?>
+
+<!-- </div> -->
+  </div>
+    
+
+
+
+<script src="../assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
+<script src="../assets/js/pages/dashboard.js"></script>
+<script src="../assets/js/bootstrap.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/extensions/jquery/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/2.8.3/choices.js"></script>
+<script src="assets/js/pages/form-element-select.js"></script>
 </body>
 <style>
     body {

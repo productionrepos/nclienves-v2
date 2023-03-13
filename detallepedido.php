@@ -200,7 +200,7 @@ $http = 'http://';
                                 <h5 style="color:black;">Resumen Pedido</h5>
                             </div>
                             <div class="d-flex justify-content-center">
-                                <table class="table" style="min-height:  ; color:white; align-self:center;">
+                                <table class="table" style=" color:white; align-self:center;">
                                     <thead>
                                         <tr>
                                             <th>Fecha pedido</th>

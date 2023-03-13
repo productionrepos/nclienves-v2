@@ -29,7 +29,7 @@ $querybultosporpedido = "SELECT pedido.id_pedido AS pedido,bulto.codigo_barras_b
                               INNER JOIN bodega ON (pedido.id_bodega=bodega.id_bodega)
                               INNER JOIN comuna AS comuna_origen ON (bodega.id_comuna = comuna_origen.id_comuna)
                               INNER JOIN datos_comerciales ON (pedido.id_cliente=datos_comerciales.id_cliente)
-                              WHERE bulto.id_pedido =".$id_pedido;
+                              WHERE bulto.id_pedido =".$id_pedido." and bulto.deleted = 0";
 
 
 $querybulto = 'SELECT b.id_bulto,b.track_spread,b.nombre_bulto,b.direccion_bulto,b.precio_bulto,b.codigo_barras_bulto,p.estado_pedido,p.estado_logistico
@@ -47,12 +47,18 @@ $sinTrack = array();
 $estadoPedido = 0;
 $bultos = array();
 $precioFinal = 0;
+$id_bultos = "";
 
 if($resdatabulto = $conn->mysqli->query($querybulto)){
     while($datares = $resdatabulto->fetch_object())
     {
-        if($datares->track_spread == ""){
+        if($datares->track_spread == "" || $datares->track_spread == "0" || $datares->track_spread == NULL ){
             $sinTrack[] = $datares->id_bulto;
+            if($id_bultos == ""){
+                $id_bultos = $datares->id_bulto;
+            }else{
+                $id_bultos = $id_bultos.','.$datares->id_bulto;
+            }
         }
         $bultos[] = $datares;
         $precioFinal = $precioFinal + $datares->precio_bulto;
@@ -82,9 +88,49 @@ if( $estadoPedido == 0 ){
 }
 
 $existeSinTrack = 0;
+
 if( count($sinTrack) > 0 ){
     $existeSinTrack = 1;
 }
+
+
+
+$date = (new DateTime('now',new DateTimeZone('Chile/Continental')))->format('Y-m-d H:i:s');
+
+$querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
+bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
+bu.codigo_barras_bulto as barcode
+FROM bulto bu 
+INNER JOIN comuna co on co.id_comuna = bu.id_comuna
+INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
+INNER JOIN region re on re.id_region = pro.id_region
+where bu.id_bulto in ('. $id_bultos.') and bu.Deleted = 0';
+
+$dataAppolo =['hola'];
+
+if($resdatabulto = $conn->mysqli->query($querybulto)){
+  while($datares = $resdatabulto->fetch_object()){
+    $datosbultos [] = $datares;
+  }
+  $dataAppolo = [];
+  foreach($datosbultos as $databul){
+    $dataAppolo[]= Array(
+      "guide" => $databul->barcode,
+      "name_client" => $databul->nombre,
+      "email" => $databul->correo,
+      "phone"=> $databul->telefono ,
+      "street"=> $databul->direccion,
+      "number"=> "" ,
+      "commune" => $databul->comuna,
+      "region"=> $databul->region,
+      "dpto_bloque"=> "",
+      "id_pedido"=> $id_pedido,
+      "valor"=> "",
+      "descripcion"=> ""
+      );
+  }
+}
+
 
 if($_SERVER['HTTP_HOST'] == 'localhost:8080'){
 $http = 'http://';
@@ -155,7 +201,8 @@ $http = 'http://';
 <body lang="en">
     <div id="overlay">
         <div class="cv-spinner">
-            <span class="spinner"></span>
+            <span class="spinner"></span><br>
+            <p style="font-weight: bolder; color: white; font-size: larger; margin-top: 40px;">Generando las etiquetas</p>
         </div>
     </div>    
     
@@ -218,38 +265,32 @@ $http = 'http://';
                                 </table>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-12" style="text-align: center;">hola 2</div>
                     </div>
-                    <div class="row">
-                        <div class="col-12" style="text-align: center;">
-                            <div class="row">
-                                <h4 style="color:black;">Resumen paquetes enviados</h4>
-                            </div>
-                            <div class="row">
-                                <table class="table" style="width: 100%; background-color:#bfffd7ad;">
-                                    <thead>
-                                        <tr>
-                                            <th>Guia</th>
-                                            <th>Clientes</th>
-                                            <th>Dirección</th>
-                                            <th>Costo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                            foreach($bultos as $bulto){?>
-                                            <tr>
-                                                <td><?php echo $bulto->track_spread; ?></td>
-                                                <td><?php echo $bulto->nombre_bulto; ?></td>
-                                                <td><?php echo $bulto->direccion_bulto; ?></td>
-                                                <td><?php echo moneda($bulto->precio_bulto); ?></td>
-                                            </tr>
-                                        <?php }
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="col-12" style="text-align: center; justify-content: center;">
+                        <h4 style="color:black;">Resumen paquetes enviados</h4>
+
+                        <table class="table " style="background-color:#bfffd7ad; width: 100% !important;">
+                            <thead>
+                                <tr>
+                                    <th>Guia</th>
+                                    <th>Clientes</th>
+                                    <th>Dirección</th>
+                                    <th>Costo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    foreach($bultos as $bulto){?>
+                                    <tr>
+                                        <td><?php echo $bulto->track_spread; ?></td>
+                                        <td><?php echo $bulto->nombre_bulto; ?></td>
+                                        <td><?php echo $bulto->direccion_bulto; ?></td>
+                                        <td><?php echo moneda($bulto->precio_bulto); ?></td>
+                                    </tr>
+                                <?php }
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
@@ -316,7 +357,7 @@ $http = 'http://';
               </tr>
             </tbody>
           </table>
-          <div style="margin-bottom:70px; margin-top:70px;margin-left: 33%;"> 
+          <div style="margin-bottom:5px; margin-top:10px;margin-left: 33%;"> 
             <table width="100%">
               <tr>
                 <td width="100%" style="border: 0px;">
@@ -325,30 +366,26 @@ $http = 'http://';
                       <script>
                           JsBarcode("#barcode<?php echo $bulto->track; ?>", "<?php echo $bulto->track; ?>");
                       </script>
-                    <!-- <strong>EAN-13:</strong>
-                    <span class="ean-barcode">11011999</span> -->
                   </div>
-                  <!-- <div class="codigo_barra" style="text-align: center;">
-                    <barcode code="123223" type="EAN128A" class="barcode" size="4" height="0.5"/>
-                  </div> -->
-                </td>
-              </tr>
-              <tr>
-                <td>
-                    <h1><?php echo $bulto->track?></h1>
-                    <p>Numero de Guia</p>
                 </td>
               </tr>
             </table>
+            <table>
+                <tr>
+                <td style="text-align: center;">
+                    <h1><?php echo $bulto->track?></h1>
+                    <p>Numero de Guia</p>
+                </td>
+                </tr>
+            </table>
           </div>
-          <div class="row justify-content-center">
-            <table class="col-10">
-              <thead class="personaldatalabelhead">
+            <table style="margin: 5%; width: auto;">
+              <thead>
                 <tr>
                   <td class="text-center" colspan="2"><b class="titulo">Destinatario</b></td>
                 </tr>
               </thead>
-              <tbody class="personaldatalabelbody">
+              <tbody>
                 <tr>
                   <td width="50%" class="text-center"><b class="titulo-td">Nombre</b></td>
                   <td width="50%" class="text-center"><b class="titulo-td">Dirección</b></td>
@@ -375,7 +412,6 @@ $http = 'http://';
                 </tr>
               </tbody>
             </table>
-          </div>
 
       </div> 
       <?php
@@ -400,14 +436,14 @@ $http = 'http://';
       font-size: 20px;
       min-height: 900px;
     }
-    table {
+    /* table {
       display: block;
       width: 100%;
       border-collapse: collapse;
       border-spacing: 2px;
       border-color: grey;
       margin-top: 5px;
-    }
+    } */
     td {
       border: 1px solid #e2e5e8;
       padding: 10px;
@@ -442,6 +478,93 @@ $http = 'http://';
     }
   </style>
 <script>
+    let existeSinTrack = <?php echo $existeSinTrack; ?>;
+    let appoloData =<?php echo json_encode($dataAppolo);?>;
+    var url = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
+    var urlGetInitial = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
+    // var urlGetInitial = 'http://localhost:8000/api/pymes/revisarDocumentNumber'
+    const fecha = '<?php echo $date;?>';
+    var request = "";
+    var newTrackId;
+    var conteoAppolo;
+    var erroresAppolo;
+    var totalAppolo;
+
+    $(document).ready( async function (){
+        if(existeSinTrack > 0){
+            await appoloData.forEach((ap,i) => {
+                console.log('dentro del foreach');
+                setTimeout(function () {
+                    request = {"guide" : ap.guide,
+                            "name_client" : ap.name_client,
+                            "email": ap.email,
+                            "phone": ap.phone ,
+                            "street": ap.street,
+                            "number": "" ,
+                            "commune": ap.commune,
+                            "region": ap.region,
+                            "dpto_bloque": "",
+                            "id_pedido": ap.id_pedido,
+                            "fecha": fecha,
+                            "valor": "",
+                            "descripcion": ""};
+                (async () => {
+                    const rawResponse = await fetch( url , {
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({body:request})
+                    }).then(async (response) => {
+                        let estadoResponse = await response.json();
+
+                        if(estadoResponse.trackId){
+                            newTrackId = (estadoResponse.trackId);
+                        }
+                        if(estadoResponse.errors['0'].msg == `El numero de guia '${ap.guide}' ya existe en la base de datos`){
+                            urlGet = "";
+                            urlGet = urlGetInitial+'/'+ap.guide;
+                            const responetGet = await fetch( urlGet , {
+                                method: 'GET',
+                                headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                                }
+                            }).then(async (responseGet) => {
+                                let getTrackId = await responseGet.json();
+                                newTrackId = getTrackId.TrackID;
+                            })
+                        }
+                    })
+                    var params = {
+                        "trackid": newTrackId,
+                        "codigo_barra": ap.guide
+                    }
+                    $.ajax({
+                        data: JSON.stringify(params),
+                        type: "post",
+                        url: "./ws/bulto/insertTrackId2.php",
+                        dataType: 'json',
+                        success: function(data) {
+                            conteoAppolo = conteoAppolo + 1;
+                            if(data.status == 1){
+                                // console.log(data);
+                            }else{
+                                erroresAppolo = erroresAppolo + 1;
+                            }
+                            if(conteoAppolo == totalAppolo){
+                                window.location.reload();
+                            }
+                        },error:function(data){
+                            console.log(data);
+                        }
+                    })
+                })();
+                }, i * 3000);
+            })
+        }
+    })
     // JsBarcode("#barcode", "358853358");
 
     window.jsPDF = window.jspdf.jsPDF;
@@ -458,10 +581,6 @@ $http = 'http://';
       
       await html2canvas(canvases[i]).then(canvas=>{
 
-          let width = canvas.width;
-          let height = canvas.height;
-        // var width = doc.internal.pageSize.getWidth();
-        // var height = doc.internal.pageSize.getHeight();
           if(i>0){
             doc.addPage();
           }

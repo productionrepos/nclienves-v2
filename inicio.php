@@ -298,7 +298,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-8 menutxt">
-                                                    <h4 class="font-semibold">Mis Envíos</h4>
+                                                    <h4 class="font-semibold">Mis Envíos Realizados</h4>
                                                 </div>
                                             </div>
                                         </a>

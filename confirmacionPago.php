@@ -296,7 +296,7 @@ else {
                     console.log(data);
                     if(data.success==1) {
                         // console.log('estoy aqui');
-                        window.location.reload();
+                        
                         // window.location.href = "./";
                     }
                     else {

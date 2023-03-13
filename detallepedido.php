@@ -481,8 +481,8 @@ $http = 'http://';
     let existeSinTrack = <?php echo $existeSinTrack; ?>;
     let appoloData =<?php echo json_encode($dataAppolo);?>;
     var url = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
-    // var urlGetInitial = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
-    var urlGetInitial = 'http://localhost:8000/api/pymes/revisarDocumentNumber'
+    var urlGetInitial = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
+    // var urlGetInitial = 'http://localhost:8000/api/pymes/revisarDocumentNumber'
     const fecha = '<?php echo $date;?>';
     var request = "";
     var newTrackId;

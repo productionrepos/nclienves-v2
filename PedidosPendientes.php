@@ -202,7 +202,7 @@ $('.modpedido').on('click',function(){
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Vamos!'
                         }).then((result)=>{
-                            if(result){
+                            if(result.isConfirmed){
                                 window.location = "seleccionBultos.php?"
                             }
                             else{

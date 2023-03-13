@@ -124,113 +124,200 @@
             </div>
             
         </div>
-            <!-- MODAL LARGE-->
-                <div class="modal fade text-left w-100" id="xlarge" tabindex="-1" role="dialog"
-                    aria-labelledby="myModalLabel16" aria-hidden="true" style="padding: 60px; border-radius: 50px;">
-                    <div id="overlay">
-                        <div class="cv-spinner">
-                            <span class="spinner"></span>
+
+
+    <div class="modal fade" id="xlarge" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="toValdiateBulto">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modificar Bulto</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal"
+                            aria-label="Close">
+                            <i data-feather="x"></i>
+                        </button>
+                        <input  style="display: none;" type="text" name="vid_bulto"/>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="gg">Nombre</label>
+                                    <input type="text" id="nombredestinatario" class="form-control" name="nombredestinatario" placeholder="Nombre Destinatario"/>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="contact">Teléfono</label >
+                                    <input type="number" id="numtel" class="form-control" name="numtel" placeholder="Teléfono" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="email-id">Dirección</label>
+                                    <input type="text" id="dir" class="form-control" name="dir" placeholder="Dirección" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="Correo">Correo </label>
+                                    <input type="email" id="correo" class="form-control" name="correo" placeholder="Correo" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <label for="select_region">Región </label>
+                                <select name="select_region" class="form-select" id="select_region" >
+                                    <option value=""></option>
+                                    <?php   
+                                        $reg = getRegiones();
+                                        foreach($reg as $r):
+                                    ?>
+                                    <option value="<?php echo $r->id?>"><?php echo $r->nombre?></option>
+                                    <?php
+                                        endforeach;
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <label for="Comuna">Comuna</label>
+                                <select name="select_comuna" class="form-select" id="select_comuna" >
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="Item">Item a enviar </label>
+                                    <input type="text" id="item" class="form-control" name="item" placeholder="Item" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="Costo">Costo item </label>
+                                    <input type="text" id="cost" class="form-control" name="cost" placeholder="Precio Item" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="text-align: center;">
+                                <div class="form-group">
+                                <label for="Costo"> Tipo envío </label>
+                                    <select name="select_type" class="form-select" id="select_type" value="" >
+                                        <option value="0"></option>
+                                        <option value="1">Mini (0 - 5 kg)</option>
+                                        <option value="2">Medium (5 - 10 kg)</option>
+                                    </select>
+                                </div>
+                                <label id="tipoenvio">Rango de peso</label>
+                            </div>
+                            
                         </div>
                     </div>
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
-                        role="document">
-                        <div class="modal-content" style="padding: 0px 50px;">
-                            <form class="form form" id="toValdiateBulto" >
-                                <div class="form-body">
-                                        <div class="progress-bar" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0"
-                                            aria-valuemax="100"></div>
-                                    </div>
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="myModalLabel33">Modificar Bodega</h4>
-                                        <button class="close" data-bs-dismiss="modal"
-                                            aria-label="Close">
-                                            <i data-feather="x"></i>
-                                        </button>
-
-                                        <input  style="display: none;" type="text" name="vid_bulto"/>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="gg">Nombre</label>
-                                            <input type="text" id="nombredestinatario" class="form-control" name="nombredestinatario" placeholder="Nombre Destinatario"/>
-                                        </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <label for="contact">Teléfono</label >
-                                                <input type="number" id="numtel" class="form-control" name="numtel" placeholder="Teléfono" />
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="email-id">Dirección</label>
-                                            <input type="text" id="dir" class="form-control" name="dir" placeholder="Dirección" />
-                                        </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <label for="Correo">Correo </label>
-                                                <input type="email" id="correo" class="form-control" name="correo" placeholder="Correo" />
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-6">
-                                            <label for="select_region">Región </label>
-                                            <select name="select_region" class="form-select" id="select_region" >
-                                                <option value=""></option>
-                                                <?php   
-                                                    $reg = getRegiones();
-                                                    foreach($reg as $r):
-                                                ?>
-                                                <option value="<?php echo $r->id?>"><?php echo $r->nombre?></option>
-                                                <?php
-                                                    endforeach;
-                                                ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-6">
-                                            <label for="Comuna">Comuna</label>
-                                            <select name="select_comuna" class="form-select" id="select_comuna" >
-                                                <option value=""></option>
-                                            </select>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <label for="Item">Item a enviar </label>
-                                                <input type="text" id="item" class="form-control" name="item" placeholder="Item" />
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label for="Costo">Costo item </label>
-                                                <input type="text" id="cost" class="form-control" name="cost" placeholder="Precio Item" />
-                                            </div>
-                                        </div>
-                                        <div class="col-3" style="text-align: center;">
-                                            <div class="form-group">
-                                            <label for="Costo"> Tipo envío </label>
-                                                <select name="select_type" class="form-select" id="select_type" value="" >
-                                                    <option value="0"></option>
-                                                    <option value="1">Mini (0 - 5 kg)</option>
-                                                    <option value="2">Medium (5 - 10 kg)</option>
-                                                </select>
-                                            </div>
-                                            <label id="tipoenvio">Rango de peso</label>
-                                        </div>
-                                        <div class="col-4 justify-content-start">
-                                        <!-- type="submit" data-bs-toggle="modal" data-bs-target="#xlarge" id="closemodal" -->
-                                            <button type="submit" id="closemodal"> Modificar Bulto </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        
-
+                    <div class="modal-footer">
+                        <div class="justify-content-start">
+                            <button type="submit" class="btn btn-spread" id="closemodal"> Modificar Bulto </button>
                         </div>
+                        
                     </div>
                 </div>
+            </form>
+        </div>
+    </div>
+          
+
+
+<!-- MODAL EDITAR BULTOS -->
+    <div class="modal fade text-left" id="xlarge" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel33" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+            role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel33">Modificar Bulto</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="gg">Nombre</label>
+                                    <input type="text" id="nombredestinatario" class="form-control" name="nombredestinatario" placeholder="Nombre Destinatario"/>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="contact">Teléfono</label >
+                                    <input type="number" id="numtel" class="form-control" name="numtel" placeholder="Teléfono" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="email-id">Dirección</label>
+                                    <input type="text" id="dir" class="form-control" name="dir" placeholder="Dirección" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="Correo">Correo </label>
+                                    <input type="email" id="correo" class="form-control" name="correo" placeholder="Correo" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <label for="select_region">Región </label>
+                                <select name="select_region" class="form-select" id="select_region" >
+                                    <option value=""></option>
+                                    <?php   
+                                        $reg = getRegiones();
+                                        foreach($reg as $r):
+                                    ?>
+                                    <option value="<?php echo $r->id?>"><?php echo $r->nombre?></option>
+                                    <?php
+                                        endforeach;
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <label for="Comuna">Comuna</label>
+                                <select name="select_comuna" class="form-select" id="select_comuna" >
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="Item">Item a enviar </label>
+                                    <input type="text" id="item" class="form-control" name="item" placeholder="Item" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="Costo">Costo item </label>
+                                    <input type="text" id="cost" class="form-control" name="cost" placeholder="Precio Item" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6" style="text-align: center;">
+                                <div class="form-group">
+                                <label for="Costo"> Tipo envío </label>
+                                    <select name="select_type" class="form-select" id="select_type" value="" >
+                                        <option value="0"></option>
+                                        <option value="1">Mini (0 - 5 kg)</option>
+                                        <option value="2">Medium (5 - 10 kg)</option>
+                                    </select>
+                                </div>
+                                <label id="tipoenvio">Rango de peso</label>
+                            </div>
+                            <div class="justify-content-start">
+                            <button type="submit" class="btn btn-spread" id="closemodal"> Modificar Bulto </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <?php
         include_once('./include/footer.php');
     ?>

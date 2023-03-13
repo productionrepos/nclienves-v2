@@ -16,7 +16,7 @@
     $costo = $data->costo;
     $idpaquete = $data->idpaquete;
     $comuna = $data->comuna;
-    $region = $data->region;
+    $regionn = $data->region;
     $id_bodega = $data->idbodega;
     $rut = $data->rut;
     $numerodir = $data->numerodir;
@@ -58,12 +58,12 @@
             echo $conn->mysqli->error;
         }
 
-            $idregion = $region[0];
+            $idregion = $region[0]->id_region;
             $tipo_servicio = "";
             $valor = 0;
             $tp = "";
 
-        if($idregion == $region){
+        if($idregion == $regionn){
             $tipo_servicio = "Intercomunal urbano";
             $tp = "icu";
         }
@@ -71,12 +71,6 @@
             $tipo_servicio = "interregional urbano";
             $tp = "iru";
         }
-        // if($idpaquete == 1){
-            
-        // }
-        // elseif($idpaquete == 2){
-           
-        // }
 
         if($idpaquete == 1 && $tp == "icu" ){
             $queryprecio = 'SELECT precio_comunal_paquete as precio  from paquete where id_paquete = 1';
@@ -92,12 +86,9 @@
             $queryprecio = 'SELECT precio_regional_paquete as precio from paquete where id_paquete = 2';
         }
 
-
         $resprecio = $conn ->mysqli->query($queryprecio);
             $precio = $resprecio->fetch_object()->precio;
             $precio =+ $precio*1.19;
-        
-       
 
         if($conn->mysqli->query($querybultotemporal)){
             $idbultotemporal = $conn ->mysqli->insert_id;
@@ -117,7 +108,7 @@
             // echo $querybulto;
             echo $conn->mysqli->error;
         }
-        // echo $querybulto;
+        //echo $querybulto;
     }
     else {
         

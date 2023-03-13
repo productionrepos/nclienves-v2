@@ -641,6 +641,7 @@
 
 
     $('#submitpedido').on('click',function(){
+        
         if($('#useMini').checked == false && $('#useMini').checked == false){
                 Swal.fire({
                     position: 'bottom',
@@ -861,8 +862,7 @@ $("#select_regioncli2").on('change',function(){
                                             detalle : vdetalle,
                                             comuna : vcomunavalue,
                                             region: vregion};
-                            
-                    
+
                             // alert(JSON.stringify(dataajax));
                                     $.ajax({
                                     url: "ws/bodega/newBodega.php",

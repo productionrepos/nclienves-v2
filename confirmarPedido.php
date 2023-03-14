@@ -52,6 +52,10 @@
     }
     
 
+    function moneda($number) {
+        return '$'.number_format($number, 0, ',', '.');
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +73,7 @@
                 require_once('./include/topbar.php');
         ?>
 
-        <div class="confirmar_pedido" >
+        <div class="confirmar_bultos" >
             <div class="confirmar_pedidohead">
                 <h4>Resumen de Pedido #<?=$id_pedido?></h4>
             </div>
@@ -90,7 +94,7 @@
                                 <td class="id_bulto" style="display: none;"><?=$bulto->id_bulto?></td>
                                 <td><?=$bulto->nombre_bulto?></td>
                                 <td><?=$bulto->direccion_bulto?></td>
-                                <td><?=$bulto->precio_bulto?></td>
+                                <td><?=moneda($bulto->precio_bulto)?></td>
                                 <td style="text-align: end; max-width: 80px;">
                                     <button class="btn btn-warning editbulto" id="" data-bs-toggle="modal" data-bs-target="#xlarge" data-bs-toggle="tooltip" title="Modificar">
                                         <i class="fa-solid fa-pen-to-square" ></i>
@@ -109,7 +113,7 @@
                             ?> 
                             <td></td>
                             <td style="text-align: end;">Total</td>
-                            <td><?=$suma?></td>
+                            <td><?=moneda($suma)?></td>
                             <td>
                             </td>
                         </tr>

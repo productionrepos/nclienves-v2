@@ -119,7 +119,7 @@
                 <div class="page-content" style="color:3e3e3f;">
                     <div class="resumen-envios  mt-1">
                         <div class="row">
-                            <h4 style="color:#3e3e3f">Envíos de este mes</h4>
+                            <h4 style="color:black;font-weight:800;">Envíos de este mes</h4>
                         </div>
                         <div class="masteresume row">
                         
@@ -185,7 +185,7 @@
                    ?>
                         <div class="resumen-envios  mt-1">
                             <div class="row">
-                                <h4 style="color:#3e3e3f">Retiros Pendientes</h4>
+                                <h4 style="color:black;font-weight:800;">Retiros Pendientes</h4>
                             </div>
                             <div class="masteresume row">
                                 <div class="col-lg-4 col-12 col-md-6 card colresume">
@@ -245,64 +245,50 @@
                       
 
 
-                    <section class="resumen-envios  mt-1" >
-                        <div class="row justify-content-center">
-                            <div class="singleimgmenu col-lg-8 col-sm-12">
+                    <section class="resumen-envios mt-1" >
+                        <div class="colresume row justify-content-center" style="margin: 0px !important;">
+                            <div class="singleimgmenu col-lg-8 col-sm-12" >
                                 <a href="./PedidosPendientes.php">    
-                                    <div class="card" style="overflow-y: auto">
-                                        <div class="card-body"  id="imgmenu">
-                                            <div class="row">
-                                                <div class="col-md-4" id="cardicon">
-                                                    <div class="stats-icon green">
-                                                        <i class="fa-solid fa-warehouse"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8 menutxt">
-                                                    <h4 class="font-semibold">Continuar con envíos pendientes</h3>
-                                                </div>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-4" id="cardicon">
+                                            <i class="fa-solid fa-warehouse"></i>
+                                        </div>
+                                        <div class="col-md-8 menutxt">
+                                            <h4 class="font-semibold">Continuar con envíos pendientes</h3>
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         </div>
 
-                        <div class="row ">
-                            <div class="singleimgmenu col-lg-6 col-sm-12">
-                                <div class="card">
-                                    <div class="card-body" id="imgmenu">
-                                        <a href="./seleccionBultos.php">
-                                            <div class="row" >
-                                                <div class="col-md-4" id="cardicon">
-                                                    <div class="stats-icon green">
-                                                        <i class="fa-solid fa-paper-plane"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8 menutxt">
-                                                    <h4 class="font-semibold"> Envía Ahora </h4>
-                                                </div>
+                        <div class="row" style="justify-content: center;">
+                            <div class="col-lg-5 col-sm-12 card colresume">
+                                <div class="" >
+                                    <a href="./seleccionBultos.php">
+                                        <div class="row" >
+                                            <div class="col-md-4 envresitems" >
+                                                <i class="fa-solid fa-paper-plane"></i>
                                             </div>
-                                        </a>
-                                    </div>
+                                            <div class="col-md-8 envresitems">
+                                                <h4 class="font-semibold"> Envía Ahora </h4>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
 
-                            <div class="singleimgmenu col-lg-6 col-sm-12">
-                                <div class="card">
-                                    <div class="card-body" id="imgmenu">
-                                        <a href="./PedidosRealizados.php">
-                                            <div class="row">
-                                                <div class="col-md-4 "id="cardicon">
-                                                    <div class="stats-icon green">
-                                                        <i class="fa-solid fa-box"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8 menutxt">
-                                                    <h4 class="font-semibold">Mis Envíos Realizados</h4>
-                                                </div>
+                            <div class=" col-lg-5 col-sm-12 card colresume">
+                                <div class="">
+                                    <a href="./PedidosRealizados.php">
+                                        <div class="row">
+                                            <div class="col-md-4 envresitems">
+                                                <i class="fa-solid fa-box"></i>
                                             </div>
-                                        </a>
-                                    </div>
+                                            <div class="col-md-8 envresitems">
+                                                <h4 class="font-semibold">Mis Envíos Realizados</h4>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
 

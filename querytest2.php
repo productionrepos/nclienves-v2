@@ -45,6 +45,19 @@
     }
 
 
+
+    $queryprecio = "Select * from bulto where id_pedido in (36555,36554);";
+
+
+    $respuestaprecios = $conexion->mysqli->query($queryprecio);
+
+    while($resssspreciosss = $respuestaprecios->fetch_object()){
+      $bultosprecios [] = $resssspreciosss;
+    }
+
+    
+
+
 ?>
 
 
@@ -145,6 +158,73 @@
           </a>
         </div>
       </div>
+
+
+
+      <div class="resumen-envios" >
+        <table style="color: black;font-size: 20px;font-weight: 800;background-color: #60cbb1c2;">
+            <thead>
+                <tr>
+                  <td>ID PEDIDO</td>
+                  <td>ID BULTO</td>
+                  <td>ID PAQUETE</td>
+                  <td>TIPO SERVICIO</td>
+                  <td>PRECIO</td>
+                  <td>OPERACION</td>
+                  <td>PRECIO A INSERTAR A LA BD</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                  foreach($bultosprecios as  $bultopre):
+                  $preciomasiva = $bultopre->precio_bulto;
+                ?>
+                <tr>
+                  <td><?php echo $bultopre->id_pedido?></td>
+                  <td><?php echo $bultopre->id_bulto?></td>
+                  <td><?php echo $bultopre->id_paquete?></td>
+                  <td><?php echo $bultopre->tipo_servicio_bulto?></td>
+                  <td><?php echo $bultopre->precio_bulto?></td>
+                  <td>precio + (precio*0.19)</td>
+                  <td><?php echo $preciomasiva+($preciomasiva*0.19)?></td>
+                </tr>
+                <?php endforeach;?>
+            </tbody>
+          </table>
+      </div>
+
+      <div class="resumen-envios">
+        <table style="color: black;font-size: 20px;font-weight: 800;">
+            <thead>
+                <tr>
+                  <td>ID PEDIDO</td>
+                  <td>ID BULTO</td>
+                  <td>ID PAQUETE</td>
+                  <td>TIPO SERVICIO</td>
+                  <td>PRECIO</td>
+                  <td>OPERACION</td>
+                  <td>PRECIO A INSERTAR A LA BD</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                  foreach($bultosprecios as  $bultopre):
+                  $preciomasiva = $bultopre->precio_bulto;
+                ?>
+                <tr>
+                  <td><?php echo $bultopre->id_pedido?></td>
+                  <td><?php echo $bultopre->id_bulto?></td>
+                  <td><?php echo $bultopre->id_paquete?></td>
+                  <td><?php echo $bultopre->tipo_servicio_bulto?></td>
+                  <td><?php echo $bultopre->precio_bulto?></td>
+                  <td>precio*1.19</td>
+                  <td><?php echo round($preciomasiva*1.19,0)?></td>
+                </tr>
+                <?php endforeach;?>
+            </tbody>
+          </table>
+      </div>
+        
       
     </div>
   <div style="max-height: 1px;overflow: hidden;">

@@ -319,7 +319,7 @@
                                 <div class="card" style="background-color: #ffffffc7;">
                                     <div class="row " style="margin: 10px 5px;background-color: #ffffff00; justify-content: space-between;">
                                          <div class="col-md-5 col-10" style="align-items: center;">
-                                            <h4 class="card-title">Formulario de envío(Datos destinatario)</h4>
+                                            <h4 class="card-title">Formulario de envío <h4>(Datos destinatario)</h4> </h4>
                                         </div>
                                         <!-- <div class="col-md-3 col-3">
                                             <label ><h5>Guardar Cliente</h5><input id="savecliente"  type="checkbox"></label>                                                       

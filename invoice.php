@@ -155,6 +155,10 @@ if($credito == 0) {
         exit();
     }
 }
+
+function moneda($number) {
+    return '$'.number_format($number, 0, ',', '.');
+}
   
 
 ?>
@@ -197,8 +201,8 @@ if($credito == 0) {
                                     <table class="table table-borderless">
                                         <tbody>
                                             <tr class="add">
-                                                <td>Para</td>
-                                                <td>De</td>
+                                                <td>Datos Empresa</td>
+                                                <td>Detalle de retiro</td>
                                             </tr>
                                             <tr class="content">
                                             <td class="font-weight-bold"><?=$nombre?><br><?=$rut?><br><?=$correo?></td>
@@ -225,7 +229,7 @@ if($credito == 0) {
                                                 <tr>
                                                     <td><?=$datobulto->nombre?></td>
                                                     <td><?=$datobulto->direccion?></td>
-                                                    <td><?=$datobulto->precio?></td>
+                                                    <td><?=moneda($datobulto->precio)?></td>
                                                     
                                                 </tr>
                                             <?php
@@ -247,9 +251,9 @@ if($credito == 0) {
                                             </tr>
                                             <tr class="content">
                                                 <td></td>
-                                                <td><?=round($totalneto/1.19,0)?></td>
-                                                <td><?=round(($totalneto/1.19)*0.19,0)?></td>
-                                                <td class="text-center"><?=round($totalneto,0)?></td>
+                                                <td><?=moneda(round($totalneto/1.19,0))?></td>
+                                                <td><?=moneda(round(($totalneto/1.19)*0.19,0))?></td>
+                                                <td class="text-center"><?=moneda(round($totalneto,0))?></td>
                                             </tr>
                                         </tbody>
                                     </table>

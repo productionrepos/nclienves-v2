@@ -3,6 +3,8 @@
   if(!isset($_SESSION['cliente'])){
     header('Location: index.php');
   }
+
+  
   
 //   if($_SESSION['cliente']->id_cliente != 1394 && $_SESSION['cliente']->id_cliente != 1373){
 //     header('Location: index.php');

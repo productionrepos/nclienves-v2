@@ -160,11 +160,29 @@
     align-content: center;
     text-align: center;
     border: -2px solid #56ebc5;
+    background-color: #60cbb1c2;
+    color: white;
     margin: 20px;
     border-radius: 10px;
     padding: 10px;
     cursor: pointer;
     transition: all .4s ease;
+    justify-content: space-between;
+}
+
+
+.colresume h5{
+    color: white;
+}
+.colresume i{
+    color: white;
+}
+.colresume h4{
+    color: white;
+}
+.colresume h3{
+    color: white;
+
 }
 
 .colresume:hover{
@@ -178,6 +196,7 @@
 .dataresenv
 {
     justify-content: center;
+    margin-bottom: 0px;
 }
    
 
@@ -326,6 +345,17 @@
     background-color: #66cab2;
     margin:50px 50px;
     border-radius: 50px;
+}
+
+.confirmar_bultos{
+    padding: 30px;
+    background-color: #66cab2d6;
+    margin:50px 50px;
+    border-radius: 50px;
+}
+.confirmar_bultos .confirmar_pedidohead h4{
+    color: black;
+    font-weight: 800;
 }
 
 .confirmar_pedidoBody{

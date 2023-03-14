@@ -130,7 +130,7 @@ $id_cliente = $_SESSION['cliente']->id_cliente;
             
                     $resprecio = $conn ->mysqli->query($queryprecio);
                         $precio = $resprecio->fetch_object()->precio;
-                        $precio =+ $precio*1.19;
+                        $precio =+ round($precio*1.19,0);
 
                    
                     if($conn->mysqli->query($querybultotemporal)){

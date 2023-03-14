@@ -77,7 +77,7 @@ $conn -> desconectar();
             </div>
             <div class="page-content">
                 <section class="section">
-                    <div class="card">
+                    <div class="table-responsive card">
                         <div class="card-header">
                             Pendientes
                         </div>

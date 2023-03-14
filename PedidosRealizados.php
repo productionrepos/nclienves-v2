@@ -76,7 +76,7 @@
                         <!-- <div class="card-header">
                             <input type="search" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
                         </div> -->
-                        <div class="card-body" id="tablepr">
+                        <div class=" table-responsive card-body" id="tablepr">
                             <table class="table table-striped" id="table">
                                 <thead>
                                     <tr>

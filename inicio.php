@@ -119,7 +119,7 @@
                 <div class="page-content" style="color:3e3e3f;">
                     <div class="resumen-envios  mt-1">
                         <div class="row">
-                            <h4 style="color:black;font-weight:800;">Envíos de este mes</h4>
+                            <h4 style="color:white;font-weight:800;text-align: center;">Envíos de este mes</h4>
                         </div>
                         <div class="masteresume row">
                         
@@ -185,7 +185,7 @@
                    ?>
                         <div class="resumen-envios  mt-1">
                             <div class="row">
-                                <h4 style="color:black;font-weight:800;">Retiros Pendientes</h4>
+                                <h4 style="color:white;font-weight:800;text-align: center;">Retiros Pendientes</h4>
                             </div>
                             <div class="masteresume row">
                                 <div class="col-lg-4 col-12 col-md-6 card colresume">
@@ -301,10 +301,10 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-8 col-sm-12">
                                 <div id="faq" role="tablist" aria-multiselectable="true">
-                                    <div class="card">
-                                        <div class="card-header" role="tab" id="questionTwo" style="text-align: center;">
+                                    <div class="card colresume">
+                                        <div class="" role="tab" id="questionTwo" style="text-align: center;">
                                             <div class="row">
-                                                <h4 style="color:#3e3e3f">Sigue un envío</h4>
+                                                <h4 style="color:white; text-align: center; font-size: 800;">Sigue un envío</h4>
                                             </div>
                                                 <form>
                                                     <div class="row">

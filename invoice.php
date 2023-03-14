@@ -27,7 +27,9 @@ $descuento = 0;
 
 
 
-$querypedido = "SELECT estado_pedido as estado FROM pedido
+$querypedido = "SELECT bodega.nombre_bodega ,bodega.calle_bodega,bodega.numero_bodega,
+                       bodega.detalle_bodega,comuna.nombre_comuna ,pedido.estado_pedido as estado
+                FROM pedido
     INNER JOIN bodega ON (pedido.id_bodega=bodega.id_bodega)
     INNER JOIN comuna ON (bodega.id_comuna=comuna.id_comuna)
     INNER JOIN provincia ON (comuna.id_provincia=provincia.id_provincia)
@@ -35,10 +37,10 @@ $querypedido = "SELECT estado_pedido as estado FROM pedido
     AND pedido.id_pedido=$id_pedido AND cliente.id_cliente=$id_cliente";
 
 if($pedido = $conn->mysqli->query($querypedido)){
-    $datos_pedido = $pedido->fetch_object();
+    $datos_pedido []= $pedido->fetch_object();
 }
 
-if($datos_pedido->estado >= 2){
+if($datos_pedido[0]->estado >= 2){
     header("Location: detallepedido.php?id_pedido=$id_pedido");
     exit();
 }
@@ -189,12 +191,13 @@ function moneda($number) {
                     <div class="row d-flex justify-content-center">
                         <div class="col-md-8">
                             <div class="card">
-                                <div class="d-flex flex-row p-2"> <img src="../include/img/LogoInvoice.png"  width="450" height="60">
+                                <div class="table-responsive d-flex flex-row p-2">
                                     <div class="d-flex flex-column">
-                                         <span class="font-weight-bold">ID Pedido</span> 
-                                         <h4><?=$id_pedido?></h4> 
-                                         <h6>Pendiente de pago</h6>
-                                        </div>
+                                        <span class="font-weight-bold">ID Pedido</span> 
+                                        <h4><?=$id_pedido?></h4> 
+                                        <h6>Pendiente de pago</h6>
+                                    </div>
+                                    <img src="../include/img/LogoInvoice.png"  width="450" height="60">
                                 </div>
                                 <hr>
                                 <div class="table-responsive p-2">
@@ -206,13 +209,15 @@ function moneda($number) {
                                             </tr>
                                             <tr class="content">
                                             <td class="font-weight-bold"><?=$nombre?><br><?=$rut?><br><?=$correo?></td>
-                                                <td class="font-weight-bold">Spread <br> Gamero 2085, Independencia, Santiago <br> contacto@spread.cl</td>
+                                            <?php foreach($datos_pedido as $dt):?>
+                                                <td class="font-weight-bold"><?php echo $dt->calle_bodega.' '.$dt->numero_bodega.' '.$dt->detalle_bodega.', '.$dt->nombre_comuna;?><br></td>
+                                            <?php endforeach;?>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <hr>
-                                <div class="products p-2">
+                                <div class="table-responsive products p-2">
                                     <table class="table table-borderless">
                                         <tbody>
                                             <tr class="add">
@@ -240,7 +245,7 @@ function moneda($number) {
                                     </table>
                                 </div>
                                 <hr>
-                                <div class="products p-2">
+                                <div class=" table-responsive products p-2">
                                     <table class="table table-borderless">
                                         <tbody>
                                             <tr class="add">
@@ -264,17 +269,17 @@ function moneda($number) {
                                         <div class="finish" style="justify-content: end;">
                                             <div class="row justify-content-between align-items-center g-2">
                                                 
-                                                    <a href="confirmarpedido.php?id_pedido=<?=$id_pedido?>" class="col-md-4 col-6 btn btn-warning">Corregir Datos</a>
+                                                    <a href="confirmarpedido.php?id_pedido=<?=$id_pedido?>" class="col-md-4 col-8 btn btn-warning">Corregir Datos</a>
                                                 
                                                 <?php
                                                         if($credito == 1):
                                                     ?>
-                                                        <a id="procesarcredito" class="col-md-4 col-6 btn btn-success">Procesar credito</a>
+                                                        <a id="procesarcredito" class="col-md-4 col-8 btn btn-success">Procesar credito</a>
                                                         
                                                     <?php else:?>
-                                                        <a href="<?=$url_pago?>" class="col-md-4 col-6 btn btn-success">Pagar</a>
+                                                        <a href="<?=$url_pago?>" class="col-md-4 col-8 btn btn-success">Pagar</a>
                                                         <div class="row justify-content-end">
-                                                            <div class="col-6 ">
+                                                            <div class="col-lg-6 col-12 ">
                                                                 <div class="row">
                                                                     <img src="include/img/logoFlow.png" alt="Logos plataforma pago" width="200px" height="50px" srcset="">
                                                                     <img src="include/img/logotarjeta.png" alt="Logos medios de pago" width="250px" height="40px" srcset="">

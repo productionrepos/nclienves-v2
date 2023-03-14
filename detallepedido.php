@@ -66,6 +66,8 @@ if($resdatabulto = $conn->mysqli->query($querybulto)){
     }
 }
 
+
+
 if($resPedido = $conn->mysqli->query($queryPedido)){
     while($dataPedidos = $resPedido->fetch_object()){
         $direccion = $dataPedidos->calle_bodega." ".$dataPedidos->numero_bodega.", ".$dataPedidos->nombre_comuna;
@@ -93,44 +95,45 @@ if( count($sinTrack) > 0 ){
     $existeSinTrack = 1;
 }
 
-
-
 $date = (new DateTime('now',new DateTimeZone('Chile/Continental')))->format('Y-m-d H:i:s');
-
-$querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
-bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
-bu.codigo_barras_bulto as barcode
-FROM bulto bu 
-INNER JOIN comuna co on co.id_comuna = bu.id_comuna
-INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
-INNER JOIN region re on re.id_region = pro.id_region
-where bu.id_bulto in ('. $id_bultos.') and bu.Deleted = 0';
-
-$dataAppolo =['hola'];
-
-if($resdatabulto = $conn->mysqli->query($querybulto)){
-  while($datares = $resdatabulto->fetch_object()){
-    $datosbultos [] = $datares;
+if($id_bultos== ""){
+  $dataAppolo =['hola']; 
+}else{
+  
+  $querybulto = 'SELECT bu.id_bulto as guide, bu.nombre_bulto as nombre, bu.email_bulto as correo, bu.telefono_bulto as telefono,
+  bu.direccion_bulto as direccion, co.nombre_comuna as comuna,re.nombre_region as region, bu.precio_bulto as precio,
+  bu.codigo_barras_bulto as barcode
+  FROM bulto bu 
+  INNER JOIN comuna co on co.id_comuna = bu.id_comuna
+  INNER JOIN provincia pro on pro.id_provincia = co.id_provincia
+  INNER JOIN region re on re.id_region = pro.id_region
+  where bu.id_bulto in ('. $id_bultos.') and bu.Deleted = 0';
+  
+  
+  if($resdatabulto = $conn->mysqli->query($querybulto)){
+    while($datares = $resdatabulto->fetch_object()){
+      $datosbultos [] = $datares;
+    }
+    $dataAppolo = [];
+    foreach($datosbultos as $databul){
+      $dataAppolo[]= Array(
+        "guide" => $databul->barcode,
+        "name_client" => $databul->nombre,
+        "email" => $databul->correo,
+        "phone"=> $databul->telefono ,
+        "street"=> $databul->direccion,
+        "number"=> "" ,
+        "commune" => $databul->comuna,
+        "region"=> $databul->region,
+        "dpto_bloque"=> "",
+        "id_pedido"=> $id_pedido,
+        "valor"=> "",
+        "descripcion"=> ""
+        );
+    }
   }
-  $dataAppolo = [];
-  foreach($datosbultos as $databul){
-    $dataAppolo[]= Array(
-      "guide" => $databul->barcode,
-      "name_client" => $databul->nombre,
-      "email" => $databul->correo,
-      "phone"=> $databul->telefono ,
-      "street"=> $databul->direccion,
-      "number"=> "" ,
-      "commune" => $databul->comuna,
-      "region"=> $databul->region,
-      "dpto_bloque"=> "",
-      "id_pedido"=> $id_pedido,
-      "valor"=> "",
-      "descripcion"=> ""
-      );
-  }
-}
 
+}  
 
 if($_SERVER['HTTP_HOST'] == 'localhost:8080'){
 $http = 'http://';
@@ -220,7 +223,7 @@ $http = 'http://';
             <div class="row"  style="padding: 20px; text-align: center;">
                 <div class="card resumen-envios col-lg-6 col-md-6 col-sm-8 col-12" style="padding: 20px; text-align: center;">
                     <div class="">
-                            <h3 style="color: black; font-weight: 700;">Información del pedido</h3>
+                            <h3 style="color: black; font-weight: 700;">Información del pedido #<?=$id_pedido?></h3>
                     </div>
                 </div>
             </div>
@@ -481,8 +484,9 @@ $http = 'http://';
     let existeSinTrack = <?php echo $existeSinTrack; ?>;
     let appoloData =<?php echo json_encode($dataAppolo);?>;
     var url = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
-    var urlGetInitial = 'https://spreadfillment-back.azurewebsites.net/api/pymes/ingresarPyme'
+    var urlGetInitial = 'https://spreadfillment-back.azurewebsites.net/api/pymes/revisarDocumentNumber'
     // var urlGetInitial = 'http://localhost:8000/api/pymes/revisarDocumentNumber'
+    var urlGet;
     const fecha = '<?php echo $date;?>';
     var request = "";
     var newTrackId;
@@ -492,6 +496,11 @@ $http = 'http://';
 
     $(document).ready( async function (){
         if(existeSinTrack > 0){
+           newTrackId = ""
+           conteoAppolo = 0
+           erroresAppolo = 0
+           totalAppolo = appoloData.length
+
             await appoloData.forEach((ap,i) => {
                 console.log('dentro del foreach');
                 setTimeout(function () {
@@ -518,7 +527,7 @@ $http = 'http://';
                         body: JSON.stringify({body:request})
                     }).then(async (response) => {
                         let estadoResponse = await response.json();
-
+                        // console.log(estadoResponse);
                         if(estadoResponse.trackId){
                             newTrackId = (estadoResponse.trackId);
                         }
@@ -561,8 +570,9 @@ $http = 'http://';
                         }
                     })
                 })();
-                }, i * 3000);
+                }, i * 4500);
             })
+          
         }
     })
     // JsBarcode("#barcode", "358853358");
